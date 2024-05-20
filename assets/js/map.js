@@ -82,7 +82,7 @@ const vectorSource = new VectorSource();
 
 // geojson example
 const datageojson = new VectorSource({
-  url: "./assets/data/Environment.geojson",
+  url: "/assets/data/Environment.geojson",
   format: new GeoJSON(),
 });
 
