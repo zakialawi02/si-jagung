@@ -1,0 +1,66 @@
+
+const vectorSource = new ol.source.Vector();
+const projection = new ol.proj.Projection({
+  code: "EPSG:54034",
+  units: "m",
+  axisOrientation: "neu",
+});
+ol.proj.addProjection(projection);
+
+// BaseMap
+const osmBaseMap = new ol.layer.Tile({
+  source: new ol.source.OSM(),
+  crossOrigin: "anonymous",
+  visible: false,
+});
+
+const sourceBingMaps = new ol.source.BingMaps({
+  key: "AjQ2yJ1-i-j_WMmtyTrjaZz-3WdMb2Leh_mxe9-YBNKk_mz1cjRC7-8ILM7WUVEu",
+  imagerySet: "AerialWithLabels",
+  maxZoom: 20,
+});
+const bingAerialBaseMap = new ol.layer.Tile({
+  preload: Infinity,
+  source: sourceBingMaps,
+  crossOrigin: "anonymous",
+  visible: true,
+});
+
+const mapboxBaseURL = "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiNjg2MzUzMyIsImEiOiJjbDh4NDExZW0wMXZsM3ZwODR1eDB0ajY0In0.6jHWxwN6YfLftuCFHaa1zw";
+const mapboxStyleId = "mapbox/streets-v11";
+const mapboxSource = new ol.source.XYZ({
+  url: mapboxBaseURL.replace("{id}", mapboxStyleId),
+});
+const mapboxBaseMap = new ol.layer.Tile({
+  source: mapboxSource,
+  crossOrigin: "anonymous",
+  visible: false,
+});
+
+const baseMaps = [osmBaseMap, bingAerialBaseMap, mapboxBaseMap];
+
+// Init To Canvas/View
+const view = new ol.View({
+  center: ol.proj.fromLonLat([0, 0]),
+  zoom: 10,
+  Projection: projection,
+});
+const viewMini = new ol.View({
+  center: ol.proj.fromLonLat([0, 0]),
+  zoom: 5,
+});
+var attribution = new ol.control.Attribution({
+  collapsible: true,
+});
+const map = new ol.Map({
+  target: "map",
+
+  layers: [
+    new ol.layer.Group({
+      layers: baseMaps,
+    }),
+  ],
+
+  view: view,
+  controls: [new ol.control.Zoom(), new ol.control.ScaleLine(), attribution],
+});
