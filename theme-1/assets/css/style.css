@@ -6,10 +6,17 @@
   --info: #07847f;
   --warning: #e89531;
   --danger: #c42626;
-  --light: #fffef0;
+  --light: #fffef6;
   --dark: #161614;
 }
 
+.bg-white {
+  background-color: #fff;
+}
+
+main {
+  background-color: var(--light);
+}
 .back-to-top {
   position: fixed;
   display: none;
@@ -42,6 +49,11 @@
 .py-6 {
   padding-top: 4.15rem;
   padding-bottom: 4.15rem;
+}
+
+.px-6 {
+  padding-right: 4.15rem;
+  padding-left: 4.15rem;
 }
 
 /*** Spinner ***/
@@ -121,7 +133,6 @@
 /*** Header ***/
 #home {
   margin-bottom: 6rem;
-  background: url(../img/bg-header.png) left top no-repeat;
 }
 
 .typed-cursor {
@@ -219,6 +230,47 @@
   color: #ffffff;
   background: #000000;
   opacity: 1;
+}
+
+/* HOME */
+#home {
+  min-height: 98vh;
+}
+
+/* SERVICES */
+.services-icon {
+  font-size: 5rem;
+  color: var(--info);
+}
+
+.services-icon:hover {
+  color: var(--secondary);
+}
+
+/* FAQ */
+#faq {
+  min-height: 100vh;
+  background-image: linear-gradient(rgba(7, 132, 127, 1), rgba(255, 254, 246, 0.8)), url("https://unsplash.com/photos/");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.question-collapes {
+  background-color: var(--info);
+  padding: 2rem 1rem;
+  border-radius: 0.5rem;
+}
+
+/* CONTACT */
+#contact {
+  min-height: 100vh;
+}
+
+/* FOOTER */
+.sosial-media-icon {
+  font-size: 1.4rem;
+  color: var(--info);
 }
 
 /* MAP */
