@@ -173,8 +173,11 @@ document.getElementById("tes-1").addEventListener("click", function () {
 });
 
 $("#tes-2").click(function (e) {
-  contohGeojson.setVisible(!geojsonVisible);
-  geojsonVisible = !geojsonVisible;
+  if (this.checked) {
+    contohGeojson.setVisible(true);
+  } else {
+    contohGeojson.setVisible(false);
+  }
 });
 
 function setOsmBasemap() {

@@ -167,18 +167,40 @@ const wms5 = new TileLayer({
 });
 map.addLayer(wms5);
 
-let wmsVisible = false;
 $("#tes-1").click(function (e) {
-  wms1.setVisible(!wmsVisible);
-  wmsVisible = !wmsVisible;
+  if (this.checked) {
+    wms1.setVisible(true);
+  } else {
+    wms1.setVisible(false);
+  }
 });
 $("#tes-2").click(function (e) {
-  wms2.setVisible(!wmsVisible);
-  wmsVisible = !wmsVisible;
+  if (this.checked) {
+    wms2.setVisible(true);
+  } else {
+    wms2.setVisible(false);
+  }
 });
 $("#tes-3").click(function (e) {
-  wms3.setVisible(!wmsVisible);
-  wmsVisible = !wmsVisible;
+  if (this.checked) {
+    wms3.setVisible(true);
+  } else {
+    wms3.setVisible(false);
+  }
+});
+$("#tes-4").click(function (e) {
+  if (this.checked) {
+    wms4.setVisible(true);
+  } else {
+    wms4.setVisible(false);
+  }
+});
+$("#tes-5").click(function (e) {
+  if (this.checked) {
+    wms5.setVisible(true);
+  } else {
+    wms5.setVisible(false);
+  }
 });
 
 function setOsmBasemap() {
