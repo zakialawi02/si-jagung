@@ -449,14 +449,16 @@ main {
 #overlayPopup {
   position: fixed;
   bottom: 60px;
-  left: 10px;
-  width: 20rem;
+  left: 6px;
+  width: 22rem;
+  height: 20rem;
   padding: 0.5rem;
   border-radius: 6px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   opacity: 0;
   z-index: 9999;
   transition: all 0.3s ease-in-out;
+  transform: translateY(10%);
   animation: fadeSlideUp 0.3s forwards;
 }
 
@@ -476,9 +478,10 @@ button.btn-close {
   height: 0.3rem;
 }
 
-#coordinateOverlay {
+#overlayPopupCoordinate {
   font-size: 0.8rem;
 }
+
 #overlayPopupContent {
   max-height: 30vh;
   overflow: auto;
@@ -492,10 +495,8 @@ button.btn-close {
 
 @media screen and (max-width: 768px) {
   #overlayPopup {
-    background-color: #269b55;
-    bottom: 60px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 55px;
+    margin: 0 auto;
     width: 32rem;
   }
 }
@@ -503,9 +504,8 @@ button.btn-close {
 @media screen and (max-width: 576px) {
   #overlayPopup {
     bottom: 0;
-    height: 40vh;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    height: 44vh;
     width: 100%;
   }
 }

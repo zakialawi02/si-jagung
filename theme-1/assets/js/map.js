@@ -5,7 +5,7 @@ let View = ol.View;
 let OSM = ol.source.OSM;
 let TileLayer = ol.layer.Tile;
 let TileSource = ol.source.Tile;
-let { fromLonLat, toLonLat } = ol.proj;
+let { fromLonLat, toLonLat, Projection, useGeographic, getProjection, getTransform, addCoordinateTransforms, addProjection, transform } = ol.proj;
 let VectorLayer = ol.layer.Vector;
 let VectorSource = ol.source.Vector;
 let LayerGroup = ol.layer.Group;
@@ -15,12 +15,16 @@ let GeoJSON = ol.format.GeoJSON;
 let Feature = ol.Feature;
 let Point = ol.geom.Point;
 let Circle = ol.geom.Circle;
-let Style = ol.style.Style;
-let Fill = ol.style.Fill;
-let Stroke = ol.style.Stroke;
-let Text = ol.style.Text;
-let IconImage = ol.style.IconImage;
-let Icon = ol.style.Icon;
+let { Style, Fill, Stroke, Text, IconImage, Icon } = ol.style;
+let { Attribution, OverviewMap, ScaleLine, MousePosition } = ol.control;
+let { register } = ol.proj.proj4;
+let { format, toStringHDMS, toStringXY } = ol.coordinate;
+
+let WGS84 = new Projection("EPSG:4326");
+let MERCATOR = new Projection("EPSG:3857");
+let UTM49S = new Projection("EPSG:32649");
+
+const loader = `<div class="text-center"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></>`;
 
 // Init View
 const view = new View({
@@ -28,7 +32,7 @@ const view = new View({
   zoom: 15,
   // minZoom: 5,
   // maxZoom: 19,
-  Projection: "EPSG:4326",
+  // Projection: WGS84,
 });
 
 // BaseMap
@@ -62,6 +66,60 @@ const mapboxBaseMap = new ol.layer.Tile({
 });
 const baseMaps = [osmBaseMap, bingAerialBaseMap, mapboxBaseMap];
 
+// Minimap
+const overviewMapControl = new OverviewMap({
+  layers: [
+    new TileLayer({
+      source: new OSM(),
+    }),
+  ],
+  className: "ol-overviewmap ol-custom-overviewmap",
+  collapsed: false,
+  tipLabel: "Minimap",
+  collapseLabel: "\u00BB",
+  label: "\u00AB",
+});
+
+// Attribution
+const attribution = new Attribution({
+  collapsible: true,
+  className: "ol-attribution",
+});
+
+// ScaleLine
+const scaleControl = new ScaleLine({
+  units: "metric",
+  bar: true,
+  steps: 4,
+  text: true,
+  minWidth: 140,
+  maxWidth: 180,
+});
+
+//** STYLE ***/
+// marker style
+const markerClickedStyle = new Style({
+  image: new Icon({
+    anchor: [0.5, 0.99],
+    anchorXUnits: "fraction",
+    anchorYUnits: "fraction",
+    with: 50,
+    height: 50,
+    opacity: 0.9,
+    src: "/theme-2/assets/img/map/marker-click.svg",
+  }),
+});
+// hightlight style
+const hightlightClickedStyle = new ol.style.Style({
+  fill: new ol.style.Fill({
+    color: "orange",
+  }),
+  stroke: new ol.style.Stroke({
+    color: "yellow",
+    width: 2,
+  }),
+});
+
 // Init To Canvas/View
 let map = new Map({
   target: "map",
@@ -74,11 +132,98 @@ let map = new Map({
 
   view: view,
 
-  controls: [new ol.control.Zoom(), new ol.control.ScaleLine()],
+  controls: [new ol.control.Zoom(), scaleControl, overviewMapControl, attribution],
 });
 
-//
-const vectorSource = new VectorSource();
+// Layer Click Event
+const vectorSourceEventClick = new VectorSource();
+const vectorLayerEventClick = new VectorLayer({
+  source: vectorSourceEventClick,
+  style: markerClickedStyle,
+  zIndex: 1000,
+});
+map.addLayer(vectorLayerEventClick);
+
+function markToClickedPosition(coordinate) {
+  const marker = new Feature({
+    geometry: new Point(coordinate),
+  });
+  if (vectorSourceEventClick) {
+    vectorSourceEventClick.clear();
+  }
+  vectorLayerEventClick.getSource().addFeatures([marker]);
+}
+
+// Layer highlight Event Click
+const vectorSourceHighlightSelected = new ol.source.Vector();
+const vectorLayerHighlightSelected = new ol.layer.Vector({
+  source: vectorSourceHighlightSelected,
+  opacity: 0.8,
+  zIndex: 99,
+  style: hightlightClickedStyle,
+});
+map.addLayer(vectorLayerHighlightSelected);
+
+function highlightClicked(event, selected) {
+  if (selectedFeature) {
+    selectedFeature.setStyle(null);
+    selectedFeature = null;
+  }
+  if (!map.hasFeatureAtPixel(event.pixel)) {
+    // Jika tidak ada fitur yang diklik, hapus highlight
+    if (selectedFeature) {
+      selectedFeature.setStyle(null);
+      selectedFeature = null;
+    }
+  }
+  // Dapatkan fitur yang diklik
+  map.forEachFeatureAtPixel(event.pixel, function (feature) {
+    selectedFeature = feature;
+    feature.setStyle(hightlightClickedStyle);
+    return true; // Hentikan iterasi setelah menemukan satu fitur
+  });
+}
+
+// Add a click handler to hide the popup when the closer is clicked
+$("#overlayPopupClose").click(function (e) {
+  $("#overlayPopup").addClass("d-none");
+});
+
+// Event klik map
+let selectedFeature = null;
+map.on("singleclick", function (event) {
+  console.log("Klik map");
+
+  $("#overlayPopupContent").html(loader);
+  // Get Coordinate
+  var coordinate = event.coordinate;
+  const hdmsCoordinate = toStringHDMS(transform(coordinate, MERCATOR, WGS84));
+  $("#overlayPopupCoordinate").html(hdmsCoordinate);
+
+  $("#overlayPopup").removeClass("d-none");
+
+  markToClickedPosition(coordinate);
+
+  // Dapatkan fitur yang diklik
+  const feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
+    return feature;
+  });
+
+  if (!feature) {
+    $("#overlayPopupContent").html(``);
+    $("#overlayPopupTitle h5").html(`Koordinat`);
+    selected = null;
+    return;
+  }
+  if (feature) {
+    const coordinates = feature.getGeometry().getCoordinates();
+    const properties = feature.getProperties();
+    $("#overlayPopupTitle h5").html(`Informasi Data Layer`);
+    $("#overlayPopupContent").html(`<pre>${JSON.stringify(properties, null, 2)}</pre>`);
+  }
+
+  highlightClicked(event, selectedFeature);
+});
 
 // geojson example
 const datageojson = new VectorSource({

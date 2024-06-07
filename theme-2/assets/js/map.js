@@ -16,7 +16,7 @@ let Feature = ol.Feature;
 let Point = ol.geom.Point;
 let Circle = ol.geom.Circle;
 let { Style, Fill, Stroke, Text, IconImage, Icon } = ol.style;
-let { Attribution, OverviewMap, ScaleLine } = ol.control;
+let { Attribution, OverviewMap, ScaleLine, MousePosition } = ol.control;
 let { register } = ol.proj.proj4;
 let { format, toStringHDMS, toStringXY } = ol.coordinate;
 
@@ -24,8 +24,7 @@ let WGS84 = new Projection("EPSG:4326");
 let MERCATOR = new Projection("EPSG:3857");
 let UTM49S = new Projection("EPSG:32649");
 
-let vectorSource;
-let vectorLayer;
+const loader = `<div class="text-center"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></>`;
 
 // Init View
 const view = new View({
@@ -97,6 +96,30 @@ const scaleControl = new ScaleLine({
   maxWidth: 180,
 });
 
+//** STYLE ***/
+// marker style
+const markerClickedStyle = new Style({
+  image: new Icon({
+    anchor: [0.5, 0.99],
+    anchorXUnits: "fraction",
+    anchorYUnits: "fraction",
+    with: 50,
+    height: 50,
+    opacity: 0.9,
+    src: "/theme-2/assets/img/map/marker-click.svg",
+  }),
+});
+// hightlight style
+const hightlightClickedStyle = new ol.style.Style({
+  fill: new ol.style.Fill({
+    color: "orange",
+  }),
+  stroke: new ol.style.Stroke({
+    color: "yellow",
+    width: 2,
+  }),
+});
+
 // Init To Canvas/View
 let map = new Map({
   target: "map",
@@ -112,35 +135,74 @@ let map = new Map({
   controls: [new ol.control.Zoom(), scaleControl, overviewMapControl, attribution],
 });
 
-// Init Overlay Popup
-const popupContainer = document.getElementById("overlayPopup");
-const popupContent = document.getElementById("overlayPopupContent");
-const popupTitle = document.getElementById("overlayPopupTitle");
-const popupCloser = document.getElementById("overlayPopupClose");
-const overlay = new ol.Overlay({
-  element: popupContainer,
-  autoPan: true,
-  autoPanAnimation: {
-    duration: 250,
-  },
+// Layer Click Event
+const vectorSourceEventClick = new VectorSource();
+const vectorLayerEventClick = new VectorLayer({
+  source: vectorSourceEventClick,
+  style: markerClickedStyle,
+  zIndex: 1000,
 });
-map.addOverlay(overlay);
+map.addLayer(vectorLayerEventClick);
+
+function markToClickedPosition(coordinate) {
+  const marker = new Feature({
+    geometry: new Point(coordinate),
+  });
+  if (vectorSourceEventClick) {
+    vectorSourceEventClick.clear();
+  }
+  vectorLayerEventClick.getSource().addFeatures([marker]);
+}
+
+// Layer highlight Event Click
+const vectorSourceHighlightSelected = new ol.source.Vector();
+const vectorLayerHighlightSelected = new ol.layer.Vector({
+  source: vectorSourceHighlightSelected,
+  opacity: 0.8,
+  zIndex: 99,
+  style: hightlightClickedStyle,
+});
+map.addLayer(vectorLayerHighlightSelected);
+
+function highlightClicked(event, selected) {
+  if (selectedFeature) {
+    selectedFeature.setStyle(null);
+    selectedFeature = null;
+  }
+  if (!map.hasFeatureAtPixel(event.pixel)) {
+    // Jika tidak ada fitur yang diklik, hapus highlight
+    if (selectedFeature) {
+      selectedFeature.setStyle(null);
+      selectedFeature = null;
+    }
+  }
+  // Dapatkan fitur yang diklik
+  map.forEachFeatureAtPixel(event.pixel, function (feature) {
+    selectedFeature = feature;
+    feature.setStyle(hightlightClickedStyle);
+    return true; // Hentikan iterasi setelah menemukan satu fitur
+  });
+}
 
 // Add a click handler to hide the popup when the closer is clicked
-popupCloser.onclick = function () {
-  overlay.setPosition(undefined);
-  popupCloser.blur();
-  return false;
-};
+$("#overlayPopupClose").click(function (e) {
+  $("#overlayPopup").addClass("d-none");
+});
 
 // Event klik map
+let selectedFeature = null;
 map.on("singleclick", function (event) {
-  overlay.setPosition(undefined);
-  popupContent.innerHTML = "";
   console.log("Klik map");
+
+  $("#overlayPopupContent").html(loader);
   // Get Coordinate
-  const coordinate = event.coordinate;
+  var coordinate = event.coordinate;
   const hdmsCoordinate = toStringHDMS(transform(coordinate, MERCATOR, WGS84));
+  $("#overlayPopupCoordinate").html(hdmsCoordinate);
+
+  $("#overlayPopup").removeClass("d-none");
+
+  markToClickedPosition(coordinate);
 
   // Dapatkan fitur yang diklik
   const feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
@@ -148,22 +210,20 @@ map.on("singleclick", function (event) {
   });
 
   if (!feature) {
-    popupContainer.querySelector("h5").innerHTML = "Koordinat";
-    $("#coordinateOverlay").html(hdmsCoordinate);
-    overlay.setPosition([]);
+    $("#overlayPopupContent").html(``);
+    $("#overlayPopupTitle h5").html(`Koordinat`);
+    selected = null;
     return;
   }
   if (feature) {
-    popupContainer.querySelector("h5").innerHTML = "Informasi Data Layer";
     const coordinates = feature.getGeometry().getCoordinates();
     const properties = feature.getProperties();
-    popupContent.innerHTML = `<pre>${JSON.stringify(properties, null, 2)}</pre>`;
-    overlay.setPosition(coordinates);
+    $("#overlayPopupTitle h5").html(`Informasi Data Layer`);
+    $("#overlayPopupContent").html(`<pre>${JSON.stringify(properties, null, 2)}</pre>`);
   }
-});
 
-//
-vectorSource = new VectorSource();
+  highlightClicked(event, selectedFeature);
+});
 
 // geojson example
 const datageojson = new VectorSource({

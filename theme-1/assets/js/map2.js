@@ -1,7 +1,3 @@
-$(document).ready(function () {
-  $("#overlayPopup").removeClass("d-none");
-});
-
 console.log("RUN");
 
 let Map = ol.Map;
@@ -27,6 +23,8 @@ let { format, toStringHDMS, toStringXY } = ol.coordinate;
 let WGS84 = new Projection("EPSG:4326");
 let MERCATOR = new Projection("EPSG:3857");
 let UTM49S = new Projection("EPSG:32649");
+
+const loader = `<div class="text-center"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></>`;
 
 // Init View
 const view = new View({
@@ -112,6 +110,30 @@ const mousePositionControl = new MousePosition({
   // target: document.getElementById("mouse-position"),
 });
 
+//** STYLE ***/
+// marker style
+const markerClickedStyle = new Style({
+  image: new Icon({
+    anchor: [0.5, 0.99],
+    anchorXUnits: "fraction",
+    anchorYUnits: "fraction",
+    with: 50,
+    height: 50,
+    opacity: 0.9,
+    src: "/theme-2/assets/img/map/marker-click.svg",
+  }),
+});
+// hightlight style
+const hightlightClickedStyle = new ol.style.Style({
+  fill: new ol.style.Fill({
+    color: "orange",
+  }),
+  stroke: new ol.style.Stroke({
+    color: "yellow",
+    width: 2,
+  }),
+});
+
 // Init To Canvas/View
 let map = new Map({
   target: "map",
@@ -127,39 +149,45 @@ let map = new Map({
   controls: [new ol.control.Zoom(), scaleControl, overviewMapControl, attribution, mousePositionControl],
 });
 
-// Init Overlay Popup
-const informationPopupContainer = document.getElementById("overlayPopup");
-const informationPopupContent = document.getElementById("overlayPopupContent");
-const informationPopupTitle = document.querySelectorAll("#overlayPopupTitle h5");
-const informationPopupCoordinate = document.getElementById("overlayPopupCoordinate");
-const informationPopupClose = document.getElementById("overlayPopupClose");
-const informationOverlay = new ol.Overlay({
-  element: informationPopupContainer,
-  autoPan: true,
-  autoPanAnimation: {
-    duration: 250,
-  },
+// Layer Click Event
+const vectorSourceEventClick = new VectorSource();
+const vectorLayerEventClick = new VectorLayer({
+  source: vectorSourceEventClick,
+  style: markerClickedStyle,
+  zIndex: 100,
 });
-map.addOverlay(informationOverlay);
+map.addLayer(vectorLayerEventClick);
+
+function markToClickedPosition(coordinate) {
+  const marker = new Feature({
+    geometry: new Point(coordinate),
+  });
+  if (vectorSourceEventClick) {
+    vectorSourceEventClick.clear();
+  }
+  vectorLayerEventClick.getSource().addFeatures([marker]);
+}
+
+// Layer highlight Event Click
+const highlightVectorSource = new ol.source.Vector();
+const highlightVectorLayer = new ol.layer.Vector({
+  source: highlightVectorSource,
+  opacity: 0.8,
+  zIndex: 99,
+  style: hightlightClickedStyle,
+});
+map.addLayer(highlightVectorLayer);
+
+function highlightClicked(geojson) {
+  highlightVectorSource.clear();
+  geojson.forEach((feature) => {
+    highlightVectorSource.addFeatures(new GeoJSON().readFeatures(feature));
+  });
+}
 
 // Add a click handler to hide the popup when the closer is clicked
-informationPopupClose.onclick = function () {
-  informationOverlay.setPosition(undefined);
-  informationPopupClose.blur();
-  return false;
-};
-
-// marker style
-const markerStyle = new Style({
-  image: new Icon({
-    anchor: [0.5, 1],
-    anchorXUnits: "fraction",
-    anchorYUnits: "fraction",
-    with: 50,
-    height: 50,
-    opacity: 0.9,
-    src: "/theme-2/assets/img/map/marker-click.svg",
-  }),
+$("#overlayPopupClose").click(function (e) {
+  $("#overlayPopup").addClass("d-none");
 });
 
 // wms source layer
@@ -208,26 +236,13 @@ surabayaWMSLayer.map(({ name, title, visible, zIndex }) => {
   surabayaWMS.getLayers().push(layer);
 });
 
-map.on("singleclick", getinfo);
+const prosesFetchWMSLayerData = async (evt, viewResolution, projection, surabayaWMS, no_layers, surabayaWMSLayer) => {
+  let url = [];
+  let wmsSource = [];
+  let layer_title = [];
 
-function getinfo(evt) {
-  informationOverlay.setPosition(undefined);
-  informationPopupContent.innerHTML = "";
-  const feturesArray = [];
-  console.log("Klik map");
-  let viewResolution = /** @type {number} */ (view.getResolution());
-  let projection = view.getProjection();
-
-  // Get Coordinate
-  var coordinate = evt.coordinate;
-  const hdmsCoordinate = toStringHDMS(transform(coordinate, MERCATOR, WGS84));
-  informationPopupCoordinate.innerHTML = String(hdmsCoordinate);
-
-  // Dapatkan fitur yang diklik
-  let no_layers = surabayaWMS.getLayers().get("length");
-  let url = new Array();
-  let wmsSource = new Array();
-  let layer_title = new Array();
+  let dataArray = [];
+  let feturesArray = [];
 
   let i;
   for (i = 0; i < no_layers; i++) {
@@ -248,22 +263,79 @@ function getinfo(evt) {
         INFO_FORMAT: "application/json",
       });
 
-      $.get(url[i], function (data) {
-        const dataProperties = data.features;
-        if (data.numberReturned > 0) {
-          dataProperties.map((feature) => {
-            feturesArray.push(data);
-          });
-          console.log({ feturesArray });
-          informationPopupTitle.innerHTML = "Informasi Data Layer";
-          informationPopupContent.innerHTML = `<pre>${JSON.stringify(feturesArray, null, 2)}</pre>`;
-        } else {
-          informationPopupTitle.innerHTML = "Koordinat";
+      if (url[i]) {
+        try {
+          let response = await fetch(url[i]);
+          let data = await response.json();
+          const dataProperties = data.features;
+          if (dataProperties.length > 0) {
+            dataArray.push(data);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
         }
-        informationOverlay.setPosition([]);
-      });
+      }
     }
   }
+  // console.log({ dataArray });
+  dataArray.forEach((data) => {
+    feturesArray.push(data.features);
+  });
+  // console.log({ feturesArray });
+
+  return { dataArray, feturesArray };
+};
+
+map.on("singleclick", eventClickMap);
+
+function eventClickMap(evt) {
+  console.log("Klik map");
+  $("#overlayPopupContent").html(loader);
+  let viewResolution = /** @type {number} */ (view.getResolution());
+  let projection = view.getProjection();
+
+  // Get Coordinate
+  var coordinate = evt.coordinate;
+  const hdmsCoordinate = toStringHDMS(transform(coordinate, MERCATOR, WGS84));
+  $("#overlayPopupCoordinate").html(hdmsCoordinate);
+
+  markToClickedPosition(coordinate);
+
+  // Dapatkan fitur yang diklik
+  let no_layers = surabayaWMS.getLayers().get("length");
+
+  $("#overlayPopup").removeClass("d-none");
+
+  (async () => {
+    const result = await prosesFetchWMSLayerData(evt, viewResolution, projection, surabayaWMS, no_layers, surabayaWMSLayer);
+    console.log({ result });
+    const { dataArray, feturesArray } = result;
+    let idPropertiesData = [];
+    let mergedPropertiesFeatures = [];
+    let mergedDataGeojson = [];
+    feturesArray.forEach((data) => {
+      data.forEach((feature) => {
+        const properties = feature.properties;
+        idPropertiesData.push(feature.id);
+        mergedPropertiesFeatures.push(properties);
+      });
+    });
+    dataArray.forEach((data) => {
+      mergedDataGeojson.push(data);
+    });
+    // console.log(mergedPropertiesFeatures);
+    console.log(mergedDataGeojson);
+
+    highlightClicked(mergedDataGeojson);
+
+    if (dataArray.length > 0) {
+      $("#overlayPopupTitle h5").html(`Informasi Data Layer`);
+      $("#overlayPopupContent").html(`<pre>${JSON.stringify(mergedPropertiesFeatures, null, 2)}</pre>`);
+    } else {
+      $("#overlayPopupTitle h5").html(`Koordinat`);
+      $("#overlayPopupContent").html(``);
+    }
+  })();
 }
 
 $("#tes-1").click(function (e) {
