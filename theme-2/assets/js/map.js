@@ -5,7 +5,7 @@ let View = ol.View;
 let OSM = ol.source.OSM;
 let TileLayer = ol.layer.Tile;
 let TileSource = ol.source.Tile;
-let { fromLonLat, toLonLat } = ol.proj;
+let { fromLonLat, toLonLat, Projection, useGeographic, getProjection, getTransform, addCoordinateTransforms, addProjection, transform } = ol.proj;
 let VectorLayer = ol.layer.Vector;
 let VectorSource = ol.source.Vector;
 let LayerGroup = ol.layer.Group;
@@ -15,12 +15,17 @@ let GeoJSON = ol.format.GeoJSON;
 let Feature = ol.Feature;
 let Point = ol.geom.Point;
 let Circle = ol.geom.Circle;
-let Style = ol.style.Style;
-let Fill = ol.style.Fill;
-let Stroke = ol.style.Stroke;
-let Text = ol.style.Text;
-let IconImage = ol.style.IconImage;
-let Icon = ol.style.Icon;
+let { Style, Fill, Stroke, Text, IconImage, Icon } = ol.style;
+let { Attribution, OverviewMap, ScaleLine } = ol.control;
+let { register } = ol.proj.proj4;
+let { format, toStringHDMS, toStringXY } = ol.coordinate;
+
+let WGS84 = new Projection("EPSG:4326");
+let MERCATOR = new Projection("EPSG:3857");
+let UTM49S = new Projection("EPSG:32649");
+
+let vectorSource;
+let vectorLayer;
 
 // Init View
 const view = new View({
@@ -28,7 +33,7 @@ const view = new View({
   zoom: 15,
   // minZoom: 5,
   // maxZoom: 19,
-  Projection: "EPSG:4326",
+  // Projection: WGS84,
 });
 
 // BaseMap
@@ -62,6 +67,36 @@ const mapboxBaseMap = new ol.layer.Tile({
 });
 const baseMaps = [osmBaseMap, bingAerialBaseMap, mapboxBaseMap];
 
+// Minimap
+const overviewMapControl = new OverviewMap({
+  layers: [
+    new TileLayer({
+      source: new OSM(),
+    }),
+  ],
+  className: "ol-overviewmap ol-custom-overviewmap",
+  collapsed: false,
+  tipLabel: "Minimap",
+  collapseLabel: "\u00BB",
+  label: "\u00AB",
+});
+
+// Attribution
+const attribution = new Attribution({
+  collapsible: true,
+  className: "ol-attribution",
+});
+
+// ScaleLine
+const scaleControl = new ScaleLine({
+  units: "metric",
+  bar: true,
+  steps: 4,
+  text: true,
+  minWidth: 140,
+  maxWidth: 180,
+});
+
 // Init To Canvas/View
 let map = new Map({
   target: "map",
@@ -74,11 +109,61 @@ let map = new Map({
 
   view: view,
 
-  controls: [new ol.control.Zoom(), new ol.control.ScaleLine()],
+  controls: [new ol.control.Zoom(), scaleControl, overviewMapControl, attribution],
+});
+
+// Init Overlay Popup
+const popupContainer = document.getElementById("overlayPopup");
+const popupContent = document.getElementById("overlayPopupContent");
+const popupTitle = document.getElementById("overlayPopupTitle");
+const popupCloser = document.getElementById("overlayPopupClose");
+const overlay = new ol.Overlay({
+  element: popupContainer,
+  autoPan: true,
+  autoPanAnimation: {
+    duration: 250,
+  },
+});
+map.addOverlay(overlay);
+
+// Add a click handler to hide the popup when the closer is clicked
+popupCloser.onclick = function () {
+  overlay.setPosition(undefined);
+  popupCloser.blur();
+  return false;
+};
+
+// Event klik map
+map.on("singleclick", function (event) {
+  overlay.setPosition(undefined);
+  popupContent.innerHTML = "";
+  console.log("Klik map");
+  // Get Coordinate
+  const coordinate = event.coordinate;
+  const hdmsCoordinate = toStringHDMS(transform(coordinate, MERCATOR, WGS84));
+
+  // Dapatkan fitur yang diklik
+  const feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
+    return feature;
+  });
+
+  if (!feature) {
+    popupContainer.querySelector("h5").innerHTML = "Koordinat";
+    $("#coordinateOverlay").html(hdmsCoordinate);
+    overlay.setPosition([]);
+    return;
+  }
+  if (feature) {
+    popupContainer.querySelector("h5").innerHTML = "Informasi Data Layer";
+    const coordinates = feature.getGeometry().getCoordinates();
+    const properties = feature.getProperties();
+    popupContent.innerHTML = `<pre>${JSON.stringify(properties, null, 2)}</pre>`;
+    overlay.setPosition(coordinates);
+  }
 });
 
 //
-const vectorSource = new VectorSource();
+vectorSource = new VectorSource();
 
 // geojson example
 const datageojson = new VectorSource({

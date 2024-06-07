@@ -1,11 +1,13 @@
-var swiper = new Swiper(".mySwiper", {
+const swiper = new Swiper(".mySwiper", {
   direction: "vertical",
   slidesPerView: 1,
   spaceBetween: 0,
   loop: true,
   mousewheel: false,
+  grabCursor: false,
+  allowTouchMove: false,
   autoplay: {
-    delay: 2500,
+    delay: 3000,
     disableOnInteraction: false,
   },
   pagination: {
@@ -15,6 +17,12 @@ var swiper = new Swiper(".mySwiper", {
   navigation: {
     nextEl: ".swiper-button-next",
     prevEl: ".swiper-button-prev",
+  },
+  breakpoints: {
+    1023: {
+      grabCursor: true,
+      allowTouchMove: true,
+    },
   },
 });
 

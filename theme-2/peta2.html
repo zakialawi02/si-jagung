@@ -30,7 +30,7 @@
   <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light fixed-top shadow py-lg-0 px-4 px-lg-5 z-1">
-      <a href="/" class="navbar-brand d-inline-flex align-items-center">
+      <a href="./" class="navbar-brand d-inline-flex align-items-center">
         <img src="./assets/img/logo-dummy.png" alt="Logo" height="50rem" class="me-2" />
         <h1 class="text-primary fw-bold m-0">Brand</h1>
       </a>
@@ -49,53 +49,75 @@
 
     <main class="pt-6">
       <section>
-        <div id="map"></div>
+        <div id="mapWrapper" class="position-relative">
+          <div id="map"></div>
+        </div>
+
+        <!-- overlay popup -->
+        <div id="overlaySection" class="">
+          <div id="overlayPopup" class="bg-light d-none">
+            <div class="px-2 m-0">
+              <div id="overlayPopupHeader" class="d-flex justify-content-between align-items-center mb-0">
+                <div id="overlayPopupTitle" class="position-relative w-100 align-content-start">
+                  <h5>Informasi Data Layer</h5>
+                  <div id="overlayPopupClose" class="p-0 m-0 mt-2 position-absolute top-0 end-0 translate-middle-y">
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                  </div>
+                </div>
+              </div>
+              <div id="overlayPopupCoordinate" class="d-flex align-content-start">...</div>
+            </div>
+            <div id="overlayPopupContent" class="p-2">...</div>
+          </div>
+        </div>
+
+        <div id="overlayLayerControl" class="offcanvas offcanvas-start align-self-end" style="height: calc(100vh - 70px)" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" aria-labelledby="offcanvasScrollingLabel">
+          <div class="offcanvas-header px-3 py-0 pt-3">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <div class="offcanvas-body">
+              <div class="layer mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="tes-1" checked />
+                  <label class="form-check-label" for="tes-1"> Layer 1 </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="tes-2" checked />
+                  <label class="form-check-label" for="tes-2"> Layer 2 </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="tes-3" checked />
+                  <label class="form-check-label" for="tes-3"> Layer 3 </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="tes-4" checked />
+                  <label class="form-check-label" for="tes-4"> Layer 4 </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="tes-5" checked />
+                  <label class="form-check-label" for="tes-5"> Layer 5 </label>
+                </div>
+              </div>
+
+              <div id="basemap-select" class="mb-3">
+                <select name="basemap" id="basemap" class="">
+                  <option value="osm">Street OSM</option>
+                  <option value="bingaerial">Bing Aerial</option>
+                  <option value="mapbox">Street Mapbox</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-
-      <div class="offcanvas offcanvas-start align-self-end" style="height: calc(100vh - 70px)" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Offcanvas with body scrolling</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <div class="layer mb-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="tes-1" checked />
-              <label class="form-check-label" for="tes-1"> Layer 1 </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="tes-2" checked />
-              <label class="form-check-label" for="tes-2"> Layer 2 </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="tes-3" checked />
-              <label class="form-check-label" for="tes-3"> Layer 3 </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="tes-4" checked />
-              <label class="form-check-label" for="tes-4"> Layer 4 </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="tes-5" checked />
-              <label class="form-check-label" for="tes-5"> Layer 5 </label>
-            </div>
-          </div>
-
-          <div id="basemap" class="mb-3">
-            <select name="basemap" id="basemap" class="">
-              <option value="osm">Street OSM</option>
-              <option value="bingaerial">Bing Aerial</option>
-              <option value="mapbox">Street Mapbox</option>
-            </select>
-          </div>
-        </div>
-      </div>
     </main>
 
     <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
-      const bsOffcanvas = new bootstrap.Offcanvas("#offcanvasScrolling");
+      const bsOffcanvas = new bootstrap.Offcanvas("#overlayLayerControl");
       $(".navbar-toggler").click(function (e) {
         $(".navbar-collapse").toggleClass("collapse");
         $(".navbar-collapse").toggleClass("show");
@@ -107,7 +129,12 @@
     <!-- open layers js -->
     <script src="https://cdn.jsdelivr.net/npm/ol@v9.1.0/dist/ol.js"></script>
 
-    <script src="./assets/js/js.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.min.js" integrity="sha512-JfEOeAU2TD7AtE3xJPSBwBFCxURVqQCysNBwOnNhEJS9LgTHTWGSyYd11JUBOaJ+xVHPaA0ZhLin365CapD8EQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- <script src="./assets/js/jszip-utils.js"></script>
+    <script src="./assets/js/jszip.js"></script>
+    <script src="./assets/js/preprocess.js"></script>
+    <script src="./assets/js/preview.js"></script> -->
     <script src="./assets/js/map2.js"></script>
   </body>
 </html>
