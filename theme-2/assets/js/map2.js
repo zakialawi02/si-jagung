@@ -100,15 +100,50 @@ const scaleControl = new ScaleLine({
 // Mouse Position
 const mousePositionControl = new MousePosition({
   coordinateFormat: function (coordinate) {
-    const coord = toStringHDMS(coordinate);
-    const template = "Long: {x}° &nbsp&nbsp&nbsp  Lat: {y}°";
-    const outCoord = format(coordinate, template, 5);
-    return outCoord;
+    const { formattedLon, formattedLat } = coordinateFormatIndo(coordinate, "dd");
+
+    return "Long: " + formattedLon + " &nbsp&nbsp&nbsp  Lat: " + formattedLat;
   },
   projection: "EPSG:4326",
   className: "ol-mouse-position",
   // target: document.getElementById("mouse-position"),
 });
+
+/**
+ * Formats the given coordinate into a specific format for Indo coordinates.
+ *
+ * @param {Array<number>} coordinate - The coordinate to be formatted. It should be an array with two elements: [longitude, latitude].
+ * @param {string} [format="dd"] - The format to use for the coordinate. It can be "dd" for decimal degrees, or "dms" for degrees, minutes, and seconds.
+ * @return {Object} An object containing the formatted longitude and latitude.
+ * @example
+ * dd=> {"formattedLon": "112.74719° BT", "formattedLat": "7.26786° LS"}
+ * or
+ * dms=> {"formattedLon": "112° 47' 17.00\" BT", "formattedLat": "7° 24' 46.00\" LS"}
+ */
+function coordinateFormatIndo(coordinate, format = "dd") {
+  const lon = coordinate[0];
+  const lat = coordinate[1];
+
+  const lonDirection = lon < 0 ? "BB" : "BT";
+  const latDirection = lat < 0 ? "LS" : "LU"; // LS: Lintang Selatan, LU: Lintang Utara
+
+  if (format === "dms") {
+    const convertToDMS = (coord, direction) => {
+      const absoluteCoord = Math.abs(coord);
+      const degrees = Math.floor(absoluteCoord);
+      const minutes = Math.floor((absoluteCoord - degrees) * 60);
+      const seconds = ((absoluteCoord - degrees - minutes / 60) * 3600).toFixed(2);
+      return `${degrees}° ${minutes}' ${seconds}" ${direction}`;
+    };
+    const formattedLon = convertToDMS(lon, lonDirection);
+    const formattedLat = convertToDMS(lat, latDirection);
+    return { formattedLon, formattedLat };
+  } else {
+    const formattedLon = `${Math.abs(lon).toFixed(5)}° ${lonDirection}`;
+    const formattedLat = `${Math.abs(lat).toFixed(5)}° ${latDirection}`;
+    return { formattedLon, formattedLat };
+  }
+}
 
 //** STYLE ***/
 // marker style
@@ -188,6 +223,12 @@ function highlightClicked(geojson) {
 // Add a click handler to hide the popup when the closer is clicked
 $("#overlayPopupClose").click(function (e) {
   $("#overlayPopup").addClass("d-none");
+  if (vectorSourceEventClick) {
+    vectorSourceEventClick.clear();
+  }
+  if (highlightVectorSource) {
+    highlightVectorSource.clear();
+  }
 });
 
 // wms source layer
@@ -202,6 +243,7 @@ const surabayaWMSLayer = [
   { name: "AGRILADANG_AR_25K", title: "AGRILADANG", visible: true, zIndex: 1 },
   { name: "AGRISAWAH_AR_25K", title: "AGRISAWAH", visible: true, zIndex: 1 },
   { name: "RAWA_AR_25K", title: "RAWA", visible: true, zIndex: 1 },
+  { name: "BANGUNAN_AR_25K", title: "BANGUNAN", visible: true, zIndex: 2 },
 ];
 console.log(surabayaWMSLayer);
 
@@ -295,8 +337,11 @@ function eventClickMap(evt) {
   let projection = view.getProjection();
 
   // Get Coordinate
-  var coordinate = evt.coordinate;
-  const hdmsCoordinate = toStringHDMS(transform(coordinate, MERCATOR, WGS84));
+  const coordinate = evt.coordinate;
+  const LonLatcoordinate = toLonLat(coordinate, projection);
+  // const hdmsCoordinate = toStringHDMS(LonLatcoordinate);
+  const { formattedLon, formattedLat } = coordinateFormatIndo(LonLatcoordinate, "dms");
+  const hdmsCoordinate = `${formattedLon} &nbsp ${formattedLat}`;
   $("#overlayPopupCoordinate").html(hdmsCoordinate);
 
   markToClickedPosition(coordinate);
@@ -308,7 +353,7 @@ function eventClickMap(evt) {
 
   (async () => {
     const result = await prosesFetchWMSLayerData(evt, viewResolution, projection, surabayaWMS, no_layers, surabayaWMSLayer);
-    console.log({ result });
+    // console.log({ result });
     const { dataArray, feturesArray } = result;
     let idPropertiesData = [];
     let mergedPropertiesFeatures = [];
@@ -324,15 +369,13 @@ function eventClickMap(evt) {
       mergedDataGeojson.push(data);
     });
     // console.log(mergedPropertiesFeatures);
-    console.log(mergedDataGeojson);
+    // console.log(mergedDataGeojson);
 
     highlightClicked(mergedDataGeojson);
 
     if (dataArray.length > 0) {
-      $("#overlayPopupTitle h5").html(`Informasi Data Layer`);
       $("#overlayPopupContent").html(`<pre>${JSON.stringify(mergedPropertiesFeatures, null, 2)}</pre>`);
     } else {
-      $("#overlayPopupTitle h5").html(`Koordinat`);
       $("#overlayPopupContent").html(``);
     }
   })();

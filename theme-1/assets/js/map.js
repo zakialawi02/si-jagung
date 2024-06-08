@@ -94,7 +94,56 @@ const scaleControl = new ScaleLine({
   text: true,
   minWidth: 140,
   maxWidth: 180,
+  className: "ol-scale-line",
 });
+
+// Mouse Position
+const mousePositionControl = new MousePosition({
+  coordinateFormat: function (coordinate) {
+    const { formattedLon, formattedLat } = coordinateFormatIndo(coordinate, "dd");
+
+    return "Long: " + formattedLon + " &nbsp&nbsp&nbsp  Lat: " + formattedLat;
+  },
+  projection: "EPSG:4326",
+  className: "ol-mouse-position",
+  // target: document.getElementById("mouse-position"),
+});
+
+/**
+ * Formats the given coordinate into a specific format for Indo coordinates.
+ *
+ * @param {Array<number>} coordinate - The coordinate to be formatted. It should be an array with two elements: [longitude, latitude].
+ * @param {string} [format="dd"] - The format to use for the coordinate. It can be "dd" for decimal degrees, or "dms" for degrees, minutes, and seconds.
+ * @return {Object} An object containing the formatted longitude and latitude.
+ * @example
+ * dd=> {"formattedLon": "112.74719° BT", "formattedLat": "7.26786° LS"}
+ * or
+ * dms=> {"formattedLon": "112° 47' 17.00\" BT", "formattedLat": "7° 24' 46.00\" LS"}
+ */
+function coordinateFormatIndo(coordinate, format = "dd") {
+  const lon = coordinate[0];
+  const lat = coordinate[1];
+
+  const lonDirection = lon < 0 ? "BB" : "BT";
+  const latDirection = lat < 0 ? "LS" : "LU"; // LS: Lintang Selatan, LU: Lintang Utara
+
+  if (format === "dms") {
+    const convertToDMS = (coord, direction) => {
+      const absoluteCoord = Math.abs(coord);
+      const degrees = Math.floor(absoluteCoord);
+      const minutes = Math.floor((absoluteCoord - degrees) * 60);
+      const seconds = ((absoluteCoord - degrees - minutes / 60) * 3600).toFixed(2);
+      return `${degrees}° ${minutes}' ${seconds}" ${direction}`;
+    };
+    const formattedLon = convertToDMS(lon, lonDirection);
+    const formattedLat = convertToDMS(lat, latDirection);
+    return { formattedLon, formattedLat };
+  } else {
+    const formattedLon = `${Math.abs(lon).toFixed(5)}° ${lonDirection}`;
+    const formattedLat = `${Math.abs(lat).toFixed(5)}° ${latDirection}`;
+    return { formattedLon, formattedLat };
+  }
+}
 
 //** STYLE ***/
 // marker style
@@ -132,7 +181,7 @@ let map = new Map({
 
   view: view,
 
-  controls: [new ol.control.Zoom(), scaleControl, overviewMapControl, attribution],
+  controls: [new ol.control.Zoom(), scaleControl, overviewMapControl, attribution, mousePositionControl],
 });
 
 // Layer Click Event
@@ -164,18 +213,8 @@ const vectorLayerHighlightSelected = new ol.layer.Vector({
 });
 map.addLayer(vectorLayerHighlightSelected);
 
-function highlightClicked(event, selected) {
-  if (selectedFeature) {
-    selectedFeature.setStyle(null);
-    selectedFeature = null;
-  }
-  if (!map.hasFeatureAtPixel(event.pixel)) {
-    // Jika tidak ada fitur yang diklik, hapus highlight
-    if (selectedFeature) {
-      selectedFeature.setStyle(null);
-      selectedFeature = null;
-    }
-  }
+function highlightClicked(event) {
+  removeHighlightClicked();
   // Dapatkan fitur yang diklik
   map.forEachFeatureAtPixel(event.pixel, function (feature) {
     selectedFeature = feature;
@@ -184,20 +223,37 @@ function highlightClicked(event, selected) {
   });
 }
 
+function removeHighlightClicked() {
+  if (selectedFeature) {
+    selectedFeature.setStyle(null);
+    selectedFeature = null;
+  }
+  return true;
+}
+
 // Add a click handler to hide the popup when the closer is clicked
 $("#overlayPopupClose").click(function (e) {
+  removeHighlightClicked(selectedFeature);
+  if (vectorSourceEventClick) {
+    vectorSourceEventClick.clear();
+  }
   $("#overlayPopup").addClass("d-none");
 });
 
 // Event klik map
 let selectedFeature = null;
-map.on("singleclick", function (event) {
+map.on("singleclick", function (evt) {
   console.log("Klik map");
 
   $("#overlayPopupContent").html(loader);
+
   // Get Coordinate
-  var coordinate = event.coordinate;
-  const hdmsCoordinate = toStringHDMS(transform(coordinate, MERCATOR, WGS84));
+  const coordinate = evt.coordinate;
+  const projection = view.getProjection();
+  const LonLatcoordinate = toLonLat(coordinate, projection);
+  // const hdmsCoordinate = toStringHDMS(LonLatcoordinate);
+  const { formattedLon, formattedLat } = coordinateFormatIndo(LonLatcoordinate, "dms");
+  const hdmsCoordinate = `${formattedLon} &nbsp ${formattedLat}`;
   $("#overlayPopupCoordinate").html(hdmsCoordinate);
 
   $("#overlayPopup").removeClass("d-none");
@@ -205,24 +261,21 @@ map.on("singleclick", function (event) {
   markToClickedPosition(coordinate);
 
   // Dapatkan fitur yang diklik
-  const feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
+  const feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
     return feature;
   });
-
+  removeHighlightClicked();
   if (!feature) {
     $("#overlayPopupContent").html(``);
-    $("#overlayPopupTitle h5").html(`Koordinat`);
-    selected = null;
+    selectedFeature = null;
     return;
   }
   if (feature) {
     const coordinates = feature.getGeometry().getCoordinates();
     const properties = feature.getProperties();
-    $("#overlayPopupTitle h5").html(`Informasi Data Layer`);
     $("#overlayPopupContent").html(`<pre>${JSON.stringify(properties, null, 2)}</pre>`);
+    highlightClicked(evt, selectedFeature);
   }
-
-  highlightClicked(event, selectedFeature);
 });
 
 // geojson example
