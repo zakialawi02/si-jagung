@@ -40,6 +40,7 @@ const osmBaseMap = new TileLayer({
   source: new OSM(),
   crossOrigin: "anonymous",
   visible: true,
+  preload: 10,
 });
 
 const sourceBingMaps = new ol.source.BingMaps({
@@ -52,6 +53,7 @@ const bingAerialBaseMap = new ol.layer.Tile({
   source: sourceBingMaps,
   crossOrigin: "anonymous",
   visible: false,
+  preload: 10,
 });
 
 const mapboxBaseURL = "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiNjg2MzUzMyIsImEiOiJjbDh4NDExZW0wMXZsM3ZwODR1eDB0ajY0In0.6jHWxwN6YfLftuCFHaa1zw";
@@ -63,6 +65,7 @@ const mapboxBaseMap = new ol.layer.Tile({
   source: mapboxSource,
   crossOrigin: "anonymous",
   visible: false,
+  preload: 10,
 });
 const baseMaps = [osmBaseMap, bingAerialBaseMap, mapboxBaseMap];
 
@@ -193,6 +196,12 @@ const vectorLayerEventClick = new VectorLayer({
 });
 map.addLayer(vectorLayerEventClick);
 
+/**
+ * Marks a clicked position on the map.
+ *
+ * @param {ol.Coordinate} coordinate - The coordinate of the clicked position.
+ * @return {void}
+ */
 function markToClickedPosition(coordinate) {
   const marker = new Feature({
     geometry: new Point(coordinate),
@@ -213,6 +222,12 @@ const highlightVectorLayer = new ol.layer.Vector({
 });
 map.addLayer(highlightVectorLayer);
 
+/**
+ * Highlights the clicked features on the map by adding them to the highlight vector source.
+ *
+ * @param {Array} geojson - An array of GeoJSON features to highlight.
+ * @return {void} This function does not return anything.
+ */
 function highlightClicked(geojson) {
   geojson.forEach((feature) => {
     highlightVectorSource.addFeatures(new GeoJSON().readFeatures(feature));
@@ -264,6 +279,7 @@ const createWMSLayer = (title, layerName, visible, zIndex) =>
     title,
     source: new TileWMS({
       url: "http://localhost:8080/geoserver/surabaya/wms",
+      attributions: "surabaya wms layer",
       params: {
         LAYERS: `surabaya:${layerName}`,
         TILED: true,
@@ -271,65 +287,17 @@ const createWMSLayer = (title, layerName, visible, zIndex) =>
       },
       serverType: "geoserver",
     }),
+    preload: Infinity,
+    // crossOrigin: "anonymous",
     opacity: 0.8,
     visible: visible,
     zIndex: zIndex,
   });
 
-surabayaWMSLayer.map(({ name, title, visible, zIndex }) => {
+surabayaWMSLayer.map(({ title, name, visible, zIndex }) => {
   const layer = createWMSLayer(title, name, visible, zIndex);
   surabayaWMS.getLayers().push(layer);
 });
-
-const prosesFetchWMSLayerData = async (evt, viewResolution, projection, surabayaWMS, no_layers, surabayaWMSLayer) => {
-  let url = [];
-  let wmsSource = [];
-  let layer_title = [];
-
-  let dataArray = [];
-  let feturesArray = [];
-
-  let i;
-  for (i = 0; i < no_layers; i++) {
-    let visibility = surabayaWMS.getLayers().item(i).getVisible();
-    if (visibility == true) {
-      layer_title[i] = surabayaWMS.getLayers().item(i).get("title");
-      // alert(`${i}= ${layer_title[i]}`);
-      // alert(`${surabayaWMSLayer[i].name}`);
-      wmsSource[i] = new ol.source.ImageWMS({
-        url: "http://localhost:8080/geoserver/wms",
-        params: {
-          LAYERS: surabayaWMSLayer[i].name,
-        },
-        serverType: "geoserver",
-        // crossOrigin: "anonymous",
-      });
-      url[i] = wmsSource[i].getFeatureInfoUrl(evt.coordinate, viewResolution, projection, {
-        INFO_FORMAT: "application/json",
-      });
-
-      if (url[i]) {
-        try {
-          let response = await fetch(url[i]);
-          let data = await response.json();
-          const dataProperties = data.features;
-          if (dataProperties.length > 0) {
-            dataArray.push(data);
-          }
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      }
-    }
-  }
-  // console.log({ dataArray });
-  dataArray.forEach((data) => {
-    feturesArray.push(data.features);
-  });
-  // console.log({ feturesArray });
-
-  return { dataArray, feturesArray };
-};
 
 map.on("singleclick", eventClickMap);
 
@@ -356,69 +324,99 @@ function eventClickMap(evt) {
   $("#overlayPopup").removeClass("d-none");
 
   (async () => {
-    const result = await prosesFetchWMSLayerData(evt, viewResolution, projection, surabayaWMS, no_layers, surabayaWMSLayer);
-    // console.log({ result });
-    const { dataArray, feturesArray } = result;
-    let idPropertiesData = [];
-    let mergedPropertiesFeatures = [];
-    let mergedDataGeojson = [];
-    feturesArray.forEach((data) => {
-      data.forEach((feature) => {
-        const properties = feature.properties;
-        idPropertiesData.push(feature.id);
-        mergedPropertiesFeatures.push(properties);
-      });
-    });
-    dataArray.forEach((data) => {
-      mergedDataGeojson.push(data);
-    });
-    // console.log(mergedPropertiesFeatures);
-    // console.log(mergedDataGeojson);
+    let WMS_ARRAY = [];
 
-    highlightClicked(mergedDataGeojson);
+    let i;
+    for (i = 0; i < no_layers; i++) {
+      let visibility = surabayaWMS.getLayers().item(i).getVisible();
+      if (visibility == true) {
+        let params_layers = surabayaWMS.getLayers().item(i).getSource().getParams().LAYERS;
+        WMS_ARRAY.push(params_layers);
+      }
+    }
+
+    let dataArray = [];
+    const wmsSource = new ol.source.ImageWMS({
+      url: "http://localhost:8080/geoserver/wms",
+      params: {
+        LAYERS: WMS_ARRAY,
+      },
+      serverType: "geoserver",
+      // crossOrigin: "anonymous",
+    });
+    url = wmsSource.getFeatureInfoUrl(evt.coordinate, viewResolution, projection, {
+      INFO_FORMAT: "application/json",
+      FEATURE_COUNT: 3,
+    });
+    // console.log(url);
+    if (url) {
+      try {
+        let response = await fetch(url);
+        let data = await response.json();
+        const dataProperties = data.features;
+        if (dataProperties.length > 0) {
+          dataArray.push(data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    // console.log({ dataArray });
 
     if (dataArray.length > 0) {
-      $("#overlayPopupContent").html(`<pre>${JSON.stringify(mergedPropertiesFeatures, null, 2)}</pre>`);
+      let featuresArray = [];
+      let idPropertiesData = [];
+      let mergedPropertiesFeatures = [];
+      let crsGeo = dataArray[0].crs;
+      let mergedDataGeojson = [];
+
+      dataArray.forEach((data) => {
+        featuresArray.push(data.features);
+      });
+      // console.log(featuresArray);
+      featuresArray.forEach((features) => {
+        features.forEach((feature) => {
+          const geom = {
+            crs: crsGeo,
+            type: "FeatureCollection",
+            features: [],
+          };
+          feature.properties.mark = feature.id;
+          geom.features.push(feature);
+          mergedDataGeojson.push(geom);
+          mergedPropertiesFeatures.push(feature.properties);
+          idPropertiesData.push(feature.id);
+        });
+      });
+
+      // console.log({ mergedDataGeojson });
+      // console.log({ mergedPropertiesFeatures });
+
+      highlightClicked(mergedDataGeojson);
+
+      $("#overlayPopupContent").html(`<pre>Raw : <br> ${JSON.stringify(mergedPropertiesFeatures, null, 2)}</pre>`);
     } else {
       $("#overlayPopupContent").html(``);
     }
   })();
 }
 
-$("#tes-1").click(function (e) {
-  if (this.checked) {
-    surabayaWMS.getLayers().item(0).setVisible(true);
-  } else {
-    surabayaWMS.getLayers().item(0).setVisible(false);
-  }
-});
-$("#tes-2").click(function (e) {
-  if (this.checked) {
-    surabayaWMS.getLayers().item(1).setVisible(true);
-  } else {
-    surabayaWMS.getLayers().item(1).setVisible(false);
-  }
-});
-$("#tes-3").click(function (e) {
-  if (this.checked) {
-    surabayaWMS.getLayers().item(2).setVisible(true);
-  } else {
-    surabayaWMS.getLayers().item(2).setVisible(false);
-  }
-});
-$("#tes-4").click(function (e) {
-  if (this.checked) {
-    surabayaWMS.getLayers().item(3).setVisible(true);
-  } else {
-    surabayaWMS.getLayers().item(3).setVisible(false);
-  }
-});
-$("#tes-5").click(function (e) {
-  if (this.checked) {
-    surabayaWMS.getLayers().item(4).setVisible(true);
-  } else {
-    surabayaWMS.getLayers().item(4).setVisible(false);
-  }
+const checkboxesLayer = document.querySelectorAll(".layer .form-check-input");
+checkboxesLayer.forEach((checkbox) => {
+  checkbox.addEventListener("change", (event) => {
+    // console.log(event.target.checked);
+    const layerName = event.target.value;
+    if (layerName) {
+      const name = layerName.split(":")[1];
+      const index = surabayaWMSLayer.findIndex((layer) => layer.name === name);
+      console.log({ index });
+      if (event.target.checked) {
+        surabayaWMS.getLayers().item(index).setVisible(true);
+      } else {
+        surabayaWMS.getLayers().item(index).setVisible(false);
+      }
+    }
+  });
 });
 
 function setOsmBasemap() {
