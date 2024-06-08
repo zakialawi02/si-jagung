@@ -214,21 +214,24 @@ const highlightVectorLayer = new ol.layer.Vector({
 map.addLayer(highlightVectorLayer);
 
 function highlightClicked(geojson) {
-  highlightVectorSource.clear();
   geojson.forEach((feature) => {
     highlightVectorSource.addFeatures(new GeoJSON().readFeatures(feature));
   });
 }
 
-// Add a click handler to hide the popup when the closer is clicked
-$("#overlayPopupClose").click(function (e) {
-  $("#overlayPopup").addClass("d-none");
+function removeHighlightClicked() {
   if (vectorSourceEventClick) {
     vectorSourceEventClick.clear();
   }
   if (highlightVectorSource) {
     highlightVectorSource.clear();
   }
+}
+
+// Add a click handler to hide the popup when the closer is clicked
+$("#overlayPopupClose").click(function (e) {
+  removeHighlightClicked();
+  $("#overlayPopup").addClass("d-none");
 });
 
 // wms source layer
@@ -344,6 +347,7 @@ function eventClickMap(evt) {
   const hdmsCoordinate = `${formattedLon} &nbsp ${formattedLat}`;
   $("#overlayPopupCoordinate").html(hdmsCoordinate);
 
+  removeHighlightClicked();
   markToClickedPosition(coordinate);
 
   // Dapatkan fitur yang diklik
