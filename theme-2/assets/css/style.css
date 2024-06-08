@@ -388,6 +388,37 @@ main {
   right: auto;
 }
 
+/* Zoom Toggle */
+#zoomToggle {
+  position: fixed;
+  top: auto;
+  bottom: 92px;
+  left: auto;
+  right: 38px;
+}
+
+.ol-custom-zoom {
+  margin: 8px 5px;
+  font-size: 1.2rem;
+  border-radius: 5px;
+}
+
+.ol-custom-zoom-in {
+  background-image: url("data:image/svg+xml,%3Csvg class='w-6 h-6 text-gray-800 dark:text-white' aria-hidden='true' xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 12h14m-7 7V5'/%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat no-repeat;
+  background-position: center center;
+  background-size: cover;
+  padding: 0.8rem;
+}
+
+.ol-custom-zoom-out {
+  background-image: url("data:image/svg+xml,%3Csvg class='w-6 h-6 text-gray-800 dark:text-white' aria-hidden='true' xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 12h14'/%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat no-repeat;
+  background-position: center center;
+  background-size: cover;
+  padding: 0.8rem;
+}
+
 /* Scaleline */
 .ol-scale-line {
   position: absolute;
@@ -405,6 +436,12 @@ main {
 }
 
 /* minimap */
+#minimap {
+  position: fixed;
+  right: 30px;
+  bottom: auto;
+}
+
 .ol-custom-overviewmap button {
   padding: 0.7rem;
   font-size: 1.2rem;
@@ -418,10 +455,10 @@ main {
 }
 
 .ol-custom-overviewmap:not(.ol-collapsed) button {
-  top: auto;
-  bottom: 0;
-  left: auto;
-  right: 0;
+  top: 0;
+  bottom: auto;
+  left: 0;
+  right: auto;
 }
 
 .ol-custom-overviewmap,
@@ -445,8 +482,14 @@ main {
   border: 2px solid red;
 }
 
-/* information overlay */
-#overlayPopup {
+@media screen and (max-width: 768px) {
+  #minimap {
+    bottom: 30px;
+  }
+}
+
+/* Information overlay */
+#informationPopup {
   position: fixed;
   bottom: 60px;
   left: 6px;
@@ -469,7 +512,7 @@ main {
   }
 }
 
-#overlayPopupTitle h5 {
+#informationPopupTitle h5 {
   font-size: 1rem;
 }
 
@@ -478,23 +521,23 @@ button.btn-close {
   height: 0.3rem;
 }
 
-#overlayPopupCoordinate {
+#informationPopupCoordinate {
   font-size: 0.8rem;
 }
 
-#overlayPopupContent {
+#informationPopupContent {
   max-height: 30vh;
   overflow: auto;
 }
 
-#overlayPopupContent p {
+#informationPopupContent p {
   font-size: 0.9rem;
   margin: 0;
   padding: 0;
 }
 
 @media screen and (max-width: 768px) {
-  #overlayPopup {
+  #informationPopup {
     bottom: 55px;
     margin: 0 auto;
     width: 32rem;
@@ -502,10 +545,72 @@ button.btn-close {
 }
 
 @media screen and (max-width: 576px) {
-  #overlayPopup {
+  #informationPopup {
     bottom: 0;
     left: 0;
     height: 44vh;
     width: 100%;
+  }
+}
+
+/* Off canvas layer control */
+#layerControl {
+  position: absolute;
+  bottom: 60px;
+  left: -20rem;
+  height: calc(100vh - 140px);
+  z-index: 1;
+  width: 20rem;
+  padding: 0.5rem;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+#layerControl.show {
+  left: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+#layerControlBtn {
+  position: fixed;
+  top: 4.6rem;
+  left: 10px;
+  padding: 0.8rem 0.9rem;
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: gray;
+  cursor: pointer;
+}
+
+#layerControlBtn:hover {
+  background-color: #f5f5f5;
+}
+
+.btn-layerControl-close {
+  font-size: 1.2rem;
+  padding: 0.8rem 0.9rem;
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: gray;
+  cursor: pointer;
+}
+
+.btn-layerControl-close:hover {
+  background-color: #f5f5f5;
+  color: #404040;
+}
+
+@media screen and (max-width: 992px) {
+  #layerControlBtn {
+    top: 5rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  #layerControl {
+    bottom: 40px;
+    left: -28rem;
+    height: calc(100vh - 120px);
+    width: 80%;
   }
 }

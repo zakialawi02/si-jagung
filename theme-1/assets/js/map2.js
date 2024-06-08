@@ -100,6 +100,16 @@ const scaleControl = new ScaleLine({
   className: "ol-scale-line",
 });
 
+// zoom
+const zoomControl = new ol.control.Zoom({
+  target: document.getElementById("zoomToggle"),
+  className: "ol-custom-zoom",
+  zoomInClassName: "btn ol-custom-zoom-in",
+  zoomOutClassName: "btn ol-custom-zoom-out",
+  zoomInLabel: "",
+  zoomOutLabel: "",
+});
+
 // Mouse Position
 const mousePositionControl = new MousePosition({
   coordinateFormat: function (coordinate) {
@@ -184,7 +194,7 @@ let map = new Map({
 
   view: view,
 
-  controls: [new ol.control.Zoom(), scaleControl, overviewMapControl, attribution, mousePositionControl],
+  controls: [zoomControl, scaleControl, overviewMapControl, attribution, mousePositionControl],
 });
 
 // Layer Click Event
@@ -244,9 +254,9 @@ function removeHighlightClicked() {
 }
 
 // Add a click handler to hide the popup when the closer is clicked
-$("#overlayPopupClose").click(function (e) {
+$("#informationPopupClose").click(function (e) {
   removeHighlightClicked();
-  $("#overlayPopup").addClass("d-none");
+  $("#informationPopup").addClass("d-none");
 });
 
 // wms source layer
@@ -303,7 +313,7 @@ map.on("singleclick", eventClickMap);
 
 function eventClickMap(evt) {
   console.log("Klik map");
-  $("#overlayPopupContent").html(loader);
+  $("#informationPopupContent").html(loader);
   let viewResolution = /** @type {number} */ (view.getResolution());
   let projection = view.getProjection();
 
@@ -313,7 +323,7 @@ function eventClickMap(evt) {
   // const hdmsCoordinate = toStringHDMS(LonLatcoordinate);
   const { formattedLon, formattedLat } = coordinateFormatIndo(LonLatcoordinate, "dms");
   const hdmsCoordinate = `${formattedLon} &nbsp ${formattedLat}`;
-  $("#overlayPopupCoordinate").html(hdmsCoordinate);
+  $("#informationPopupCoordinate").html(hdmsCoordinate);
 
   removeHighlightClicked();
   markToClickedPosition(coordinate);
@@ -321,7 +331,7 @@ function eventClickMap(evt) {
   // Dapatkan fitur yang diklik
   let no_layers = surabayaWMS.getLayers().get("length");
 
-  $("#overlayPopup").removeClass("d-none");
+  $("#informationPopup").removeClass("d-none");
 
   (async () => {
     let WMS_ARRAY = [];
@@ -394,9 +404,9 @@ function eventClickMap(evt) {
 
       highlightClicked(mergedDataGeojson);
 
-      $("#overlayPopupContent").html(`<pre>Raw : <br> ${JSON.stringify(mergedPropertiesFeatures, null, 2)}</pre>`);
+      $("#informationPopupContent").html(`<pre>Raw : <br> ${JSON.stringify(mergedPropertiesFeatures, null, 2)}</pre>`);
     } else {
-      $("#overlayPopupContent").html(``);
+      $("#informationPopupContent").html(``);
     }
   })();
 }

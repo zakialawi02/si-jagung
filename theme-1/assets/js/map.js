@@ -73,6 +73,7 @@ const overviewMapControl = new OverviewMap({
       source: new OSM(),
     }),
   ],
+  target: document.getElementById("minimap"),
   className: "ol-overviewmap ol-custom-overviewmap",
   collapsed: false,
   tipLabel: "Minimap",
@@ -95,6 +96,16 @@ const scaleControl = new ScaleLine({
   minWidth: 140,
   maxWidth: 180,
   className: "ol-scale-line",
+});
+
+// zoom
+const zoomControl = new ol.control.Zoom({
+  target: document.getElementById("zoomToggle"),
+  className: "ol-custom-zoom",
+  zoomInClassName: "btn ol-custom-zoom-in",
+  zoomOutClassName: "btn ol-custom-zoom-out",
+  zoomInLabel: "",
+  zoomOutLabel: "",
 });
 
 // Mouse Position
@@ -181,7 +192,7 @@ let map = new Map({
 
   view: view,
 
-  controls: [new ol.control.Zoom(), scaleControl, overviewMapControl, attribution, mousePositionControl],
+  controls: [zoomControl, scaleControl, overviewMapControl, attribution, mousePositionControl],
 });
 
 // Layer Click Event
@@ -232,12 +243,12 @@ function removeHighlightClicked() {
 }
 
 // Add a click handler to hide the popup when the closer is clicked
-$("#overlayPopupClose").click(function (e) {
+$("#informationPopupClose").click(function (e) {
   removeHighlightClicked(selectedFeature);
   if (vectorSourceEventClick) {
     vectorSourceEventClick.clear();
   }
-  $("#overlayPopup").addClass("d-none");
+  $("#informationPopup").addClass("d-none");
 });
 
 // Event klik map
@@ -245,7 +256,7 @@ let selectedFeature = null;
 map.on("singleclick", function (evt) {
   console.log("Klik map");
 
-  $("#overlayPopupContent").html(loader);
+  $("#informationPopupContent").html(loader);
 
   // Get Coordinate
   const coordinate = evt.coordinate;
@@ -254,9 +265,9 @@ map.on("singleclick", function (evt) {
   // const hdmsCoordinate = toStringHDMS(LonLatcoordinate);
   const { formattedLon, formattedLat } = coordinateFormatIndo(LonLatcoordinate, "dms");
   const hdmsCoordinate = `${formattedLon} &nbsp ${formattedLat}`;
-  $("#overlayPopupCoordinate").html(hdmsCoordinate);
+  $("#informationPopupCoordinate").html(hdmsCoordinate);
 
-  $("#overlayPopup").removeClass("d-none");
+  $("#informationPopup").removeClass("d-none");
 
   markToClickedPosition(coordinate);
 
@@ -266,14 +277,14 @@ map.on("singleclick", function (evt) {
   });
   removeHighlightClicked();
   if (!feature) {
-    $("#overlayPopupContent").html(``);
+    $("#informationPopupContent").html(``);
     selectedFeature = null;
     return;
   }
   if (feature) {
     const coordinates = feature.getGeometry().getCoordinates();
     const properties = feature.getProperties();
-    $("#overlayPopupContent").html(`<pre>${JSON.stringify(properties, null, 2)}</pre>`);
+    $("#informationPopupContent").html(`<pre>${JSON.stringify(properties, null, 2)}</pre>`);
     highlightClicked(evt, selectedFeature);
   }
 });
