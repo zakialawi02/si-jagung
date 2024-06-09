@@ -52,6 +52,32 @@
       <section>
         <div id="mapWrapper" class="position-relative">
           <div id="map"></div>
+
+          <div id="topLeft" class="">
+            <!-- layerControl Button -->
+            <button id="layerControlBtn" class="position-relative"><i class="bi bi-layout-sidebar"></i><i class="bi bi-arrow-bar-right"></i></button>
+          </div>
+
+          <div id="bottomLeft" class="">
+            <div class="d-flex align-items-end">
+              <!-- Mouse Position -->
+              <div id="mousePosition" class="position-relative mb-1"></div>
+
+              <!-- Scaleline -->
+              <div id="scaleline" class="position-relative"></div>
+            </div>
+          </div>
+
+          <div id="bottomRight" class="">
+            <!-- Zoom Toggle -->
+            <div id="zoomToggle" class="position-relative"></div>
+
+            <!-- Minimap -->
+            <div id="minimap" class="position-relative"></div>
+
+            <!-- attribution -->
+            <div id="attribution" class="position-relative"></div>
+          </div>
         </div>
 
         <!-- overlay popup -->
@@ -72,23 +98,14 @@
           </div>
         </div>
 
+        <!-- offcanvas layerControl -->
         <div class="position-relative">
-          <!-- Zoom Toggle -->
-          <div id="zoomToggle" class=""></div>
-
-          <!-- layerControl Button -->
-          <button id="layerControlBtn" class=""><i class="bi bi-layout-sidebar"></i><i class="bi bi-arrow-bar-right"></i></button>
-
-          <!-- Minimap -->
-          <div id="minimap" class=""></div>
-
-          <!-- offcanvas layerControl -->
           <div id="layerControl" class="layerControl align-self-end">
             <div class="layerControl-header d-flex justify-content-between align-items-center">
               <h5 class="layerControl-title px-2 py-1" id="layerControlTitle"></h5>
               <button type="button" class="btn btn-layerControl-close p-1 m-1 align-self-start"><i class="bi bi-arrow-bar-left"></i></button>
             </div>
-            <div class="layerControl-body mt-1 px-2 py-1">
+            <div class="layerControl-body px-2 py-1">
               <div class="layerControl-body">
                 <div class="layer mb-3">
                   <div class="form-check">

@@ -279,38 +279,93 @@ main {
   height: 100%;
 }
 
-/* attribution */
-.ol-attribution {
-  top: auto;
-  bottom: 0;
-  left: auto;
+#topLeft {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: max-content;
+}
+
+#bottomLeft {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  width: max-content;
+}
+
+#bottomRight {
+  position: absolute;
+  bottom: 5px;
   right: 5px;
+  width: max-content;
+}
+
+@media screen and (max-width: 992px) {
+  #topLeft {
+    top: 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #bottomLeft {
+    position: fixed;
+    width: 100%;
+  }
+
+  #mousePosition {
+    /* display: none; */
+  }
+
+  #bottomRight {
+    position: fixed;
+    bottom: 25px;
+  }
+
+  #attribution {
+    display: none;
+  }
+
+  .ol-scale-line {
+    max-width: 500px;
+  }
 }
 
 /* Mouse Position */
-.ol-mouse-position {
+.ol-custom-mouse-position {
   padding: 0.3rem 0.5rem;
   background-color: #ffffff;
   border-radius: 5px;
   color: #303030;
   font-size: 0.8rem;
+}
+
+/* Scaleline */
+.ol-scale-line {
+  max-width: 200px;
+  background-color: #ffffff;
+  padding: 0.2rem 0.8rem;
+}
+
+.ol-scale-line-inner {
+  display: flex;
+  border: 0 solid grey;
+  transition: none;
+}
+
+/* attribution */
+.ol-attribution {
   top: auto;
-  bottom: 8px;
-  left: 0;
-  right: auto;
+  bottom: 0;
+  left: auto;
+  right: 0;
+  width: max-content;
+  max-width: max-content;
 }
 
 /* Zoom Toggle */
-#zoomToggle {
-  position: fixed;
-  top: auto;
-  bottom: 92px;
-  left: auto;
-  right: 38px;
-}
-
 .ol-custom-zoom {
-  margin: 8px 5px;
+  bottom: 30px;
+  right: 0;
   font-size: 1.2rem;
   border-radius: 5px;
 }
@@ -331,39 +386,18 @@ main {
   padding: 0.8rem;
 }
 
-/* Scaleline */
-.ol-scale-line {
-  position: absolute;
-  bottom: 8px;
-  left: 250px;
-  max-width: 200px;
-  background-color: #ffffff;
-  padding: 0.2rem 0.8rem;
-}
-
-.ol-scale-line-inner {
-  display: flex;
-  border: 0 solid grey;
-  transition: none;
-}
-
 /* minimap */
-#minimap {
-  position: fixed;
+.ol-custom-overviewmap,
+.ol-custom-overviewmap.ol-uncollapsible {
+  top: auto;
+  bottom: 30px;
+  left: auto;
   right: 30px;
-  bottom: auto;
 }
 
 .ol-custom-overviewmap button {
   padding: 0.7rem;
   font-size: 1.2rem;
-}
-
-.ol-custom-overviewmap span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .ol-custom-overviewmap:not(.ol-collapsed) button {
@@ -373,12 +407,11 @@ main {
   right: auto;
 }
 
-.ol-custom-overviewmap,
-.ol-custom-overviewmap.ol-uncollapsible {
-  top: auto;
-  bottom: 25px;
-  left: auto;
-  right: 5px;
+.ol-custom-overviewmap span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .ol-custom-overviewmap:not(.ol-collapsed) {
@@ -392,12 +425,6 @@ main {
 
 .ol-custom-overviewmap .ol-overviewmap-box {
   border: 2px solid red;
-}
-
-@media screen and (max-width: 768px) {
-  #minimap {
-    bottom: 30px;
-  }
 }
 
 /* Information overlay */
@@ -473,9 +500,10 @@ button.btn-close {
   height: calc(100vh - 140px);
   z-index: 1;
   width: 20rem;
-  padding: 0.5rem;
+  padding: 0.8rem 0.5rem;
   background-color: #ffffff;
   border-radius: 5px;
+  overflow: auto;
 }
 
 #layerControl.show {
@@ -484,9 +512,6 @@ button.btn-close {
 }
 
 #layerControlBtn {
-  position: fixed;
-  top: 4.6rem;
-  left: 10px;
   padding: 0.8rem 0.9rem;
   background-color: #ffffff;
   border-radius: 5px;
@@ -512,17 +537,11 @@ button.btn-close {
   color: #404040;
 }
 
-@media screen and (max-width: 992px) {
-  #layerControlBtn {
-    top: 5rem;
-  }
-}
-
 @media screen and (max-width: 576px) {
   #layerControl {
-    bottom: 40px;
+    bottom: 52px;
     left: -28rem;
-    height: calc(100vh - 120px);
+    height: calc(100vh - 135px);
     width: 80%;
   }
 }

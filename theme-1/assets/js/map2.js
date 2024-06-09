@@ -76,6 +76,7 @@ const overviewMapControl = new OverviewMap({
       source: new OSM(),
     }),
   ],
+  target: document.getElementById("minimap"),
   className: "ol-overviewmap ol-custom-overviewmap",
   collapsed: false,
   tipLabel: "Minimap",
@@ -85,12 +86,14 @@ const overviewMapControl = new OverviewMap({
 
 // Attribution
 const attribution = new Attribution({
+  target: document.getElementById("attribution"),
   collapsible: true,
   className: "ol-attribution",
 });
 
 // ScaleLine
 const scaleControl = new ScaleLine({
+  target: document.getElementById("scaleline"),
   units: "metric",
   bar: true,
   steps: 4,
@@ -112,14 +115,15 @@ const zoomControl = new ol.control.Zoom({
 
 // Mouse Position
 const mousePositionControl = new MousePosition({
+  target: document.getElementById("mousePosition"),
   coordinateFormat: function (coordinate) {
     const { formattedLon, formattedLat } = coordinateFormatIndo(coordinate, "dd");
 
     return "Long: " + formattedLon + " &nbsp&nbsp&nbsp  Lat: " + formattedLat;
   },
   projection: "EPSG:4326",
-  className: "ol-mouse-position",
-  // target: document.getElementById("mouse-position"),
+  placeholder: "Long: - &nbsp&nbsp&nbsp  Lat: -",
+  className: "ol-custom-mouse-position",
 });
 
 /**
