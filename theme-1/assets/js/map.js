@@ -19,6 +19,8 @@ let { Style, Fill, Stroke, Text, IconImage, Icon } = ol.style;
 let { Attribution, OverviewMap, ScaleLine, MousePosition } = ol.control;
 let { register } = ol.proj.proj4;
 let { format, toStringHDMS, toStringXY } = ol.coordinate;
+let { bbox, tile } = ol.loadingstrategy;
+let { createXYZ } = ol.tilegrid;
 
 let WGS84 = new Projection("EPSG:4326");
 let MERCATOR = new Projection("EPSG:3857");
@@ -292,10 +294,38 @@ map.on("singleclick", function (evt) {
   }
 });
 
-// geojson example
-const datageojson = new VectorSource({
-  url: "./assets/data/Environment.geojson",
-  format: new GeoJSON(),
+// surabaya layer group
+const surabayaLayers = new LayerGroup({
+  title: "Surabaya",
+});
+map.addLayer(surabayaLayers);
+
+// Geojson style
+const jalanStyle = new Style({
+  stroke: new Stroke({
+    color: "red",
+    width: 2,
+  }),
+});
+
+const kebunStyle = new Style({
+  fill: new Fill({
+    color: "green",
+  }),
+  stroke: new Stroke({
+    color: "green",
+    width: 2,
+  }),
+});
+
+const bangunanStyle = new Style({
+  fill: new Fill({
+    color: "#808080",
+  }),
+  stroke: new Stroke({
+    color: "#808080",
+    width: 2,
+  }),
 });
 
 function perum(zona) {
@@ -310,11 +340,17 @@ function perum(zona) {
       return (fillColor = "rgba(0, 200, 200, 0.8)");
   }
 }
-const contohGeojson = new VectorLayer({
-  source: datageojson,
-  opacity: 0.8,
+
+// geojson layer
+const geojsonSiola = new VectorSource({
+  url: "./assets/data/Environment.geojson",
+  format: new GeoJSON(),
+});
+
+const layerSiola = new VectorLayer({
+  source: geojsonSiola,
+  zIndex: 0,
   visible: true,
-  zIndex: 1,
   style: function (feature) {
     const zona = feature.get("zona");
     let fillColor = perum(zona);
@@ -336,60 +372,119 @@ const contohGeojson = new VectorLayer({
     });
   },
 });
-map.addLayer(contohGeojson);
+surabayaLayers.getLayers().push(layerSiola);
+
+const geojsonKebun = new VectorSource({
+  url: "./assets/data/AGRIKEBUN_AR_25K.geojson",
+  format: new GeoJSON(),
+});
+
+const layerKebun = new VectorLayer({
+  source: geojsonKebun,
+  zIndex: 0,
+  visible: true,
+  opacity: 0.8,
+  style: kebunStyle,
+});
+surabayaLayers.getLayers().push(layerKebun);
+
+const geojsonBangunan = new VectorSource({
+  format: new GeoJSON(),
+  url: "http://localhost:8080/geoserver/surabaya/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=surabaya%3ABANGUNAN_AR_25K&outputFormat=application%2Fjson",
+  strategy: bbox,
+});
+
+const layerBangunan = new VectorLayer({
+  source: geojsonBangunan,
+  zIndex: 0,
+  visible: true,
+  opacity: 0.8,
+  style: bangunanStyle,
+});
+surabayaLayers.getLayers().push(layerBangunan);
+
+const geojsonJalan = new VectorSource({
+  format: new GeoJSON(),
+  url: "http://localhost:8080/geoserver/surabaya/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=surabaya%3AJALAN_LN_25K&outputFormat=application%2Fjson",
+  strategy: bbox,
+});
+
+const layerJalan = new VectorLayer({
+  source: geojsonJalan,
+  zIndex: 10,
+  visible: true,
+  style: jalanStyle,
+});
+surabayaLayers.getLayers().push(layerJalan);
+
 let geojsonVisible = true;
 document.getElementById("tes-1").addEventListener("click", function () {
   if (geojsonVisible) {
-    datageojson.getFeatures().forEach(function (feature) {
-      if (feature.get("zona") === "Perumahan") {
+    console.log(layerSiola);
+    layerSiola
+      .getSource()
+      .getFeatures()
+      .forEach(function (feature) {
+        if (feature.get("zona") === "Perumahan") {
+          feature.setStyle(
+            new ol.style.Style({
+              fill: new ol.style.Fill({
+                color: "rgba(0, 0, 0, 0)",
+              }),
+              stroke: new ol.style.Stroke({
+                color: "rgba(0, 0, 0, 0)",
+              }),
+              text: new ol.style.Text({
+                text: "",
+              }),
+            })
+          );
+        }
+      });
+  } else {
+    layerSiola
+      .getSource()
+      .getFeatures()
+      .forEach(function (feature) {
+        const zona = feature.get("zona");
+        let fillColor = perum(zona);
         feature.setStyle(
-          new ol.style.Style({
-            fill: new ol.style.Fill({
-              color: "rgba(0, 0, 0, 0)",
+          new Style({
+            fill: new Fill({
+              color: fillColor,
             }),
-            stroke: new ol.style.Stroke({
-              color: "rgba(0, 0, 0, 0)",
+            stroke: new Stroke({
+              color: "#ffcc33",
+              width: 2,
             }),
-            text: new ol.style.Text({
-              text: "",
+            text: new Text({
+              text: zona,
+              font: "15px Calibri,sans-serif",
+              fill: new Fill({
+                color: "#000000",
+              }),
             }),
           })
         );
-      }
-    });
-  } else {
-    datageojson.getFeatures().forEach(function (feature) {
-      const zona = feature.get("zona");
-      let fillColor = perum(zona);
-      feature.setStyle(
-        new Style({
-          fill: new Fill({
-            color: fillColor,
-          }),
-          stroke: new Stroke({
-            color: "#ffcc33",
-            width: 2,
-          }),
-          text: new Text({
-            text: zona,
-            font: "15px Calibri,sans-serif",
-            fill: new Fill({
-              color: "#000000",
-            }),
-          }),
-        })
-      );
-    });
+      });
   }
   geojsonVisible = !geojsonVisible;
 });
 
 $("#tes-2").click(function (e) {
-  if (this.checked) {
-    contohGeojson.setVisible(true);
-  } else {
-    contohGeojson.setVisible(false);
-  }
+  layerSiola.setVisible(this.checked);
+});
+
+$("#tes-3").change(function () {
+  layerKebun.setVisible(this.checked);
+});
+
+$("#tes-4").change(function () {
+  layerBangunan.setVisible(this.checked);
+});
+
+$("#tes-5").change(function () {
+  layerJalan.setVisible(this.checked);
 });
 
 function setOsmBasemap() {

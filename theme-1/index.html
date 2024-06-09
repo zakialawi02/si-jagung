@@ -460,6 +460,17 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/js/glightbox.min.js" integrity="sha512-RBWI5Qf647bcVhqbEnRoL4KuUT+Liz+oG5jtF+HP05Oa5088M9G0GxG0uoHR9cyq35VbjahcI+Hd1xwY8E1/Kg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script>
+      $("#navbarCollapse a").click(function (e) {
+        $("#navbarCollapse").removeClass("show");
+      });
+      $(document).click(function (e) {
+        if (!$(e.target).closest("#navbarCollapse").length) {
+          $("#navbarCollapse").removeClass("show");
+        }
+      });
+    </script>
+
     <script src="./assets/js/js.js"></script>
   </body>
 </html>

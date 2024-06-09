@@ -28,27 +28,7 @@
     <title>Title Document</title>
   </head>
   <body>
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light fixed-top shadow py-lg-0 px-4 px-lg-5 z-1">
-      <a href="./" class="navbar-brand d-inline-flex align-items-center">
-        <img src="./assets/img/logo-dummy.png" alt="Logo" height="50rem" class="me-2" />
-        <h1 class="text-primary fw-bold m-0">Brand</h1>
-      </a>
-      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-        <div class="navbar-nav ms-auto py-0">
-          <a href="./" class="nav-item nav-link">Home</a>
-          <a href="#" class="nav-item nav-link">Menu 1</a>
-          <a href="#" class="nav-item nav-link">Menu 2</a>
-          <a href="./#contact" class="nav-item nav-link">Contact</a>
-        </div>
-      </div>
-    </nav>
-    <!-- Navbar End -->
-
-    <main class="pt-6">
+    <main class="">
       <section>
         <div id="mapWrapper" class="position-relative">
           <div id="map"></div>
@@ -56,6 +36,38 @@
           <div id="topLeft" class="">
             <!-- layerControl Button -->
             <button id="layerControlBtn" class="position-relative"><i class="bi bi-layout-sidebar"></i><i class="bi bi-arrow-bar-right"></i></button>
+          </div>
+
+          <div id="topRight" class="">
+            <div id="logoSection" class="position-relative">
+              <div class="d-flex flex-row align-items-center gap-3">
+                <div class="p-1">
+                  <a href="./" id="">
+                    <img src="./assets/img/logo-dummy.png" alt="logo" />
+                  </a>
+                </div>
+                <div id="menuToggleBtn" class="border-0 border-start">
+                  <i class="bi bi-list"></i>
+                </div>
+              </div>
+            </div>
+
+            <div id="menuSection" class="d-none">
+              <div class="m-1 p-2">
+                <div id="menuItem" class="d-flex flex-column">
+                  <a class="p-2" href="./">Home</a>
+                  <a class="p-2" href="#">Menu 1</a>
+                  <a class="p-2" href="#">Menu 2</a>
+                  <a class="p-2" href="#">Menu 2</a>
+                  <a class="p-2" href="#">Menu 2</a>
+                  <a class="p-2" href="#">Menu 2</a>
+                  <hr />
+                  <a class="p-2" href="#">Menu</a>
+                  <a class="p-2" href="#">Menu Item</a>
+                  <a class="p-2" href="#"><i class="bi bi-question-circle"></i> Menu Link</a>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div id="bottomLeft" class="">
@@ -124,6 +136,10 @@
                     <input class="form-check-input" type="checkbox" value="" id="tes-4" checked />
                     <label class="form-check-label" for="tes-4"> Layer 4 </label>
                   </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="tes-4" checked />
+                    <label class="form-check-label" for="tes-4"> Layer 5 </label>
+                  </div>
                 </div>
 
                 <div id="basemap-select" class="mb-3">
@@ -152,6 +168,18 @@
       });
       $(".btn-layerControl-close").click(function (e) {
         $("#layerControl").toggleClass("show");
+      });
+      $("#menuToggleBtn").click(function (e) {
+        e.stopPropagation();
+        $("#menuSection").toggleClass("d-none");
+      });
+      $("#menuItem").click(function (e) {
+        $("#menuSection").toggleClass("d-none");
+      });
+      $(document).click(function (e) {
+        if (!$(e.target).closest("#menuSection").length && !$(e.target).closest("#menuToggleBtn").length) {
+          $("#menuSection").addClass("d-none");
+        }
       });
     </script>
     <!-- open layers js -->

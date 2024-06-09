@@ -359,7 +359,7 @@ main {
 
 /*################## MAP ##################*/
 #mapWrapper {
-  height: calc(100vh - 68px); /*90vh*/
+  height: 100vh;
 }
 
 #map {
@@ -369,8 +369,15 @@ main {
 
 #topLeft {
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: 10px;
+  left: 10px;
+  width: max-content;
+}
+
+#topRight {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   width: max-content;
 }
 
@@ -386,12 +393,6 @@ main {
   bottom: 5px;
   right: 5px;
   width: max-content;
-}
-
-@media screen and (max-width: 992px) {
-  #topLeft {
-    top: 20px;
-  }
 }
 
 @media screen and (max-width: 768px) {
@@ -526,7 +527,7 @@ main {
   border-radius: 6px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   opacity: 0;
-  z-index: 9999;
+  z-index: 100;
   transition: all 0.3s ease-in-out;
   transform: translateY(10%);
   animation: fadeSlideUp 0.3s forwards;
@@ -585,7 +586,7 @@ button.btn-close {
   position: absolute;
   bottom: 60px;
   left: -20rem;
-  height: calc(100vh - 140px);
+  height: calc(100vh - 130px);
   z-index: 1;
   width: 20rem;
   padding: 0.8rem 0.5rem;
@@ -631,5 +632,62 @@ button.btn-close {
     left: -28rem;
     height: calc(100vh - 135px);
     width: 80%;
+  }
+}
+
+#logoSection {
+  padding: 0.3rem 0.3rem;
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: gray;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+#logoSection > *:first-child {
+  border: 1px solid #30303060;
+  border-radius: 5px;
+}
+
+#logoSection img {
+  height: 100%;
+  max-height: 40px;
+}
+
+#logoSection > *:first-child > *:nth-child(2) {
+  color: var(--dark);
+  font-weight: 800;
+  padding: 0.75rem 1rem;
+  border-radius: left 5px;
+}
+
+#menuSection {
+  position: absolute;
+  right: 0;
+  margin: 0.5rem auto;
+  width: 20rem;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  z-index: 999;
+  transition: all 0.3s ease-in-out;
+  transform: translateY(-10%);
+  animation: fadeSlideUp 0.3s forwards;
+}
+
+#menuItem > a {
+  color: #1e1e2a;
+  text-decoration: solid;
+  border-radius: 5px;
+}
+
+#menuItem > a:hover {
+  background-color: #f5f5f5;
+}
+
+@media screen and (max-width: 576px) {
+  #menuSection {
+    width: 22rem;
   }
 }

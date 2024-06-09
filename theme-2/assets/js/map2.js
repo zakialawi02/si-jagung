@@ -263,7 +263,7 @@ $("#informationPopupClose").click(function (e) {
   $("#informationPopup").addClass("d-none");
 });
 
-// wms source layer
+// surabaya wms layer group
 const surabayaWMS = new LayerGroup({
   title: "Surabaya",
 });
@@ -308,6 +308,7 @@ const createWMSLayer = (title, layerName, visible, zIndex) =>
     zIndex: zIndex,
   });
 
+// wms source layer
 surabayaWMSLayer.map(({ title, name, visible, zIndex }) => {
   const layer = createWMSLayer(title, name, visible, zIndex);
   surabayaWMS.getLayers().push(layer);
