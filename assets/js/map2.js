@@ -29,17 +29,17 @@ const loader = `<div class="text-center"><span class="spinner-border spinner-bor
 // Init View
 const view = new View({
   // projection: "EPSG:4326",
-  center: ol.proj.fromLonLat([112.7464, -7.2652]),
-  zoom: 15,
-  // minZoom: 5,
-  // maxZoom: 19,
+  center: ol.proj.fromLonLat([111.450394, -7.847051]),
+  zoom: 17,
+  minZoom: 9,
+  maxZoom: 19,
 });
 
 // BaseMap
 const osmBaseMap = new TileLayer({
   source: new OSM(),
   crossOrigin: "anonymous",
-  visible: true,
+  visible: false,
   preload: 10,
 });
 
@@ -52,7 +52,7 @@ const bingAerialBaseMap = new ol.layer.Tile({
   preload: Infinity,
   source: sourceBingMaps,
   crossOrigin: "anonymous",
-  visible: false,
+  visible: true,
   preload: 10,
 });
 
@@ -172,7 +172,7 @@ const markerClickedStyle = new Style({
     with: 50,
     height: 50,
     opacity: 0.9,
-    src: "/theme-2/assets/img/map/marker-click.svg",
+    src: "./assets/img/map/marker-click.svg",
   }),
 });
 // hightlight style
@@ -264,20 +264,16 @@ $("#informationPopupClose").click(function (e) {
 });
 
 // wms source layer
-const surabayaWMS = new LayerGroup({
-  title: "Surabaya",
+const sijagungWMS = new LayerGroup({
+  title: "SIJAGUNG",
 });
-map.addLayer(surabayaWMS);
+map.addLayer(sijagungWMS);
 
-const surabayaWMSLayer = [
-  { name: "JALAN_LN_25K", title: "JALAN", visible: true, zIndex: 10 },
-  { name: "AGRIKEBUN_AR_25K", title: "AGRIKEBUN", visible: true, zIndex: 1 },
-  { name: "AGRILADANG_AR_25K", title: "AGRILADANG", visible: true, zIndex: 1 },
-  { name: "AGRISAWAH_AR_25K", title: "AGRISAWAH", visible: true, zIndex: 1 },
-  { name: "RAWA_AR_25K", title: "RAWA", visible: true, zIndex: 1 },
-  { name: "BANGUNAN_AR_25K", title: "BANGUNAN", visible: true, zIndex: 2 },
+const sijagungWMSLayer = [
+  { name: "LC08_L1TP_119065_20240717_20240717_02_RT_B2", title: "raster", visible: false, opacity: 0.9, zIndex: 1 },
+  { name: "swh_pnrg_polygon", title: "sawah jagung", visible: true, opacity: 0.8, zIndex: 2 },
 ];
-console.log(surabayaWMSLayer);
+console.log(sijagungWMSLayer);
 
 /**
  * Creates a new TileLayer with a TileWMS source.
@@ -288,14 +284,14 @@ console.log(surabayaWMSLayer);
  * @param {number} zIndex - The z-index of the layer.
  * @return {TileLayer} The created TileLayer.
  */
-const createWMSLayer = (title, layerName, visible, zIndex) =>
+const createWMSLayer = (title, layerName, visible, opacity, zIndex) =>
   new TileLayer({
     title,
     source: new TileWMS({
-      url: "http://localhost:8080/geoserver/surabaya/wms",
-      attributions: "surabaya wms layer",
+      url: "http://8.219.98.89:8080/geoserver/si-jagung/wms",
+      attributions: "si-jagung wms layer",
       params: {
-        LAYERS: `surabaya:${layerName}`,
+        LAYERS: `si-jagung:${layerName}`,
         TILED: true,
         FORMAT: "image/png",
       },
@@ -303,14 +299,14 @@ const createWMSLayer = (title, layerName, visible, zIndex) =>
     }),
     preload: Infinity,
     // crossOrigin: "anonymous",
-    opacity: 0.8,
+    opacity: opacity,
     visible: visible,
     zIndex: zIndex,
   });
 
-surabayaWMSLayer.map(({ title, name, visible, zIndex }) => {
+sijagungWMSLayer.map(({ title, name, visible, zIndex }) => {
   const layer = createWMSLayer(title, name, visible, zIndex);
-  surabayaWMS.getLayers().push(layer);
+  sijagungWMS.getLayers().push(layer);
 });
 
 map.on("singleclick", eventClickMap);
@@ -333,7 +329,7 @@ function eventClickMap(evt) {
   markToClickedPosition(coordinate);
 
   // Dapatkan fitur yang diklik
-  let no_layers = surabayaWMS.getLayers().get("length");
+  let no_layers = sijagungWMS.getLayers().get("length");
 
   $("#informationPopup").removeClass("d-none");
 
@@ -342,16 +338,16 @@ function eventClickMap(evt) {
 
     let i;
     for (i = 0; i < no_layers; i++) {
-      let visibility = surabayaWMS.getLayers().item(i).getVisible();
+      let visibility = sijagungWMS.getLayers().item(i).getVisible();
       if (visibility == true) {
-        let params_layers = surabayaWMS.getLayers().item(i).getSource().getParams().LAYERS;
+        let params_layers = sijagungWMS.getLayers().item(i).getSource().getParams().LAYERS;
         WMS_ARRAY.push(params_layers);
       }
     }
 
     let dataArray = [];
     const wmsSource = new ol.source.ImageWMS({
-      url: "http://localhost:8080/geoserver/wms",
+      url: "http://8.219.98.89:8080/geoserver/wms",
       params: {
         LAYERS: WMS_ARRAY,
       },
@@ -422,12 +418,12 @@ checkboxesLayer.forEach((checkbox) => {
     const layerName = event.target.value;
     if (layerName) {
       const name = layerName.split(":")[1];
-      const index = surabayaWMSLayer.findIndex((layer) => layer.name === name);
+      const index = sijagungWMSLayer.findIndex((layer) => layer.name === name);
       console.log({ index });
       if (event.target.checked) {
-        surabayaWMS.getLayers().item(index).setVisible(true);
+        sijagungWMS.getLayers().item(index).setVisible(true);
       } else {
-        surabayaWMS.getLayers().item(index).setVisible(false);
+        sijagungWMS.getLayers().item(index).setVisible(false);
       }
     }
   });
