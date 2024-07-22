@@ -288,7 +288,7 @@ const createWMSLayer = (title, layerName, visible, opacity, zIndex) =>
   new TileLayer({
     title,
     source: new TileWMS({
-      url: "http://8.219.98.89:8080/geoserver/si-jagung/wms",
+      url: "https://geoserver.zakiserver.my.id/geoserver/si-jagung/wms",
       attributions: "si-jagung wms layer",
       params: {
         LAYERS: `si-jagung:${layerName}`,
@@ -347,7 +347,7 @@ function eventClickMap(evt) {
 
     let dataArray = [];
     const wmsSource = new ol.source.ImageWMS({
-      url: "http://8.219.98.89:8080/geoserver/wms",
+      url: "https://geoserver.zakiserver.my.id/geoserver/wms",
       params: {
         LAYERS: WMS_ARRAY,
       },
@@ -356,7 +356,7 @@ function eventClickMap(evt) {
     });
     url = wmsSource.getFeatureInfoUrl(evt.coordinate, viewResolution, projection, {
       INFO_FORMAT: "application/json",
-      FEATURE_COUNT: 3,
+      FEATURE_COUNT: 1,
     });
     // console.log(url);
     if (url) {
