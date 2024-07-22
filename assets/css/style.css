@@ -258,6 +258,46 @@ main {
   border-radius: 0.5rem;
 }
 
+/* PROFILE */
+#profile {
+  min-height: 100vh;
+  margin-bottom: 5rem;
+  padding-bottom: 5rem;
+}
+
+.image-profile-wrapper {
+  position: relative;
+  width: 100%;
+  height: 30rem;
+  z-index: 0;
+}
+
+.image-profile-wrapper img {
+  align-items: start;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: blur(3px);
+}
+
+.profile-video {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  margin-top: 12rem;
+  backdrop-filter: blur(8px);
+}
+
+.profile-video img {
+  width: 90vmin;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
+}
+
 /* CONTACT */
 #contact {
   min-height: 100vh;
