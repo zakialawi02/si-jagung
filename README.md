@@ -6,8 +6,8 @@ You can view a demo here: <#>
 
 To use this repo, follow these steps:
 
-1. Clone the repo to your local machine by running `git clone https://github.com/zakialawi02/personal-blog-laravel.git` in your terminal. This will create a local copy of the project on your machine.
-2. Open the terminal in the root directory of the project, `cd personal-blog-laravel`.
+1. Clone the repo to your local machine by running `git clone https://github.com/zakialawi02/<>` in your terminal. This will create a local copy of the project on your machine.
+2. Open the terminal in the root directory of the project, `cd <>`.
 3. Run `composer install` to install the dependencies.
 4. Copy `.env.example` to `.env` and set up your database credentials.
 5. Run `php artisan key:generate` to set your application key.
