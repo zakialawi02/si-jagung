@@ -14,6 +14,29 @@
             <a class="nav-item nav-link" href="/kesehatan-jagung">Kesehatan Jagung</a>
             <a class="nav-item nav-link" href="/peta">Peta</a>
             <a class="nav-item nav-link" href="/kontak">Kontak</a>
+
+            <!-- User Dropdown -->
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                    <i class="fas fa-user"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" id="userDropdown-menu" aria-labelledby="userDropdown">
+                    @guest
+                        <li><a class="dropdown-item" href="{{ route("login") }}">Login</a></li>
+                    @else
+                        <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form method="POST" action="{{ route("logout") }}">
+                                @csrf
+                                <button class="dropdown-item" type="submit">Logout</button>
+                            </form>
+                        </li>
+                    @endguest
+                </ul>
+            </div>
         </div>
     </div>
 </nav>

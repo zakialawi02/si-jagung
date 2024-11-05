@@ -14,6 +14,7 @@
             <div class="position-relative" id="mapWrapper">
                 <div id="map"></div>
 
+
                 <div class="" id="topLeft">
                     <!-- layerControl Button -->
                     <button class="position-relative" id="layerControlBtn"><i class="bi bi-layout-sidebar"></i><i class="bi bi-arrow-bar-right"></i></button>
@@ -34,7 +35,7 @@
                     <div class="position-relative" id="zoomToggle"></div>
 
                     <!-- Minimap -->
-                    <div class="bottom-0 mb-3 position-fixed end-0 me-3" id="minimap"></div>
+                    <div class="position-relative" id="minimap"></div>
 
 
                     <!-- attribution -->

@@ -39,8 +39,8 @@ const loader = `<div class="text-center"><span class="spinner-border spinner-bor
 // Init View
 const view = new View({
     // projection: "EPSG:4326",
-    center: ol.proj.fromLonLat([111.450394, -7.847051]),
-    zoom: 17,
+    center: ol.proj.fromLonLat([111.550394, -7.857051]),
+    zoom: 16,
     minZoom: 9,
     maxZoom: 19,
 });
@@ -289,16 +289,16 @@ $("#informationPopupClose").click(function (e) {
 });
 
 // wms source layer
-const ndviLayer = new LayerGroup({
+const ndviLayers = new LayerGroup({
     title: "NDVI",
 });
-map.addLayer(ndviLayer);
-const ndmiLayer = new LayerGroup({
+map.addLayer(ndviLayers);
+const ndmiLayers = new LayerGroup({
     title: "NDMI",
 });
-map.addLayer(ndmiLayer);
+map.addLayer(ndmiLayers);
 
-const ndviWMSLayer = [
+const ndviWMSLayers = [
     {
         name: "2021-01-03-00_00_2021-01-03-23_59_Sentinel-2_L1C_NDVI",
         title: "NDVI Januari 2021",
@@ -321,8 +321,8 @@ const ndviWMSLayer = [
         zIndex: 1,
     },
 ];
-console.log(ndviWMSLayer);
-const ndmiWMSLayer = [
+console.log(ndviWMSLayers);
+const ndmiWMSLayers = [
     {
         name: "2021-01-03-00_00_2021-01-03-23_59_Sentinel-2_L1C_Moisture_index",
         title: "NDMI Januari 2021",
@@ -338,7 +338,7 @@ const ndmiWMSLayer = [
         zIndex: 1,
     },
 ];
-console.log(ndmiWMSLayer);
+console.log(ndmiWMSLayers);
 
 /**
  * Creates a new TileLayer with a TileWMS source.
@@ -362,21 +362,21 @@ const createWMSLayer = (title, layerName, visible, opacity, zIndex) =>
                 TRANSPARENT: true,
             },
             serverType: "geoserver",
+            crossOrigin: "anonymous",
         }),
         preload: Infinity,
-        crossOrigin: "anonymous",
         opacity: opacity ?? 0.6,
         visible: visible ?? true,
         zIndex: zIndex ?? 1,
     });
 
-ndviWMSLayer.map(({ title, name, visible, zIndex }) => {
+ndviWMSLayers.map(({ title, name, visible, zIndex }) => {
     const layer = createWMSLayer(title, name, visible, zIndex);
-    ndviLayer.getLayers().push(layer);
+    ndviLayers.getLayers().push(layer);
 });
-ndmiWMSLayer.map(({ title, name, visible, zIndex }) => {
+ndmiWMSLayers.map(({ title, name, visible, zIndex }) => {
     const layer = createWMSLayer(title, name, visible, zIndex);
-    ndmiLayer.getLayers().push(layer);
+    ndmiLayers.getLayers().push(layer);
 });
 
 map.on("singleclick", eventClickMap);
@@ -402,7 +402,7 @@ function eventClickMap(evt) {
     markToClickedPosition(coordinate);
 
     // Dapatkan fitur yang diklik
-    let no_layers = ndviLayer.getLayers().get("length");
+    let no_layers = ndviLayers.getLayers().get("length");
 
     $("#informationPopup").removeClass("d-none");
 
@@ -411,9 +411,9 @@ function eventClickMap(evt) {
 
         let i;
         for (i = 0; i < no_layers; i++) {
-            let visibility = ndviLayer.getLayers().item(i).getVisible();
+            let visibility = ndviLayers.getLayers().item(i).getVisible();
             if (visibility == true) {
-                let params_layers = ndviLayer
+                let params_layers = ndviLayers
                     .getLayers()
                     .item(i)
                     .getSource()
@@ -503,13 +503,13 @@ function eventClickMap(evt) {
 const checkboxesLayer = document.querySelectorAll(".layer .form-check-input");
 const toggleLayerVisibility = (layerName, checked) => {
     const name = layerName.split(":")[1];
-    const index = ndviWMSLayer.findIndex((layer) => layer.name === name);
+    const index = ndviWMSLayers.findIndex((layer) => layer.name === name);
     if (index >= 0) {
-        ndviLayer.getLayers().item(index).setVisible(checked);
+        ndviLayers.getLayers().item(index).setVisible(checked);
     }
-    const index2 = ndmiWMSLayer.findIndex((layer) => layer.name === name);
+    const index2 = ndmiWMSLayers.findIndex((layer) => layer.name === name);
     if (index2 >= 0) {
-        ndmiLayer.getLayers().item(index2).setVisible(checked);
+        ndmiLayers.getLayers().item(index2).setVisible(checked);
     }
 };
 checkboxesLayer.forEach((checkbox) => {

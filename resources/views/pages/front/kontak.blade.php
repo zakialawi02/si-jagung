@@ -14,13 +14,13 @@
     <main class="pt-5 mt-3">
         <section class="" id="">
             <div class="position-relative">
-                <div class="image-profile-wrapper align-baseline" style="height: 20vh">
-                    <img class="" src="./assets/img/aboutus.jpg" alt="" />
-                    <div class="position-absolute top-0 start-50 translate-middle-x w-75">
+                <div class="align-baseline image-profile-wrapper" style="height: 20vh">
+                    <img class="" src="./assets/img/jagung3.jpeg" alt="" />
+                    <div class="top-0 position-absolute start-50 translate-middle-x w-75">
                         <div class="py-4">
-                            <h2 class="mb-3 fw-bolder text-center">KONTAK</h2>
-                            <!-- <p class="text-primary mb-3 text-center">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id quibusdam maxime quo amet temporibus molestiae.</p> -->
-                            <hr class="w-50 mx-auto mb-2 mb-xl-9 border-secondary-subtle" />
+                            <h2 class="mb-3 text-center fw-bolder">KONTAK</h2>
+                            <!-- <p class="mb-3 text-center text-primary">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id quibusdam maxime quo amet temporibus molestiae.</p> -->
+                            <hr class="mx-auto mb-2 w-50 mb-xl-9 border-secondary-subtle" />
                         </div>
                     </div>
                 </div>
@@ -30,14 +30,14 @@
         <!-- Profile Start -->
         <section class="" id="profile">
             <div class="position-relative">
-                <div class="image-profile-wrapper align-baseline">
+                <div class="align-baseline image-profile-wrapper">
                     <div style="background: linear-gradient(to bottom, #104a5972,#fffef6 ); height: 80vh; backdrop-filter: blur(2px);"></div>
-                    <div class="position-absolute top-0 start-50 translate-middle-x w-75">
+                    <div class="top-0 position-absolute start-50 translate-middle-x w-75">
                         <div class="py-4">
                             <h2 class="mb-3 text-center">Tim Kami</h2>
-                            <h4 class="h5 mb-3 text-center">Tim Pengabdian Masyarakat SIJAGUNG: PEMANFAATAN SISTEM INFORMASI GEOGRAFIS BERBASIS WEB UNTUK RANTAI PRODUKSI JAGUNG"
+                            <h4 class="mb-3 text-center h5">Tim Pengabdian Masyarakat SIJAGUNG: PEMANFAATAN SISTEM INFORMASI GEOGRAFIS BERBASIS WEB UNTUK RANTAI PRODUKSI JAGUNG"
                             </h4>
-                            <hr class="w-50 mx-auto mb-2 mb-xl-9 border-secondary-subtle" />
+                            <hr class="mx-auto mb-2 w-50 mb-xl-9 border-secondary-subtle" />
                         </div>
                     </div>
                 </div>
@@ -61,9 +61,9 @@
                     <div class="col-12 col-lg-6">
                         <div class="row justify-content-xl-center">
                             <div class="col-12 col-xl-11">
-                                <h2 class="h1 mb-3">Hubungi Kami</h2>
-                                <p class="lead fs-4 text-primary mb-5">Jangan ragu untuk menghubungi kami jika ada pertanyaan, pertanyaan, atau sekadar menyapa. Kami di sini untuk membantu.</p>
-                                <div class="d-flex mb-4">
+                                <h2 class="mb-3 h1">Hubungi Kami</h2>
+                                <p class="mb-5 lead fs-4 text-primary">Jangan ragu untuk menghubungi kami jika ada pertanyaan, pertanyaan, atau sekadar menyapa. Kami di sini untuk membantu.</p>
+                                <div class="mb-4 d-flex">
                                     <div class="me-4 text-primary">
                                         <svg class="bi bi-geo" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -75,7 +75,7 @@
                                         <address class="mb-0 text-info">Departemen Teknik Geomatika Gedung Teknik Geomatika, FTSPK Kampus ITS, Sukolilo, Kota Surabaya, 60111</address>
                                     </div>
                                 </div>
-                                <div class="d-flex mb-4">
+                                <div class="mb-4 d-flex">
                                     <div class="me-4 text-primary">
                                         <svg class="bi bi-telephone-outbound" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
                                             <path

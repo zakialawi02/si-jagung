@@ -26,7 +26,7 @@
                         membantu petani, peneliti, dan masyarakat umum untuk memahami lebih dalam tentang potensi jagung dan mengoptimalkan penggunaannya.
                     </p>
                     <div class="gap-2 d-grid d-md-flex justify-content-md-start">
-                        <button class="px-4 btn btn-outline-warning btn-lg" type="button">Text Here</button>
+                        <a class="px-4 btn btn-outline-warning btn-lg" type="button" href="/peta">Eksplor</a>
                     </div>
                 </div>
             </div>
@@ -131,13 +131,13 @@
         </section>
         <!-- Service End -->
 
-        <section class="bsb-service-6 py-5 py-xl-8">
+        <section class="py-5 bsb-service-6 py-xl-8">
             <div class="container">
                 <div class="row justify-content-md-center">
                     <div class="col-12 col-md-10 col-lg-8 col-xl-7">
-                        <h2 class="display-5 mb-2 text-center">Produk dan Penggunaan Jagung</h2>
-                        <h3 class="fs-5 mb-2 mb-md-3  text-secondary text-center text-uppercase">Jagung memiliki berbagai kegunaan</h3>
-                        <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle">
+                        <h2 class="mb-2 text-center display-5">Produk dan Penggunaan Jagung</h2>
+                        <h3 class="mb-2 text-center fs-5 mb-md-3 text-secondary text-uppercase">Jagung memiliki berbagai kegunaan</h3>
+                        <hr class="mx-auto mb-5 w-50 mb-xl-9 border-dark-subtle">
                     </div>
                 </div>
             </div>
@@ -145,16 +145,16 @@
             <div class="container overflow-hidden">
                 <div class="row gy-4 gy-md-0 gx-xxl-5 align-items-lg-center justify-content-lg-center">
                     <div class="col-12 col-md-4">
-                        <div class="card bg-transparent border-primary rounded-0">
-                            <div class="card-body text-center">
+                        <div class="bg-transparent card border-primary rounded-0">
+                            <div class="text-center card-body">
                                 <h4 class="mb-2">Pangan</h4>
                                 <p class="mb-2 text-secondary">Jagung segar, tepung jagung, minyak jagung, sirup jagung fruktosa tinggi (HFCS).</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-4">
-                        <div class="card bg-transparent border-primary rounded-0">
-                            <div class="card-body text-center">
+                        <div class="bg-transparent card border-primary rounded-0">
+                            <div class="text-center card-body">
                                 <h4 class="mb-2">Pakan ternak</h4>
                                 <p class="mb-2 text-secondary">Biji jagung, silase jagung.</p>
 
@@ -162,24 +162,24 @@
                         </div>
                     </div>
                     <div class="col-12 col-md-4">
-                        <div class="card bg-transparent border-primary rounded-0">
-                            <div class="card-body text-center">
+                        <div class="bg-transparent card border-primary rounded-0">
+                            <div class="text-center card-body">
                                 <h4 class="mb-2">Pakan ternak</h4>
                                 <p class="mb-2 text-secondary">Bioetanol.</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-4">
-                        <div class="card bg-transparent border-primary rounded-0">
-                            <div class="card-body text-center">
+                        <div class="bg-transparent card border-primary rounded-0">
+                            <div class="text-center card-body">
                                 <h4 class="mb-2">Industri</h4>
                                 <p class="mb-2 text-secondary">Plastik biodegradable, tekstil, kosmetik, farmasi.</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-4">
-                        <div class="card bg-transparent border-primary rounded-0">
-                            <div class="card-body text-center">
+                        <div class="bg-transparent card border-primary rounded-0">
+                            <div class="text-center card-body">
                                 <h4 class="mb-2">Pati jagung</h4>
                                 <p class="mb-2 text-secondary">Digunakan dalam berbagai produk makanan dan non-makanan.</p>
                             </div>
@@ -193,14 +193,14 @@
             <div class="container mt-5">
                 <div class="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
                     <div class="col-12 col-lg-6">
-                        <img class="img-fluid rounded" src="https://fakeimg.pl/600x600" alt="About 2" loading="lazy" />
+                        <img class="rounded img-fluid" src="/assets/img/corn farm4.jpeg" alt="About 2" loading="lazy" />
                     </div>
                     <div class="col-12 col-lg-6 text-light">
                         <div class="row justify-content-xl-center">
                             <div class="col-12 col-xl-10">
                                 <h2 class="mb-3">Produksi Jagung di Indonesia</h2>
-                                <p class="lead fs-5 mb-3 mb-xl-5">Indonesia adalah produsen jagung terbesar ke-7 di dunia. Sentra produksi utama meliputi:</p>
-                                <div class="d-flex align-items-center mb-3">
+                                <p class="mb-3 lead fs-5 mb-xl-5">Indonesia adalah produsen jagung terbesar ke-7 di dunia. Sentra produksi utama meliputi:</p>
+                                <div class="mb-3 d-flex align-items-center">
                                     <div class="me-3 text-warning">
                                         <svg class="bi bi-check-circle-fill" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
                                             <path
@@ -208,10 +208,10 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="fs-5 m-0">Jawa Timur</p>
+                                        <p class="m-0 fs-5">Jawa Timur</p>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-center mb-3">
+                                <div class="mb-3 d-flex align-items-center">
                                     <div class="me-3 text-warning">
                                         <svg class="bi bi-check-circle-fill" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
                                             <path
@@ -219,10 +219,10 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="fs-5 m-0">Jawa Tengah</p>
+                                        <p class="m-0 fs-5">Jawa Tengah</p>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-center mb-3">
+                                <div class="mb-3 d-flex align-items-center">
                                     <div class="me-3 text-warning">
                                         <svg class="bi bi-check-circle-fill" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
                                             <path
@@ -230,10 +230,10 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="fs-5 m-0">Lampung</p>
+                                        <p class="m-0 fs-5">Lampung</p>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-center mb-3">
+                                <div class="mb-3 d-flex align-items-center">
                                     <div class="me-3 text-warning">
                                         <svg class="bi bi-check-circle-fill" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
                                             <path
@@ -241,10 +241,10 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="fs-5 m-0">Sulawesi Selatan</p>
+                                        <p class="m-0 fs-5">Sulawesi Selatan</p>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-center mb-4 mb-xl-5">
+                                <div class="mb-4 d-flex align-items-center mb-xl-5">
                                     <div class="me-3 text-warning">
                                         <svg class="bi bi-check-circle-fill" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
                                             <path
@@ -252,7 +252,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="fs-5 m-0">Sulawesi Utara</p>
+                                        <p class="m-0 fs-5">Sulawesi Utara</p>
                                     </div>
                                 </div>
                             </div>
@@ -262,14 +262,14 @@
             </div>
         </section>
 
-        <section class="bg-light mb-5 py-3 py-md-5 py-xl-8">
+        <section class="py-3 mb-5 bg-light py-md-5 py-xl-8">
             <div class="container p-3">
                 <div class="row gy-3 gy-md-5 gy-lg-0 align-items-center">
                     <div class="col-12 col-lg-5">
-                        <h2 class="fs-3 text-primary mb-2 mb-xl-3">Tantangan dan Prospek Masa Depan</h2>
-                        <h3 class="display-5 mb-3 mb-xl-4 fs-5">Beberapa tantangan dalam produksi jagung di Indonesia.</h3>
+                        <h2 class="mb-2 fs-3 text-primary mb-xl-3">Tantangan dan Prospek Masa Depan</h2>
+                        <h3 class="mb-3 display-5 mb-xl-4 fs-5">Beberapa tantangan dalam produksi jagung di Indonesia.</h3>
 
-                        <p class="mt-5 pt-5">Namun, dengan inovasi teknologi seperti pengembangan varietas tahan kekeringan dan hama, serta peningkatan efisiensi produksi, jagung tetap memiliki prospek
+                        <p class="pt-5 mt-5">Namun, dengan inovasi teknologi seperti pengembangan varietas tahan kekeringan dan hama, serta peningkatan efisiensi produksi, jagung tetap memiliki prospek
                             yang
                             cerah sebagai komoditas strategis di Indonesia.</p>
                     </div>
@@ -278,25 +278,25 @@
                             <div class="col-12 col-xl-11">
                                 <div class="row gy-3 gy-md-4">
                                     <div class="col-12 col-sm-6">
-                                        <div class="card shadow h-50 justify-content-center align-items-center center mb-4 mt-0 mt-md-4">
-                                            <div class="card-body text-center p-2 p-xxl-3">
+                                        <div class="mt-0 mb-4 shadow card h-50 justify-content-center align-items-center center mt-md-4">
+                                            <div class="p-2 text-center card-body p-xxl-3">
                                                 <h5 class="mb-1">Perubahan iklim dan cuaca ekstrem</h5>
                                             </div>
                                         </div>
-                                        <div class="card shadow h-50 justify-content-center align-items-center">
-                                            <div class="card-body text-center p-2 p-xxl-3">
+                                        <div class="shadow card h-50 justify-content-center align-items-center">
+                                            <div class="p-2 text-center card-body p-xxl-3">
                                                 <h5 class="mb-1">Serangan hama dan penyakit</h5>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-6">
-                                        <div class="card shadow h-50 justify-content-center align-items-center mt-lg-6 mt-xxl-8 mb-4">
-                                            <div class="card-body text-center p-2 p-xxl-3">
+                                        <div class="mb-4 shadow card h-50 justify-content-center align-items-center mt-lg-6 mt-xxl-8">
+                                            <div class="p-2 text-center card-body p-xxl-3">
                                                 <h5 class="mb-1">Keterbatasan lahan produktif</h5>
                                             </div>
                                         </div>
-                                        <div class="card shadow h-50 justify-content-center align-items-center">
-                                            <div class="card-body text-center p-2 p-xxl-3">
+                                        <div class="shadow card h-50 justify-content-center align-items-center">
+                                            <div class="p-2 text-center card-body p-xxl-3">
                                                 <h5 class="mb-1">Fluktuasi harga</h5>
                                             </div>
                                         </div>
@@ -310,76 +310,6 @@
         </section>
 
 
-        <!-- Team Start -->
-        <!-- <section class="py-3 pb-2 bg-light py-md-5 py-xl-8" id="team">
-                                                                                                                                                                                                                                                                                                        <div class="container mt-4">
-                                                                                                                                                                                                                                                                                                          <div class="row justify-content-md-center">
-                                                                                                                                                                                                                                                                                                            <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-                                                                                                                                                                                                                                                                                                              <h2 class="mb-4 text-center display-5">Team (Section 6)</h2>
-                                                                                                                                                                                                                                                                                                              <p class="mb-5 text-center text-secondary lead fs-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, numquam at itaque animi voluptatum rerum officia voluptates.</p>
-                                                                                                                                                                                                                                                                                                              <hr class="mx-auto mb-5 w-50 mb-xl-9 border-dark-subtle"/>
-                                                                                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                                                                          </div>
-                                                                                                                                                                                                                                                                                                        </div>
-
-                                                                                                                                                                                                                                                                                                        <div class="container overflow-hidden">
-                                                                                                                                                                                                                                                                                                          <div class="row gy-4 gy-lg-0 gx-xxl-5">
-                                                                                                                                                                                                                                                                                                            <div class="col-12 col-md-6 col-lg-3">
-                                                                                                                                                                                                                                                                                                              <div class="overflow-hidden border-0 shadow-sm card border-bottom border-primary">
-                                                                                                                                                                                                                                                                                                                <div class="p-0 card-body">
-                                                                                                                                                                                                                                                                                                                  <figure class="p-0 m-0">
-                                                                                                                                                                                                                                                                                                                    <img class="img-fluid" src="./assets/img/team/p1.jpeg" alt="Anggota team" loading="lazy" width="500"/>
-                                                                                                                                                                                                                                                                                                                    <figcaption class="p-4 m-0">
-                                                                                                                                                                                                                                                                                                                      <h4 class="mb-1">Evander Mac</h4>
-                                                                                                                                                                                                                                                                                                                      <p class="mb-0 text-secondary">Product Manager</p>
-                                                                                                                                                                                                                                                                                                                    </figcaption>
-                                                                                                                                                                                                                                                                                                                  </figure>
-                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                              </div>
-                                                                                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                                                                            <div class="col-12 col-md-6 col-lg-3">
-                                                                                                                                                                                                                                                                                                              <div class="overflow-hidden border-0 shadow-sm card border-bottom border-primary">
-                                                                                                                                                                                                                                                                                                                <div class="p-0 card-body">
-                                                                                                                                                                                                                                                                                                                  <figure class="p-0 m-0">
-                                                                                                                                                                                                                                                                                                                    <img class="img-fluid" src="./assets/img/team/p3.jpg" alt="Anggota team" loading="lazy" width="500"/>
-                                                                                                                                                                                                                                                                                                                    <figcaption class="p-4 m-0">
-                                                                                                                                                                                                                                                                                                                      <h4 class="mb-1">Flora Nyra</h4>
-                                                                                                                                                                                                                                                                                                                      <p class="mb-0 text-secondary">Art Director</p>
-                                                                                                                                                                                                                                                                                                                    </figcaption>
-                                                                                                                                                                                                                                                                                                                  </figure>
-                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                              </div>
-                                                                                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                                                                            <div class="col-12 col-md-6 col-lg-3">
-                                                                                                                                                                                                                                                                                                              <div class="overflow-hidden border-0 shadow-sm card border-bottom border-primary">
-                                                                                                                                                                                                                                                                                                                <div class="p-0 card-body">
-                                                                                                                                                                                                                                                                                                                  <figure class="p-0 m-0">
-                                                                                                                                                                                                                                                                                                                    <img class="img-fluid" src="./assets/img/team/p2.jpg" alt="Anggota team" loading="lazy" width="500"/>
-                                                                                                                                                                                                                                                                                                                    <figcaption class="p-4 m-0">
-                                                                                                                                                                                                                                                                                                                      <h4 class="mb-1">Wylder Elio</h4>
-                                                                                                                                                                                                                                                                                                                      <p class="mb-0 text-secondary">Investment Planner</p>
-                                                                                                                                                                                                                                                                                                                    </figcaption>
-                                                                                                                                                                                                                                                                                                                  </figure>
-                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                              </div>
-                                                                                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                                                                            <div class="col-12 col-md-6 col-lg-3">
-                                                                                                                                                                                                                                                                                                              <div class="overflow-hidden border-0 shadow-sm card border-bottom border-primary">
-                                                                                                                                                                                                                                                                                                                <div class="p-0 card-body">
-                                                                                                                                                                                                                                                                                                                  <figure class="p-0 m-0">
-                                                                                                                                                                                                                                                                                                                    <img class="img-fluid" src="./assets/img/team/p4.jpg" alt="Anggota team" loading="lazy" width="500"/>
-                                                                                                                                                                                                                                                                                                                    <figcaption class="p-4 m-0">
-                                                                                                                                                                                                                                                                                                                      <h4 class="mb-1">Taytum Elia</h4>
-                                                                                                                                                                                                                                                                                                                      <p class="mb-0 text-secondary">Financial Analyst</p>
-                                                                                                                                                                                                                                                                                                                    </figcaption>
-                                                                                                                                                                                                                                                                                                                  </figure>
-                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                              </div>
-                                                                                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                                                                          </div>
-                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                        </section> -->
-        <!-- Team End -->
 
         <!-- Contact Start -->
         <section class="py-3 py-md-5 align-items-center" id="contact">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ str_replace("_", "-", app()->getLocale()) }}">
 
     <head>
         <meta charset="utf-8" />
@@ -7,6 +7,15 @@
 
         <title>@yield("title", config("app.name"))</title>
 
+        <meta name="description" content="@yield("meta_description", "")">
+        <meta name="author" content="@yield("meta_author", "Ahmad Zaki Alawi")">
+        <meta name="keywords" content="@yield("meta_keywords", "")">
+
+        <meta property="og:title" content="@yield("og_title", config("app.name"))" />
+        <meta property="og:type" content="@yield("og_type", "website")" />
+        <meta property="og:url" content="@yield("og_url", url()->current())" />
+        <meta property="og:description" content="@yield("og_description", config("app.name"))" />
+        <meta property="og:image" content="@yield("og_image", asset("assets/img/favicon.png"))" />
 
         <link type="image/png" href="{{ asset("assets/img/favicon.png") }}" rel="shortcut icon">
 
@@ -22,16 +31,15 @@
         <!-- Icon Font Stylesheet -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/css/glightbox.min.css" rel="stylesheet"
-            integrity="sha512-T+KoG3fbDoSnlgEXFQqwcTC9AdkFIxhBlmoaFqYaIjq2ShhNwNao9AKaLUPMfwiBPL0ScxAtc+UYbHAgvd+sjQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-        <!-- open layers css -->
-        <link href="https://cdn.jsdelivr.net/npm/ol@v10.2.1/ol.css" rel="stylesheet">
 
         <!-- Bootstrap CSS -->
         <link href={{ asset("assets/css/bootstrap.min.css") }} rel="stylesheet" />
 
+        <!-- open layers css -->
+        <link href="https://cdn.jsdelivr.net/npm/ol@v10.2.1/ol.css" rel="stylesheet">
         <link href={{ asset("assets/css/styleBS.css") }} rel="stylesheet" />
+
+
 
         @stack("css")
 
@@ -53,9 +61,21 @@
 
         <script>
             $(".navbar-toggler").click(function(e) {
-                $(".navbar-collapse").toggleClass("collapse");
-                $(".navbar-collapse").toggleClass("show");
+                $("#navbarCollapse").toggleClass("collapse");
+                $("#navbarCollapse").toggleClass("show");
             });
+            $("#navbarCollapse .nav-item.nav-link").click(function(e) {
+                $("#navbarCollapse").removeClass("collapse");
+            });
+            $(document).click(function(e) {
+                if (!$(e.target).closest("#navbarCollapse").length) {
+                    $("#navbarCollapse").removeClass("show");
+                }
+            });
+            $("#userDropdown").click(function(e) {
+                $("#userDropdown-menu").toggleClass("show");
+            });
+
             $("#layerControlBtn").click(function(e) {
                 $("#layerControl").toggleClass("show");
             });

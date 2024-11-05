@@ -12,7 +12,12 @@
     </div>
     <div class="sidebar-body">
         <ul class="nav">
-            <li class="nav-item nav-category">Utama</li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <i class="link-icon" data-feather="home"></i>
+                    <span class="link-title">Beranda</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/dashboard">
                     <i class="link-icon" data-feather="box"></i>
