@@ -40,6 +40,47 @@
         <link href={{ asset("assets/css/styleBS.css") }} rel="stylesheet" />
 
 
+        <style>
+            .ol-tooltip {
+                position: relative;
+                background: rgba(0, 0, 0, 0.5);
+                border-radius: 4px;
+                color: white;
+                padding: 4px 8px;
+                opacity: 0.7;
+                white-space: nowrap;
+                font-size: 12px;
+                cursor: default;
+                user-select: none;
+            }
+
+            .ol-tooltip-measure {
+                opacity: 1;
+                font-weight: bold;
+            }
+
+            .ol-tooltip-static {
+                background-color: #ffcc33;
+                color: black;
+                border: 1px solid white;
+            }
+
+            .ol-tooltip-measure:before,
+            .ol-tooltip-static:before {
+                border-top: 6px solid rgba(0, 0, 0, 0.5);
+                border-right: 6px solid transparent;
+                border-left: 6px solid transparent;
+                content: "";
+                position: absolute;
+                bottom: -6px;
+                margin-left: -7px;
+                left: 50%;
+            }
+
+            .ol-tooltip-static:before {
+                border-top-color: #ffcc33;
+            }
+        </style>
 
         @stack("css")
 
@@ -81,6 +122,17 @@
             });
             $(".btn-layerControl-close").click(function(e) {
                 $("#layerControl").toggleClass("show");
+            });
+
+            $("#drawerControlBtn").click(function(e) {
+                $("#drawerControl").toggleClass("show");
+            });
+            $(".btn-drawerControl-close").click(function(e) {
+                $("#drawerControl").toggleClass("show");
+            });
+
+            $("#legendBtn , #legendPopupClose").click(function(e) {
+                $("#legendSection").toggleClass("d-none");
             });
         </script>
 

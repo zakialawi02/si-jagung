@@ -9,7 +9,7 @@
 
 
 @section("content")
-    <main class="pt-6">
+    <main class="overflow-hidden pt-6">
         <section>
             <div class="position-relative" id="mapWrapper">
                 <div id="map"></div>
@@ -18,6 +18,11 @@
                 <div class="" id="topLeft">
                     <!-- layerControl Button -->
                     <button class="position-relative" id="layerControlBtn">Layer <i class="bi bi-layout-sidebar"></i><i class="bi bi-arrow-bar-right"></i></button>
+                </div>
+
+                <div class="" id="topRight">
+                    <!-- draw Button -->
+                    <button class="position-relative" id="drawerControlBtn"></i><i class="bi bi-arrow-bar-left d-none d-md-inline"></i><i class="fas fa-pencil-ruler"></i> Gambar</button>
                 </div>
 
                 <div class="" id="bottomLeft">
@@ -124,6 +129,23 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- offcanvas drawerControl -->
+            <div class="position-relative">
+                <div class="drawerControl align-self-end" id="drawerControl">
+                    <div class="drawerControl-header d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="drawerControl-title px-2 py-1" id="drawerControlTitle">Gambar</h5>
+                        <button class="btn btn-close btn-drawerControl-close align-self-start m-1 p-1" type="button"></button>
+                    </div>
+                    <div class="px-2 py-1" id="drawerControlBody">
+                        <div class="">
+                            <button class="btn btn-sm btn-primary" id="drawPolygonBtn" role="button"><i class="fas fa-pencil-ruler"></i>&nbsp;&nbsp; gambar polygon</button>
+                        </div>
+
+                        <div class="" id="drawerContent"></div>
                     </div>
                 </div>
             </div>

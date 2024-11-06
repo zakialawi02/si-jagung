@@ -330,6 +330,13 @@ main {
   width: max-content;
 }
 
+#topRight {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: max-content;
+}
+
 #bottomLeft {
   position: absolute;
   bottom: 5px;
@@ -345,7 +352,8 @@ main {
 }
 
 @media screen and (max-width: 992px) {
-  #topLeft {
+  #topLeft,
+  #topRight {
     top: 20px;
   }
 }
@@ -594,7 +602,8 @@ button.btn-close {
   transition: all 0.3s ease-in-out;
 }
 
-#layerControlBtn {
+#layerControlBtn,
+#drawerControlBtn {
   padding: 0.8rem 0.9rem;
   background-color: #ffffff;
   border-radius: 5px;
@@ -602,11 +611,13 @@ button.btn-close {
   cursor: pointer;
 }
 
-#layerControlBtn:hover {
+#layerControlBtn:hover,
+#drawerControlBtn:hover {
   background-color: #f5f5f5;
 }
 
-.btn-layerControl-close {
+.btn-layerControl-close,
+.btn-drawerControl-close {
   font-size: 1.2rem;
   padding: 0.8rem 0.9rem;
   background-color: #ffffff;
@@ -615,14 +626,37 @@ button.btn-close {
   cursor: pointer;
 }
 
-.btn-layerControl-close:hover {
+.btn-layerControl-close:hover,
+.btn-drawerControl-close:hover {
   background-color: #f5f5f5;
   color: #404040;
 }
 
-#layerControlBody {
+#layerControlBody,
+#drawerControlBody {
   overflow-x: auto;
   height: calc(100% - 60px);
+}
+
+/* Off canvas drawer control */
+#drawerControl {
+  position: absolute;
+  bottom: 60px;
+  right: -20rem;
+  transform: translateY(-115%);
+  height: calc(100vh - 440px);
+  z-index: 1;
+  width: 20rem;
+  padding: 0.8rem 0.5rem;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+#drawerControl.show {
+  right: 5px;
+  transition: all 0.3s ease-in-out;
 }
 
 /* Style untuk scrollbar di dalam elemen #layerControl */
@@ -661,5 +695,21 @@ button.btn-close {
     left: -28rem;
     height: calc(100vh - 135px);
     width: 80%;
+  }
+
+  #drawerControl {
+    position: fixed;
+    bottom: -50vh;
+    right: 0;
+    transform: translateY(0);
+    padding: 0;
+    margin: 0;
+    max-height: 50vh;
+    width: 100%;
+  }
+
+  #drawerControl.show {
+    right: 0;
+    bottom: 0;
   }
 }

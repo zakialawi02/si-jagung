@@ -23,12 +23,22 @@ let Overlay = ol.Overlay;
 let TileWMS = ol.source.TileWMS;
 let GeoJSON = ol.format.GeoJSON;
 let Feature = ol.Feature;
-let Point = ol.geom.Point;
-let Circle = ol.geom.Circle;
-let { Style, Fill, Stroke, Text, IconImage, Icon } = ol.style;
+let { Point, Circle, LineString, Polygon } = ol.geom;
+let {
+    Circle: CircleStyle,
+    Style,
+    Fill,
+    Stroke,
+    Text,
+    IconImage,
+    Icon,
+} = ol.style;
 let { Attribution, OverviewMap, ScaleLine, MousePosition } = ol.control;
 let { register } = ol.proj.proj4;
 let { format, toStringHDMS, toStringXY } = ol.coordinate;
+let Draw = ol.interaction.Draw;
+let { getArea, getLength } = ol.sphere;
+let { unByKey } = ol.Observable;
 
 let WGS84 = new Projection("EPSG:4326");
 let MERCATOR = new Projection("EPSG:3857");
@@ -231,7 +241,7 @@ const vectorSourceEventClick = new VectorSource();
 const vectorLayerEventClick = new VectorLayer({
     source: vectorSourceEventClick,
     style: markerClickedStyle,
-    zIndex: 100,
+    zIndex: 9999,
 });
 map.addLayer(vectorLayerEventClick);
 
@@ -286,10 +296,6 @@ function removeHighlightClicked() {
 $("#informationPopupClose").click(function (e) {
     removeHighlightClicked();
     $("#informationPopup").addClass("d-none");
-});
-// click for open ledend popup
-$("#legendBtn , #legendPopupClose").click(function (e) {
-    $("#legendSection").toggleClass("d-none");
 });
 
 // wms source layer
@@ -587,3 +593,300 @@ function legend() {
 }
 
 legend();
+
+// Button to start the measurement
+$("#drawPolygonBtn").click(function (e) {
+    startNewMeasurement();
+});
+
+// Meassurement
+let vectorSourceMeasure = new VectorSource();
+let vectorLayerMeasure = new VectorLayer({
+    source: vectorSourceMeasure,
+    style: {
+        "fill-color": "rgba(255, 0, 0, 0.2)",
+        "stroke-color": "rgba(255, 0, 0, 1)",
+        "stroke-width": 2,
+        "circle-radius": 7,
+        "circle-fill-color": "rgba(255, 0, 0, 1)",
+    },
+    zIndex: 999,
+});
+map.addLayer(vectorLayerMeasure);
+
+/**
+ * store current drawing interaction
+ */
+let draw;
+
+/**
+ * Currently drawn feature.
+ * @type {import("../src/ol/Feature.js").default}
+ */
+let sketch;
+
+/**
+ * The help tooltip element.
+ * @type {HTMLElement}
+ */
+let helpTooltipElement;
+
+/**
+ * Overlay to show the help messages.
+ * @type {Overlay}
+ */
+let helpTooltip;
+
+/**
+ * The measure tooltip element.
+ * @type {HTMLElement}
+ */
+let measureTooltipElement;
+
+/**
+ * Overlay to show the measurement.
+ * @type {Overlay}
+ */
+let measureTooltip;
+
+/**
+ * Message to show when the user is drawing a polygon.
+ * @type {string}
+ */
+const continuePolygonMsg = "Click to continue drawing the polygon";
+
+/**
+ * Message to show when the user is drawing a line.
+ * @type {string}
+ */
+const continueLineMsg = "Click to continue drawing the line";
+
+/**
+ * Handle pointer move.
+ * @param {import("../src/ol/MapBrowserEvent").default} evt The event.
+ */
+const pointerMoveHandler = function (evt) {
+    if (evt.dragging) {
+        return;
+    }
+    /** @type {string} */
+    let helpMsg = "Click to start drawing";
+
+    if (sketch) {
+        const geom = sketch.getGeometry();
+        if (geom instanceof Polygon) {
+            helpMsg = continuePolygonMsg;
+        } else if (geom instanceof LineString) {
+            helpMsg = continueLineMsg;
+        }
+    }
+
+    if (helpTooltipElement) {
+        helpTooltipElement.innerHTML = helpMsg;
+        helpTooltip.setPosition(evt.coordinate);
+        helpTooltipElement.classList.remove("hidden");
+    }
+};
+
+map.on("pointermove", pointerMoveHandler);
+
+map.getViewport().addEventListener("mouseout", function () {
+    if (helpTooltipElement) {
+        helpTooltipElement.classList.add("hidden");
+    }
+});
+
+/**
+ * Format length output.
+ * @param {LineString} line The line.
+ * @return {string} The formatted length.
+ */
+const formatLength = function (line) {
+    const length = getLength(line);
+    let output;
+    if (length > 100) {
+        output = Math.round((length / 1000) * 100) / 100 + " " + "km";
+    } else {
+        output = Math.round(length * 100) / 100 + " " + "m";
+    }
+    return output;
+};
+
+/**
+ * Format area output.
+ * @param {Polygon} polygon The polygon.
+ * @return {string} Formatted area.
+ */
+const formatArea = function (polygon) {
+    const area = getArea(polygon);
+    let output;
+    if (area > 10000) {
+        output =
+            Math.round((area / 1000000) * 100) / 100 + " " + "km<sup>2</sup>";
+    } else {
+        output = Math.round(area * 100) / 100 + " " + "m<sup>2</sup>";
+    }
+    return output;
+};
+
+// Style definition
+const drawingStyle = new Style({
+    fill: new Fill({
+        color: "rgba(255, 0, 0, 0.2)",
+    }),
+    stroke: new Stroke({
+        color: "rgba(255, 0, 0, 1)",
+        lineDash: [10, 10],
+        width: 2,
+    }),
+    image: new CircleStyle({
+        radius: 5,
+        stroke: new Stroke({
+            color: "rgba(255, 0, 0, 1)",
+        }),
+        fill: new Fill({
+            color: "rgba(255, 0, 0, 0.2)",
+        }),
+    }),
+});
+
+/**
+ * Adds a draw interaction to the map for measuring.
+ * @param {string} [type="Polygon"] The type of geometry to draw. Can be "Polygon" or "LineString".
+ * @returns {void}
+ */
+function addInteraction(type = "Polygon") {
+    // Remove previous measurement layer and tooltips if any
+    if (draw) {
+        map.removeInteraction(draw); // Remove previous draw interaction
+    }
+
+    // Clear the vector source to remove any existing features
+    vectorSourceMeasure.clear();
+
+    // Remove previous tooltips from the DOM if they exist
+    if (measureTooltipElement) {
+        measureTooltipElement.remove(); // Remove tooltip element from DOM
+    }
+
+    // Remove the tooltip overlay from the map if it exists
+    if (measureTooltip) {
+        map.removeOverlay(measureTooltip); // Remove the overlay from the map
+    }
+
+    // Remove previous help tooltip if any
+    if (helpTooltipElement) {
+        helpTooltipElement.remove();
+    }
+
+    // Create a new draw interaction
+    draw = new Draw({
+        source: vectorSourceMeasure,
+        type: type,
+        style: function (feature) {
+            const geometryType = feature.getGeometry().getType();
+            if (geometryType === type || geometryType === "Point") {
+                return drawingStyle;
+            }
+        },
+    });
+
+    // Add the new draw interaction to the map
+    map.addInteraction(draw);
+
+    createMeasureTooltip();
+    createHelpTooltip();
+
+    draw.on("drawstart", function (evt) {
+        sketch = evt.feature;
+        let tooltipCoord = evt.coordinate;
+
+        listener = sketch.getGeometry().on("change", function (evt) {
+            const geom = evt.target;
+            let output;
+            if (geom instanceof Polygon) {
+                output = formatArea(geom);
+                tooltipCoord = geom.getInteriorPoint().getCoordinates();
+            } else if (geom instanceof LineString) {
+                output = formatLength(geom);
+                tooltipCoord = geom.getLastCoordinate();
+            }
+            measureTooltipElement.innerHTML = output;
+            measureTooltip.setPosition(tooltipCoord);
+        });
+    });
+
+    draw.on("drawend", function (evt) {
+        measureTooltipElement.className = "ol-tooltip ol-tooltip-static";
+        measureTooltip.setOffset([0, -7]);
+        sketch = null;
+        measureTooltipElement = null;
+
+        // Remove the draw interaction from the map after drawing is done
+        map.removeInteraction(draw);
+
+        // Remove tooltips and overlays
+        if (measureTooltipElement) {
+            measureTooltipElement.remove();
+        }
+        if (helpTooltipElement) {
+            helpTooltipElement.remove();
+        }
+
+        // Unset the listener to avoid memory leaks
+        unByKey(listener);
+
+        // Get the feature drawn by the user
+        const feature = evt.feature;
+
+        // Convert the feature to GeoJSON
+        const geojsonFormat = new GeoJSON();
+        const geojson = geojsonFormat.writeFeature(feature);
+
+        // Display the GeoJSON string in the #drawerContent element
+        document.getElementById(
+            "drawerContent"
+        ).innerHTML = `<pre>${geojson}</pre>`;
+    });
+}
+
+// Reset function to start a new measurement and clear previous layers
+function startNewMeasurement() {
+    addInteraction(); // Start a new interaction (polygon or line)
+}
+
+/**
+ * Creates a new help tooltip
+ */
+function createHelpTooltip() {
+    if (helpTooltipElement) {
+        helpTooltipElement.remove();
+    }
+    helpTooltipElement = document.createElement("div");
+    helpTooltipElement.className = "ol-tooltip hidden";
+    helpTooltip = new Overlay({
+        element: helpTooltipElement,
+        offset: [15, 0],
+        positioning: "center-left",
+    });
+    map.addOverlay(helpTooltip);
+}
+
+/**
+ * Creates a new measure tooltip
+ */
+function createMeasureTooltip() {
+    if (measureTooltipElement) {
+        measureTooltipElement.remove();
+    }
+    measureTooltipElement = document.createElement("div");
+    measureTooltipElement.className = "ol-tooltip ol-tooltip-measure";
+    measureTooltip = new Overlay({
+        element: measureTooltipElement,
+        offset: [0, -15],
+        positioning: "bottom-center",
+        stopEvent: false,
+        insertFirst: false,
+    });
+    map.addOverlay(measureTooltip);
+}
