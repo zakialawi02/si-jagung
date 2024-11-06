@@ -287,6 +287,10 @@ $("#informationPopupClose").click(function (e) {
     removeHighlightClicked();
     $("#informationPopup").addClass("d-none");
 });
+// click for open ledend popup
+$("#legendBtn , #legendPopupClose").click(function (e) {
+    $("#legendSection").toggleClass("d-none");
+});
 
 // wms source layer
 const ndviLayers = new LayerGroup({
@@ -317,7 +321,7 @@ const createWMSLayer = (title, layerName, visible, opacity, zIndex) =>
     new TileLayer({
         title,
         source: new TileWMS({
-            url: "http://82.112.237.119:8080/geoserver/si-jagung/wms",
+            url: "http://localhost:8080/geoserver/si-jagung/wms",
             attributions: "si-jagung wms layer",
             params: {
                 LAYERS: `si-jagung:${layerName}`,
@@ -390,7 +394,7 @@ function eventClickMap(evt) {
 
         if (WMS_ARRAY.length > 0) {
             const wmsSource = new ol.source.ImageWMS({
-                url: "http://82.112.237.119:8080/geoserver/wms",
+                url: "http://localhost:8080/geoserver/wms",
                 params: {
                     LAYERS: WMS_ARRAY.join(","), // Join layers into a single string
                 },
@@ -509,3 +513,77 @@ $("#basemap").change(function (e) {
             break;
     }
 });
+
+function legend() {
+    $("#legendContent").empty();
+
+    const layers = map
+        .getLayers()
+        .getArray()
+        .filter((layer) => layer.get("title"));
+    const no_layers = layers.length;
+    console.log(no_layers, layers);
+
+    let mainLayers = [];
+
+    // Loop melalui setiap layers
+    layers.forEach((layer) => {
+        if (layer instanceof ol.layer.Group) {
+            // Jika layer adalah LayerGroup, ambil semua sub-layer di dalamnya
+            const subLayers = layer.getLayers().getArray();
+
+            // Ambil judul LayerGroup
+            const layerGroupTitle = layer.get("title");
+
+            // Ambil parameter source dari sub-layer pertama, misalnya
+            const subLayerSourceParams = subLayers[0].getSource().getParams();
+
+            // Simpan judul LayerGroup dan parameter source ke dalam mainLayers
+            mainLayers.push({
+                groupTitle: layerGroupTitle,
+                sourceParams: subLayerSourceParams,
+            });
+        }
+    });
+    console.log(mainLayers);
+
+    // var head = document.createElement("h5");
+    // head.style.margin = "0 1px 10px";
+    // head.style.padding = "2px 4px 3px";
+
+    // var txt = document.createTextNode("Legenda");
+
+    // head.appendChild(txt);
+    var element = document.getElementById("legendContent");
+
+    // element.appendChild(head);
+
+    var ar = [];
+    var i;
+    for (i = 0; i < mainLayers.length; i++) {
+        ar.push(
+            "http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" +
+                mainLayers[i].sourceParams.LAYERS
+        );
+        //alert(map.getLayers().item(i).get('title'));
+    }
+    // console.log(ar);
+    for (i = 0; i < mainLayers.length; i++) {
+        var head = document.createElement("p");
+        head.style.margin = "12px 4px 1px";
+        head.style.padding = "0px 1px";
+
+        var txt = document.createTextNode(mainLayers[i]?.groupTitle);
+        // alert(txt[i]);
+        head.appendChild(txt);
+        var element = document.getElementById("legendContent");
+        element.appendChild(head);
+        var img = new Image();
+        img.src = ar[i];
+
+        var src = document.getElementById("legendContent");
+        src.appendChild(img);
+    }
+}
+
+legend();
