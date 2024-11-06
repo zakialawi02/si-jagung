@@ -35,7 +35,7 @@
                     <div class="top-0 position-absolute start-50 translate-middle-x w-75">
                         <div class="py-4">
                             <h2 class="mb-3 text-center">Tim Kami</h2>
-                            <h4 class="mb-3 text-center h5">Tim Pengabdian Masyarakat SIJAGUNG: PEMANFAATAN SISTEM INFORMASI GEOGRAFIS BERBASIS WEB UNTUK RANTAI PRODUKSI JAGUNG"
+                            <h4 class="mb-3 text-center h5">Tim Pengabdian Masyarakat SIJAGUNG: PEMANFAATAN SISTEM INFORMASI GEOGRAFIS BERBASIS WEB UNTUK RANTAI PRODUKSI JAGUNG
                             </h4>
                             <hr class="mx-auto mb-2 w-50 mb-xl-9 border-secondary-subtle" />
                         </div>
