@@ -18,11 +18,6 @@ use App\Http\Controllers\PetaController;
 |
 */
 
-
-Route::get('/m', function () {
-    return view('pages.peta.tes');
-});
-
 Route::get('/', function () {
     return view('pages.front.home');
 });

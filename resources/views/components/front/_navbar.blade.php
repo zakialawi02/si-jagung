@@ -9,11 +9,11 @@
     </button>
     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
         <div class="py-0 navbar-nav ms-auto">
-            <a class="nav-item nav-link" href="./#home">Home</a>
-            <a class="nav-item nav-link" href="/cara-budidaya-jagung">Cara Budidaya Jagung</a>
-            <a class="nav-item nav-link" href="/kesehatan-jagung">Kesehatan Jagung</a>
-            <a class="nav-item nav-link" href="/peta">Peta</a>
-            <a class="nav-item nav-link" href="/kontak">Kontak</a>
+            <a class="nav-item nav-link {{ Request::is("/") ? "active" : "" }}" href="./#home">Home</a>
+            <a class="nav-item nav-link {{ Request::is("cara-budidaya-jagung") ? "active" : "" }}" href="/cara-budidaya-jagung">Cara Budidaya Jagung</a>
+            <a class="nav-item nav-link {{ Request::is("kesehatan-jagung") ? "active" : "" }}" href="/kesehatan-jagung">Kesehatan Jagung</a>
+            <a class="nav-item nav-link {{ Request::is("peta") ? "active" : "" }}" href="/peta">Peta</a>
+            <a class="nav-item nav-link {{ Request::is("kontak") ? "active" : "" }}" href="/kontak">Kontak</a>
 
             <!-- User Dropdown -->
             <div class="nav-item dropdown">

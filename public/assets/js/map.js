@@ -290,18 +290,23 @@ $("#informationPopupClose").click(function (e) {
 
 // wms source layer
 const ndviLayers = new LayerGroup({
-    title: "NDVI",
+    title: "NDVI (Normalized Difference Vegetation Index)",
 });
 map.addLayer(ndviLayers);
 const ndmiLayers = new LayerGroup({
-    title: "NDMI",
+    title: "NDMI (Normalized Difference Moisture Index)",
 });
 map.addLayer(ndmiLayers);
+const methaneLayers = new LayerGroup({
+    title: "Methane",
+});
+map.addLayer(methaneLayers);
 
 const ndviWMSLayers = [
     {
         name: "2021-01-03-00_00_2021-01-03-23_59_Sentinel-2_L1C_NDVI",
         title: "NDVI Januari 2021",
+        date: "2021-01",
         visible: true,
         opacity: 0.8,
         zIndex: 1,
@@ -309,6 +314,7 @@ const ndviWMSLayers = [
     {
         name: "2021-03-19-00_00_2021-03-19-23_59_Sentinel-2_L1C_NDVI",
         title: "NDVI Maret 2021",
+        date: "2021-03",
         visible: false,
         opacity: 0.8,
         zIndex: 1,
@@ -316,6 +322,159 @@ const ndviWMSLayers = [
     {
         name: "2021-04-23-00_00_2021-04-23-23_59_Sentinel-2_L1C_NDVI",
         title: "NDVI April 2021",
+        date: "2021-04",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-05-18-00_00_2021-05-18-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Mei 2021",
+        date: "2021-05",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-06-07-00_00_2021-06-07-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Juni 2021",
+        date: "2021-06",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-07-27-00_00_2021-07-27-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Juli 2021",
+        date: "2021-07",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-08-06-00_00_2021-08-06-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Agustus 2021",
+        date: "2021-08",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-09-10-00_00_2021-09-10-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI September 2021",
+        date: "2021-09",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-10-05-00_00_2021-10-05-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Oktober 2021",
+        date: "2021-10",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-11-09-00_00_2021-11-09-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI November 2021",
+        date: "2021-11",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-12-19-00_00_2021-12-19-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Desember 2021",
+        date: "2021-12",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-01-03-00_00_2022-01-03-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Januari 2022",
+        date: "2022-01",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-02-02-00_00_2022-02-02-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Februari 2022",
+        date: "2022-02",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-03-04-00_00_2022-03-04-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Maret 2022",
+        date: "2022-03",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-04-03-00_00_2022-04-03-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI April 2022",
+        date: "2022-04",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-05-13-00_00_2022-05-13-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Mei 2022",
+        date: "2022-05",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-06-02-00_00_2022-06-02-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Juni 2022",
+        date: "2022-06",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-07-07-00_00_2022-07-07-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Juli 2022",
+        date: "2022-07",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-08-01-00_00_2022-08-01-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Agustus 2022",
+        date: "2022-08",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-10-30-00_00_2022-10-30-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Oktober 2022",
+        date: "2022-10",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-11-04-00_00_2022-11-04-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI November 2022",
+        date: "2022-11",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-12-09-00_00_2022-12-09-23_59_Sentinel-2_L1C_NDVI",
+        title: "NDVI Desember 2022",
+        date: "2022-12",
         visible: false,
         opacity: 0.8,
         zIndex: 1,
@@ -325,20 +484,281 @@ console.log(ndviWMSLayers);
 const ndmiWMSLayers = [
     {
         name: "2021-01-03-00_00_2021-01-03-23_59_Sentinel-2_L1C_Moisture_index",
-        title: "NDMI Januari 2021",
+        title: "Moisture Index Januari 2021",
+        date: "2021-01",
         visible: true,
-        opacity: 0.1,
+        opacity: 0.8,
         zIndex: 1,
     },
     {
         name: "2021-03-19-00_00_2021-03-19-23_59_Sentinel-2_L1C_Moisture_index",
-        title: "NDVI Maret 2021",
+        title: "Moisture Index Maret 2021",
+        date: "2021-03",
         visible: false,
-        opacity: 0.1,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-04-23-00_00_2021-04-23-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index April 2021",
+        date: "2021-04",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-05-18-00_00_2021-05-18-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Mei 2021",
+        date: "2021-05",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-06-07-00_00_2021-06-07-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Juni 2021",
+        date: "2021-06",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-07-27-00_00_2021-07-27-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Juli 2021",
+        date: "2021-07",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-08-06-00_00_2021-08-06-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Agustus 2021",
+        date: "2021-08",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-09-10-00_00_2021-09-10-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index September 2021",
+        date: "2021-09",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-10-05-00_00_2021-10-05-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Oktober 2021",
+        date: "2021-10",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-11-09-00_00_2021-11-09-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index November 2021",
+        date: "2021-11",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2021-12-19-00_00_2021-12-19-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Desember 2021",
+        date: "2021-12",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-01-03-00_00_2022-01-03-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Januari 2022",
+        date: "2022-01",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-02-02-00_00_2022-02-02-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Februari 2022",
+        date: "2022-02",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-03-04-00_00_2022-03-04-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Maret 2022",
+        date: "2022-03",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-04-03-00_00_2022-04-03-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index April 2022",
+        date: "2022-04",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-05-13-00_00_2022-05-13-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Mei 2022",
+        date: "2022-05",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-06-02-00_00_2022-06-02-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Juni 2022",
+        date: "2022-06",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-07-07-00_00_2022-07-07-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Juli 2022",
+        date: "2022-07",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-08-01-00_00_2022-08-01-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Agustus 2022",
+        date: "2022-08",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-10-30-00_00_2022-10-30-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Oktober 2022",
+        date: "2022-10",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-11-04-00_00_2022-11-04-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index November 2022",
+        date: "2022-11",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "2022-12-09-00_00_2022-12-09-23_59_Sentinel-2_L1C_Moisture_index",
+        title: "Moisture Index Desember 2022",
+        date: "2022-12",
+        visible: false,
+        opacity: 0.8,
         zIndex: 1,
     },
 ];
 console.log(ndmiWMSLayers);
+const methaneWMSLayers = [
+    {
+        name: "Metana Januari 2022",
+        title: "Metana Januari 2022",
+        date: "2022-01",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "Metana Februari 2022",
+        title: "Metana Februari 2022",
+        date: "2022-02",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "Metana Maret 2022",
+        title: "Metana Maret 2022",
+        date: "2022-03",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "Metana April 2022",
+        title: "Metana April 2022",
+        date: "2022-04",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "Metana Mei 2022",
+        title: "Metana Mei 2022",
+        date: "2022-05",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "Metana Juni 2022",
+        title: "Metana Juni 2022",
+        date: "2022-06",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "Metana Juli 2022",
+        title: "Metana Juli 2022",
+        date: "2022-07",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "Metana Agustus 2022",
+        title: "Metana Agustus 2022",
+        date: "2022-08",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "Metana September 2023",
+        title: "Metana September 2023",
+        date: "2023-09",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "Metana Oktober 2022",
+        title: "Metana Oktober 2022",
+        date: "2022-10",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "Metana November 2022",
+        title: "Metana November 2022",
+        date: "2022-11",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+    {
+        name: "Metana Desember 2022",
+        title: "Metana Desember 2022",
+        date: "2022-12",
+        visible: false,
+        opacity: 0.8,
+        zIndex: 1,
+    },
+];
+console.log(methaneWMSLayers);
 
 /**
  * Creates a new TileLayer with a TileWMS source.
@@ -353,7 +773,7 @@ const createWMSLayer = (title, layerName, visible, opacity, zIndex) =>
     new TileLayer({
         title,
         source: new TileWMS({
-            url: "http://localhost:8080/geoserver/si-jagung/wms",
+            url: "http://82.112.237.119:8080/geoserver/si-jagung/wms",
             attributions: "si-jagung wms layer",
             params: {
                 LAYERS: `si-jagung:${layerName}`,
@@ -378,6 +798,10 @@ ndmiWMSLayers.map(({ title, name, visible, zIndex }) => {
     const layer = createWMSLayer(title, name, visible, zIndex);
     ndmiLayers.getLayers().push(layer);
 });
+methaneWMSLayers.map(({ title, name, visible, zIndex }) => {
+    const layer = createWMSLayer(title, name, visible, zIndex);
+    methaneLayers.getLayers().push(layer);
+});
 
 map.on("singleclick", eventClickMap);
 
@@ -390,7 +814,6 @@ function eventClickMap(evt) {
     // Get Coordinate
     const coordinate = evt.coordinate;
     const LonLatcoordinate = toLonLat(coordinate, projection);
-    // const hdmsCoordinate = toStringHDMS(LonLatcoordinate);
     const { formattedLon, formattedLat } = coordinateFormatIndo(
         LonLatcoordinate,
         "dms"
@@ -401,92 +824,76 @@ function eventClickMap(evt) {
     removeHighlightClicked();
     markToClickedPosition(coordinate);
 
-    // Dapatkan fitur yang diklik
-    let no_layers = ndviLayers.getLayers().get("length");
+    // Combine layers from both ndviLayers and ndmiLayers
+    const layersArray = [
+        ...ndviLayers.getLayers().getArray(),
+        ...ndmiLayers.getLayers().getArray(),
+    ];
+    const visibleLayers = layersArray.filter((layer) => layer.getVisible());
 
     $("#informationPopup").removeClass("d-none");
 
     (async () => {
         let WMS_ARRAY = [];
-
-        let i;
-        for (i = 0; i < no_layers; i++) {
-            let visibility = ndviLayers.getLayers().item(i).getVisible();
-            if (visibility == true) {
-                let params_layers = ndviLayers
-                    .getLayers()
-                    .item(i)
-                    .getSource()
-                    .getParams().LAYERS;
-                WMS_ARRAY.push(params_layers);
-            }
-        }
-
         let dataArray = [];
-        const wmsSource = new ol.source.ImageWMS({
-            url: "http://localhost:8080/geoserver/wms",
-            params: {
-                LAYERS: WMS_ARRAY,
-            },
-            serverType: "geoserver",
-            crossOrigin: "anonymous",
-        });
-        url = wmsSource.getFeatureInfoUrl(
-            evt.coordinate,
-            viewResolution,
-            projection,
-            {
-                INFO_FORMAT: "application/json",
-                FEATURE_COUNT: 1,
-            }
-        );
-        // console.log(url);
-        if (url) {
-            try {
-                let response = await fetch(url);
-                let data = await response.json();
-                const dataProperties = data.features;
-                if (dataProperties.length > 0) {
-                    dataArray.push(data);
+
+        // Collect visible layers' WMS parameters
+        for (const layer of visibleLayers) {
+            const params_layers = layer.getSource().getParams().LAYERS;
+            WMS_ARRAY.push(params_layers);
+        }
+
+        if (WMS_ARRAY.length > 0) {
+            const wmsSource = new ol.source.ImageWMS({
+                url: "http://82.112.237.119:8080/geoserver/wms",
+                params: {
+                    LAYERS: WMS_ARRAY.join(","), // Join layers into a single string
+                },
+                serverType: "geoserver",
+                crossOrigin: "anonymous",
+            });
+
+            const url = wmsSource.getFeatureInfoUrl(
+                evt.coordinate,
+                viewResolution,
+                projection,
+                {
+                    INFO_FORMAT: "application/json",
+                    FEATURE_COUNT: 1,
                 }
-            } catch (error) {
-                console.error("Error fetching data:", error);
+            );
+
+            if (url) {
+                try {
+                    let response = await fetch(url);
+                    let data = await response.json();
+                    if (data.features.length > 0) {
+                        dataArray.push(data);
+                    }
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
             }
         }
-        // console.log({ dataArray });
 
         if (dataArray.length > 0) {
             let featuresArray = [];
-            let idPropertiesData = [];
             let mergedPropertiesFeatures = [];
             let crsGeo = dataArray[0].crs;
-            let mergedDataGeojson = [];
 
+            // Merge features from all data
             dataArray.forEach((data) => {
-                featuresArray.push(data.features);
-            });
-            // console.log(featuresArray);
-            featuresArray.forEach((features) => {
-                features.forEach((feature) => {
-                    const geom = {
-                        crs: crsGeo,
-                        type: "FeatureCollection",
-                        features: [],
-                    };
-                    feature.properties.mark = feature.id;
-                    geom.features.push(feature);
-                    mergedDataGeojson.push(geom);
-                    mergedPropertiesFeatures.push(feature.properties);
-                    idPropertiesData.push(feature.id);
-                });
+                featuresArray.push(...data.features);
             });
 
-            // console.log({ mergedDataGeojson });
-            // console.log({ mergedPropertiesFeatures });
+            featuresArray.forEach((feature) => {
+                feature.properties.mark = feature.id; // Assign mark property
+                mergedPropertiesFeatures.push(feature.properties);
+            });
 
-            highlightClicked(mergedDataGeojson);
+            highlightClicked(dataArray); // Highlight clicked features
 
-            // display information properties layer
+            // Display information properties layer
             $("#informationPopupContent").html(
                 `<pre>Raw : <br> ${JSON.stringify(
                     mergedPropertiesFeatures,
@@ -495,7 +902,7 @@ function eventClickMap(evt) {
                 )}</pre>`
             );
         } else {
-            $("#informationPopupContent").html(``);
+            $("#informationPopupContent").html(`No features found.`);
         }
     })();
 }
@@ -510,6 +917,10 @@ const toggleLayerVisibility = (layerName, checked) => {
     const index2 = ndmiWMSLayers.findIndex((layer) => layer.name === name);
     if (index2 >= 0) {
         ndmiLayers.getLayers().item(index2).setVisible(checked);
+    }
+    const index3 = methaneWMSLayers.findIndex((layer) => layer.name === name);
+    if (index3 >= 0) {
+        methaneLayers.getLayers().item(index3).setVisible(checked);
     }
 };
 checkboxesLayer.forEach((checkbox) => {

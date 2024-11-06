@@ -78,7 +78,7 @@
                         <div class="shadow row">
                             <div class="p-0 border col-12 col-md-4 d-flex flex-column">
                                 <div class="px-5 py-3 text-center">
-                                    <i class="services-icon bi bi-map-fill"></i>
+                                    <i class="services-icon fas fa-map-marked-alt"></i>
                                     <h4 class="mb-4 fw-bold text-uppercase">Peta Lahan Jagung</h4>
                                     <p class="mb-4 text-primary">Temukan peta lahan jagung yang terperinci dan lengkap, membantu Anda memetakan area pertanian dengan mudah dan efisien.</p>
                                 </div>
@@ -94,7 +94,7 @@
                             </div>
                             <div class="p-0 border col-12 col-md-4 d-flex flex-column">
                                 <div class="px-5 py-3 text-center">
-                                    <i class="services-icon bi bi-tools"></i>
+                                    <i class="services-icon fas fa-tools"></i>
                                     <h4 class="mb-4 fw-bold text-uppercase">Cara Budidaya Jagung</h4>
                                     <p class="mb-4 text-primary">Dapatkan panduan lengkap tentang cara budidaya jagung dari persiapan lahan hingga panen, memastikan hasil maksimal dan berkualitas.</p>
                                 </div>
@@ -110,7 +110,7 @@
                             </div>
                             <div class="p-0 border col-12 col-md-4 d-flex flex-column">
                                 <div class="px-5 py-3 text-center">
-                                    <i class="services-icon bi bi-heart-pulse"></i>
+                                    <i class="services-icon fas fa-heartbeat"></i>
                                     <h4 class="mb-4 fw-bold text-uppercase">Kesehatan Jagung</h4>
                                     <p class="mb-4 text-primary">Pelajari cara menjaga kesehatan tanaman jagung Anda dengan tips dan trik untuk mencegah penyakit serta meningkatkan produktivitas.</p>
                                 </div>
