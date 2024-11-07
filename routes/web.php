@@ -6,6 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PetaController;
+use App\Models\LahanKebun;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +20,19 @@ use App\Http\Controllers\PetaController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/insertKeDenganGeometry', function () {
+    $geoJson = '{"type": "Polygon", "coordinates": [[[-73.97, 40.77], [-73.98, 40.75], [-73.96, 40.73], [-73.97, 40.77]]]}';
+    dd(DB::raw("ST_GeomFromGeoJSON('{$geoJson}')"));
+
+    $polygon = 'POLYGON((-73.99756 40.73083, -73.99756 40.73091, -73.99745 40.73091, -73.99745 40.73083, -73.99756 40.73083))';
+    // Menyimpan data ke dalam kolom geometri
+    LahanKebun::create([
+        'user_id' => Auth::id(),
+        'nama_lahan' => 'Sample Location',
+        'geom' => DB::raw("ST_GeomFromText('$polygon', 4326)")
+    ]);
+});
 
 Route::get('/', function () {
     return view('pages.front.home');

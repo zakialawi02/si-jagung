@@ -503,10 +503,6 @@ main {
   }
 }
 
-#informationPopupTitle h5 {
-  font-size: 1rem;
-}
-
 button.btn-close {
   width: 0.3rem;
   height: 0.3rem;
@@ -556,7 +552,11 @@ button.btn-close {
 
 #legendContent {
   max-height: 14rem;
-  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.panel-header h5 {
+  font-size: 1rem;
 }
 
 @media screen and (max-width: 768px) {
@@ -585,19 +585,21 @@ button.btn-close {
 /* Off canvas layer control */
 #layerControl {
   position: absolute;
-  bottom: 60px;
+  bottom: 120px;
   left: -20rem;
-  height: calc(100vh - 140px);
+  height: calc(100vh - 200px);
   z-index: 1;
   width: 20rem;
   padding: 0.8rem 0.5rem;
   background-color: #ffffff;
   border-radius: 5px;
+  visibility: hidden;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
 }
 
 #layerControl.show {
+  visibility: visible;
   left: 5px;
   transition: all 0.3s ease-in-out;
 }
@@ -634,18 +636,18 @@ button.btn-close {
 
 #layerControlBody,
 #drawerControlBody {
-  overflow-x: auto;
-  height: calc(100% - 60px);
+  overflow-y: auto;
+  min-height: 150px;
+  max-height: calc(100vh - 420px);
 }
 
 /* Off canvas drawer control */
 #drawerControl {
-  position: absolute;
-  bottom: 60px;
+  position: fixed;
+  top: 5rem;
   right: -20rem;
-  transform: translateY(-115%);
-  height: calc(100vh - 440px);
-  z-index: 1;
+  max-height: calc(100vh - 320px);
+  z-index: 11;
   width: 20rem;
   padding: 0.8rem 0.5rem;
   background-color: #ffffff;
@@ -704,6 +706,7 @@ button.btn-close {
     transform: translateY(0);
     padding: 0;
     margin: 0;
+    height: 50vh;
     max-height: 50vh;
     width: 100%;
   }

@@ -594,6 +594,10 @@ function legend() {
 
 legend();
 
+// Global variabel
+let geojsonFeature;
+let drawed;
+
 // Button to start the measurement
 $("#drawPolygonBtn").click(function (e) {
     startNewMeasurement();
@@ -601,18 +605,7 @@ $("#drawPolygonBtn").click(function (e) {
 
 // Meassurement
 let vectorSourceMeasure = new VectorSource();
-let vectorLayerMeasure = new VectorLayer({
-    source: vectorSourceMeasure,
-    style: {
-        "fill-color": "rgba(255, 0, 0, 0.2)",
-        "stroke-color": "rgba(255, 0, 0, 1)",
-        "stroke-width": 2,
-        "circle-radius": 7,
-        "circle-fill-color": "rgba(255, 0, 0, 1)",
-    },
-    zIndex: 999,
-});
-map.addLayer(vectorLayerMeasure);
+let vectorLayerMeasure;
 
 /**
  * store current drawing interaction
@@ -756,9 +749,11 @@ const drawingStyle = new Style({
  * @returns {void}
  */
 function addInteraction(type = "Polygon") {
+    drawed = null;
+
     // Remove previous measurement layer and tooltips if any
-    if (draw) {
-        map.removeInteraction(draw); // Remove previous draw interaction
+    if (vectorLayerMeasure) {
+        map.removeLayer(vectorLayerMeasure);
     }
 
     // Clear the vector source to remove any existing features
@@ -779,16 +774,19 @@ function addInteraction(type = "Polygon") {
         helpTooltipElement.remove();
     }
 
+    // Create the vector layer for measuring
+    vectorLayerMeasure = new VectorLayer({
+        source: vectorSourceMeasure,
+        style: drawingStyle,
+        zIndex: 999,
+    });
+    map.addLayer(vectorLayerMeasure);
+
     // Create a new draw interaction
     draw = new Draw({
         source: vectorSourceMeasure,
         type: type,
-        style: function (feature) {
-            const geometryType = feature.getGeometry().getType();
-            if (geometryType === type || geometryType === "Point") {
-                return drawingStyle;
-            }
-        },
+        style: drawingStyle,
     });
 
     // Add the new draw interaction to the map
@@ -817,13 +815,34 @@ function addInteraction(type = "Polygon") {
     });
 
     draw.on("drawend", function (evt) {
+        drawed = true;
+
+        // Get the feature drawn by the user
+        const feature = evt.feature;
+
+        // Convert the feature to GeoJSON
+        const geojsonFormat = new GeoJSON();
+        const geojson = geojsonFormat.writeFeature(feature);
+        geojsonFeature = JSON.parse(geojson);
+
+        // Display the GeoJSON string in the #drawerContent element
+        document.getElementById(
+            "drawerContent"
+        ).innerHTML = `<pre>${geojson}</pre>`;
+
+        // Display measurement result in the #measurementOutput div
+        document.getElementById("measurementOutput").innerHTML =
+            measureTooltipElement.innerHTML;
+
+        // Remove the measurement tooltip overlay from the map
+        if (measureTooltip) {
+            map.removeOverlay(measureTooltip);
+        }
+
         measureTooltipElement.className = "ol-tooltip ol-tooltip-static";
         measureTooltip.setOffset([0, -7]);
         sketch = null;
         measureTooltipElement = null;
-
-        // Remove the draw interaction from the map after drawing is done
-        map.removeInteraction(draw);
 
         // Remove tooltips and overlays
         if (measureTooltipElement) {
@@ -833,20 +852,16 @@ function addInteraction(type = "Polygon") {
             helpTooltipElement.remove();
         }
 
+        // Remove the draw interaction and vector layer after drawing is done
+        map.removeInteraction(draw);
+
         // Unset the listener to avoid memory leaks
         unByKey(listener);
 
-        // Get the feature drawn by the user
-        const feature = evt.feature;
-
-        // Convert the feature to GeoJSON
-        const geojsonFormat = new GeoJSON();
-        const geojson = geojsonFormat.writeFeature(feature);
-
-        // Display the GeoJSON string in the #drawerContent element
-        document.getElementById(
-            "drawerContent"
-        ).innerHTML = `<pre>${geojson}</pre>`;
+        // Show feature properties after drawing
+        if (draw) {
+            $("#featureProperties").removeClass("d-none");
+        }
     });
 }
 
