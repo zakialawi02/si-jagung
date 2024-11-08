@@ -17,8 +17,9 @@
         <meta property="og:description" content="@yield("og_description", config("app.name"))" />
         <meta property="og:image" content="@yield("og_image", asset("assets/img/favicon.png"))" />
 
-        <link type="image/png" href="{{ asset("assets/img/favicon.png") }}" rel="shortcut icon">
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
 
+        <link type="image/png" href="{{ asset("assets/img/favicon.png") }}" rel="shortcut icon">
 
         <!-- Jquery -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -39,6 +40,7 @@
         <link href="https://cdn.jsdelivr.net/npm/ol@v10.2.1/ol.css" rel="stylesheet">
         <link href={{ asset("assets/css/styleBS.css") }} rel="stylesheet" />
 
+        <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.min.css" rel="stylesheet">
 
         <style>
             .ol-tooltip {
@@ -142,6 +144,8 @@
         <!-- proj4js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.min.js" integrity="sha512-JfEOeAU2TD7AtE3xJPSBwBFCxURVqQCysNBwOnNhEJS9LgTHTWGSyYd11JUBOaJ+xVHPaA0ZhLin365CapD8EQ=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.all.min.js"></script>
 
         @stack("javascript")
 

@@ -3,7 +3,7 @@ const ndmiWMSLayers = [
         name: "2021-01-03-00_00_2021-01-03-23_59_Sentinel-2_L1C_Moisture_index",
         title: "Moisture Index Januari 2021",
         date: "2021-01",
-        visible: false,
+        visible: true,
         opacity: 0.8,
         zIndex: 1,
     },

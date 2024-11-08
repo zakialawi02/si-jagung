@@ -596,16 +596,16 @@ legend();
 
 // Global variabel
 let geojsonFeature;
+let geojsonArea;
+let drawingRunning;
 let drawed;
 
-// Button to start the measurement
-$("#drawPolygonBtn").click(function (e) {
-    startNewMeasurement();
-});
-
-// Meassurement
-let vectorSourceMeasure = new VectorSource();
-let vectorLayerMeasure;
+/**
+ * Vector source for drawing.
+ * @type {VectorSource}
+ */
+let vectorSourceDrawing = new VectorSource();
+let vectorLayerDrawing;
 
 /**
  * store current drawing interaction
@@ -714,10 +714,9 @@ const formatArea = function (polygon) {
     const area = getArea(polygon);
     let output;
     if (area > 10000) {
-        output =
-            Math.round((area / 1000000) * 100) / 100 + " " + "km<sup>2</sup>";
+        output = Math.round((area / 10000) * 100) / 100 + " ha";
     } else {
-        output = Math.round(area * 100) / 100 + " " + "m<sup>2</sup>";
+        output = Math.round(area * 100) / 100 + " m²";
     }
     return output;
 };
@@ -749,15 +748,13 @@ const drawingStyle = new Style({
  * @returns {void}
  */
 function addInteraction(type = "Polygon") {
-    drawed = null;
-
     // Remove previous measurement layer and tooltips if any
-    if (vectorLayerMeasure) {
-        map.removeLayer(vectorLayerMeasure);
+    if (vectorLayerDrawing) {
+        map.removeLayer(vectorLayerDrawing);
     }
 
     // Clear the vector source to remove any existing features
-    vectorSourceMeasure.clear();
+    vectorSourceDrawing.clear();
 
     // Remove previous tooltips from the DOM if they exist
     if (measureTooltipElement) {
@@ -775,16 +772,16 @@ function addInteraction(type = "Polygon") {
     }
 
     // Create the vector layer for measuring
-    vectorLayerMeasure = new VectorLayer({
-        source: vectorSourceMeasure,
+    vectorLayerDrawing = new VectorLayer({
+        source: vectorSourceDrawing,
         style: drawingStyle,
         zIndex: 999,
     });
-    map.addLayer(vectorLayerMeasure);
+    map.addLayer(vectorLayerDrawing);
 
     // Create a new draw interaction
     draw = new Draw({
-        source: vectorSourceMeasure,
+        source: vectorSourceDrawing,
         type: type,
         style: drawingStyle,
     });
@@ -809,6 +806,7 @@ function addInteraction(type = "Polygon") {
                 output = formatLength(geom);
                 tooltipCoord = geom.getLastCoordinate();
             }
+            geojsonArea = getArea(geom);
             measureTooltipElement.innerHTML = output;
             measureTooltip.setPosition(tooltipCoord);
         });
@@ -822,41 +820,22 @@ function addInteraction(type = "Polygon") {
 
         // Convert the feature to GeoJSON
         const geojsonFormat = new GeoJSON();
-        const geojson = geojsonFormat.writeFeature(feature);
+        const geojson = geojsonFormat.writeFeature(feature, {
+            dataProjection: "EPSG:4326", // Output projection
+            featureProjection: "EPSG:3857", // Map's projection (assuming EPSG:3857)
+        });
         geojsonFeature = JSON.parse(geojson);
 
-        // Display the GeoJSON string in the #drawerContent element
+        // Display the GeoJSON string in the #drawerGeojson element
         document.getElementById(
-            "drawerContent"
-        ).innerHTML = `<pre>${geojson}</pre>`;
+            "drawerGeojson"
+        ).innerHTML = `<pre>${JSON.stringify(geojsonFeature, null, 1)}</pre>`;
 
         // Display measurement result in the #measurementOutput div
         document.getElementById("measurementOutput").innerHTML =
             measureTooltipElement.innerHTML;
 
-        // Remove the measurement tooltip overlay from the map
-        if (measureTooltip) {
-            map.removeOverlay(measureTooltip);
-        }
-
-        measureTooltipElement.className = "ol-tooltip ol-tooltip-static";
-        measureTooltip.setOffset([0, -7]);
-        sketch = null;
-        measureTooltipElement = null;
-
-        // Remove tooltips and overlays
-        if (measureTooltipElement) {
-            measureTooltipElement.remove();
-        }
-        if (helpTooltipElement) {
-            helpTooltipElement.remove();
-        }
-
-        // Remove the draw interaction and vector layer after drawing is done
-        map.removeInteraction(draw);
-
-        // Unset the listener to avoid memory leaks
-        unByKey(listener);
+        drawingEnd();
 
         // Show feature properties after drawing
         if (draw) {
@@ -865,13 +844,56 @@ function addInteraction(type = "Polygon") {
     });
 }
 
-// Reset function to start a new measurement and clear previous layers
-function startNewMeasurement() {
-    addInteraction(); // Start a new interaction (polygon or line)
+/**
+ * Start the draw interaction and clear the vector layer if exists
+ * @returns {void}
+ */
+function drawingStart() {
+    addInteraction();
+    drawingRunning = true;
+    drawed = null;
+    buttonStateDrawing();
+    $("#featureProperties").addClass("d-none");
+    $("#drawerGeojson").html("");
+}
+
+/**
+ * End the draw interaction
+ * @returns {void}
+ */
+function drawingEnd() {
+    drawingRunning = false;
+
+    // Remove the measurement tooltip overlay from the map
+    if (measureTooltip) {
+        map.removeOverlay(measureTooltip);
+    }
+
+    measureTooltipElement.className = "ol-tooltip ol-tooltip-static";
+    measureTooltip.setOffset([0, -7]);
+    sketch = null;
+    measureTooltipElement = null;
+
+    // Remove tooltips and overlays
+    if (measureTooltipElement) {
+        measureTooltipElement.remove();
+    }
+    if (helpTooltipElement) {
+        helpTooltipElement.remove();
+    }
+
+    // Remove the draw interaction and vector layer after drawing is done
+    map.removeInteraction(draw);
+
+    // Unset the listener to avoid memory leaks
+    unByKey(listener);
+
+    buttonStateDrawing();
 }
 
 /**
  * Creates a new help tooltip
+ * @returns {void}
  */
 function createHelpTooltip() {
     if (helpTooltipElement) {
@@ -889,6 +911,7 @@ function createHelpTooltip() {
 
 /**
  * Creates a new measure tooltip
+ * @returns {void}
  */
 function createMeasureTooltip() {
     if (measureTooltipElement) {
@@ -905,3 +928,106 @@ function createMeasureTooltip() {
     });
     map.addOverlay(measureTooltip);
 }
+
+/**
+ * Update the draw button state and text based on the value of drawingRunning
+ * @returns {void}
+ */
+function buttonStateDrawing() {
+    $("#drawPolygonBtn").html(
+        drawingRunning
+            ? "Batal"
+            : "<i class='fas fa-pencil-ruler'></i>&nbsp;&nbsp; gambar polygon"
+    );
+    $("#drawPolygonBtn")
+        .removeClass()
+        .addClass(
+            drawingRunning ? "btn btn-sm btn-danger" : "btn btn-sm btn-primary"
+        );
+}
+
+// Button to start/cancel the draw/measurement
+$("#drawPolygonBtn").click(function (e) {
+    if (drawingRunning) {
+        drawingEnd();
+    } else {
+        drawingStart();
+        $("#featurePropertiesForm")[0].reset();
+    }
+});
+$("#batalFeatureProperties").click(function (e) {
+    $("#featureProperties").addClass("d-none");
+    $("#drawerGeojson").html("");
+    if (vectorLayerDrawing) {
+        map.removeLayer(vectorLayerDrawing);
+        vectorSourceDrawing.clear();
+    }
+});
+
+$("#featurePropertiesForm").submit(function (e) {
+    e.preventDefault();
+
+    // Ambil data form
+    const formDataArray = $(this).serializeArray();
+    const formData = {};
+    formDataArray.forEach((field) => {
+        formData[field.name] = field.value;
+    });
+    formData._token = $('meta[name="csrf-token"]').attr("content");
+    formData.geom = JSON.stringify(geojsonFeature.geometry);
+    formData.luas = geojsonArea;
+    console.log(formData);
+    $.ajax({
+        type: "POST",
+        url: "/lahan",
+        data: formData,
+        dataType: "JSON",
+        beforeSend: function () {
+            //
+        },
+        success: function (response) {
+            console.log(response);
+            Swal.fire({
+                title: "Sukses!",
+                text: response.message,
+                icon: "success",
+                timer: 2000,
+                timerProgressBar: true,
+                confirmButtonText: "Ok",
+            }).then(() => {
+                $("#featurePropertiesForm")[0].reset();
+                $("#featureProperties").addClass("d-none");
+                $("#drawerGeojson").html("");
+                // if (vectorLayerDrawing) {
+                //     map.removeLayer(vectorLayerDrawing);
+                //     vectorSourceDrawing.clear();
+                // }
+            });
+        },
+        error: function (error) {
+            console.error(error);
+            const messages = error.responseJSON;
+            const firstMessage = messages[Object.keys(messages)[0]];
+            Swal.fire({
+                title: "Error!",
+                text: firstMessage,
+                icon: "error",
+                timer: 4000,
+                timerProgressBar: true,
+                confirmButtonText: "Ok",
+            });
+            if (error.responseJSON?.message == "Unauthenticated.") {
+                Swal.fire({
+                    title: "Error!",
+                    text:
+                        error.responseJSON?.message +
+                        " Silahkan login terlebih dahulu",
+                    icon: "error",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    confirmButtonText: "Ok",
+                });
+            }
+        },
+    });
+});

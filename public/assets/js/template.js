@@ -98,31 +98,31 @@
             $("body").addClass($(this).val());
         });
 
-        // //Add active class to nav-link based on url dynamically
-        // function addActiveClass(element) {
-        //     if (current === "") {
-        //         //for root url
-        //         if (element.attr("href").indexOf("index.html") !== -1) {
-        //             element.parents(".nav-item").last().addClass("active");
-        //             if (element.parents(".sub-menu").length) {
-        //                 element.closest(".collapse").addClass("show");
-        //                 element.addClass("active");
-        //             }
-        //         }
-        //     } else {
-        //         //for other url
-        //         if (element.attr("href").indexOf(current) !== -1) {
-        //             element.parents(".nav-item").last().addClass("active");
-        //             if (element.parents(".sub-menu").length) {
-        //                 element.closest(".collapse").addClass("show");
-        //                 element.addClass("active");
-        //             }
-        //             if (element.parents(".submenu-item").length) {
-        //                 element.addClass("active");
-        //             }
-        //         }
-        //     }
-        // }
+        //Add active class to nav-link based on url dynamically
+        function addActiveClass(element) {
+            if (current === "") {
+                //for root url
+                if (element.attr("href").indexOf("index.html") !== -1) {
+                    element.parents(".nav-item").last().addClass("active");
+                    if (element.parents(".sub-menu").length) {
+                        element.closest(".collapse").addClass("show");
+                        element.addClass("active");
+                    }
+                }
+            } else {
+                //for other url
+                if (element.attr("href").indexOf(current) !== -1) {
+                    element.parents(".nav-item").last().addClass("active");
+                    if (element.parents(".sub-menu").length) {
+                        element.closest(".collapse").addClass("show");
+                        element.addClass("active");
+                    }
+                    if (element.parents(".submenu-item").length) {
+                        element.addClass("active");
+                    }
+                }
+            }
+        }
 
         // var current = location.pathname
         //     .split("/")
@@ -195,13 +195,13 @@
         });
 
         // Prevent body scrolling while sidebar scroll
-        $(".sidebar .sidebar-body").hover(
-            function () {
-                $("body").addClass("overflow-hidden");
-            },
-            function () {
-                $("body").removeClass("overflow-hidden");
-            }
-        );
+        // $(".sidebar .sidebar-body").hover(
+        //     function () {
+        //         $("body").addClass("overflow-hidden");
+        //     },
+        //     function () {
+        //         $("body").removeClass("overflow-hidden");
+        //     }
+        // );
     });
 })(jQuery);

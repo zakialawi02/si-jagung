@@ -634,7 +634,12 @@ button.btn-close {
   color: #404040;
 }
 
-#layerControlBody,
+#layerControlBody {
+  overflow-y: auto;
+  min-height: 150px;
+  max-height: calc(100vh - 300px);
+}
+
 #drawerControlBody {
   overflow-y: auto;
   min-height: 150px;
@@ -663,25 +668,37 @@ button.btn-close {
 
 /* Style untuk scrollbar di dalam elemen #layerControl */
 #layerControlBody::-webkit-scrollbar,
-#legendContent::-webkit-scrollbar {
+#legendContent::-webkit-scrollbar,
+#informationPopupContent::-webkit-scrollbar,
+#drawerControlBody::-webkit-scrollbar,
+#drawerGeojson::-webkit-scrollbar {
   width: 10px; /* Lebar scrollbar */
 }
 
 #layerControlBody::-webkit-scrollbar-track,
-#legendContent::-webkit-scrollbar-track {
+#legendContent::-webkit-scrollbar-track,
+#informationPopupContent::-webkit-scrollbar-track,
+#drawerControlBody::-webkit-scrollbar-track,
+#drawerGeojson::-webkit-scrollbar-track {
   background: #f0f0f0; /* Warna background track scrollbar */
   border-radius: 5px; /* Radius untuk membuat track menjadi bulat */
 }
 
 #layerControlBody::-webkit-scrollbar-thumb,
-#legendContent::-webkit-scrollbar-thumb {
+#legendContent::-webkit-scrollbar-thumb,
+#informationPopupContent::-webkit-scrollbar-thumb,
+#drawerControlBody::-webkit-scrollbar-thumb,
+#drawerGeojson::-webkit-scrollbar-thumb {
   background-color: #888; /* Warna thumb scrollbar */
   border-radius: 5px; /* Radius untuk membuat thumb menjadi bulat */
   border: 2px solid #f0f0f0; /* Border untuk memberikan spasi antara thumb dan track */
 }
 
 #layerControlBody::-webkit-scrollbar-thumb:hover,
-#legendContent::-webkit-scrollbar-thumb:hover {
+#legendContent::-webkit-scrollbar-thumb:hover,
+#informationPopupContent::-webkit-scrollbar-thumb:hover,
+#drawerControlBody::-webkit-scrollbar-thumb:hover,
+#drawerGeojson::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
 
@@ -699,6 +716,10 @@ button.btn-close {
     width: 80%;
   }
 
+  #layerControlBody {
+    max-height: calc(100vh - 240px);
+  }
+
   #drawerControl {
     position: fixed;
     bottom: -50vh;
@@ -714,5 +735,11 @@ button.btn-close {
   #drawerControl.show {
     right: 0;
     bottom: 0;
+  }
+
+  #drawerControlBody {
+    overflow-y: auto;
+    min-height: 150px;
+    max-height: calc(100vh - 360px);
   }
 }

@@ -42,10 +42,12 @@
         <link href={{ asset("assets/css/style.css") }} rel="stylesheet">
         <!-- End layout styles -->
 
+        <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.min.css" rel="stylesheet">
+
         <!-- Favicon -->
         <link type="image/png" href={{ asset("assets/img/favicon.png") }} rel="icon">
 
-
+        @include("components.dependencies._messageAlert");
         <style>
             p {
                 margin-bottom: 10px;
@@ -116,6 +118,8 @@
 
         <!-- Script libraries -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.all.min.js"></script>
+
 
         @stack("javascript")
 

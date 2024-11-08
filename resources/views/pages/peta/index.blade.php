@@ -89,7 +89,7 @@
 
             <!-- offcanvas layerControl -->
             <div class="position-relative">
-                <div class="layerControl align-self-end" id="layerControl">
+                <div class="align-self-end" id="layerControl">
                     <div class="layerControl-header d-flex justify-content-between align-items-center mb-2">
                         <h5 class="layerControl-title px-2 py-1" id="layerControlTitle">Layer</h5>
                         <button class="btn btn-layerControl-close align-self-start m-1 p-1" type="button"><i class="bi bi-arrow-bar-left"></i></button>
@@ -122,7 +122,7 @@
                                     <p class="mb-1">Base Map</p>
                                 </div>
 
-                                <select class="" id="basemap" name="basemap">
+                                <select class="form-select" id="basemap" name="basemap">
                                     <option value="osm">Street OSM</option>
                                     <option value="bingaerial" selected>Bing Aerial</option>
                                     <option value="mapbox">Street Mapbox</option>
@@ -135,8 +135,8 @@
 
             <!-- offcanvas drawerControl -->
             <div class="position-relative">
-                <div class="drawerControl align-self-end" id="drawerControl">
-                    <div class="panel-header d-flex justify-content-between align-items-center my-3 px-2">
+                <div class="align-self-end" id="drawerControl">
+                    <div class="panel-header d-flex justify-content-between align-items-center my-1 px-2">
                         <h5>Gambar</h5>
                         <button class="btn btn-close btn-drawerControl-close align-self-start m-1 p-1" type="button"></button>
                     </div>
@@ -145,8 +145,8 @@
                             <button class="btn btn-sm btn-primary" id="drawPolygonBtn" role="button"><i class="fas fa-pencil-ruler"></i>&nbsp;&nbsp; gambar polygon</button>
                         </div>
 
-                        <div class="" id="drawerContent"></div>
-                        <div class="" id="measurementOutput"></div>
+                        <div class="mt-2" id="drawerGeojson" style="max-height: 60px; overflow: auto;"></div>
+                        <hr class="solid">
 
                         <div class="d-none my-2" id="featureProperties">
                             <form id="featurePropertiesForm" action="">
@@ -161,15 +161,19 @@
                                     <input class="form-control form-control-sm" id="nama_pemilik" name="nama_pemilik" type="text" placeholder="Masukkan Nama Pemilik" />
                                 </div>
                                 <div class="mb-1">
+                                    <label class="form-label m-0" for="luas" style="font-size: 14px">Luas Lahan</label>
+                                    <div class="" id="measurementOutput" style="font-size: 14px"></div>
+                                </div>
+                                <div class="mb-1">
                                     <label class="form-label m-0" for="jumlah_produksi" style="font-size: 14px">Jumlah Produksi (per panen) [Kg]</label>
                                     <input class="form-control form-control-sm" id="jumlah_produksi" name="jumlah_produksi" type="text" placeholder="Masukkan Jumlah Produksi dalam kilogram" />
                                 </div>
                                 <div class="mb-1">
                                     <label class="form-label m-0" for="jenis_jagung" style="font-size: 14px">Jenis Jagung</label>
                                     <select class="form-select form-select-sm" id="jenis_jagung" name="jenis_jagung">
-                                        <option selected>Pilih Jenis</option>
-                                        <option value="">Pakan</option>
-                                        <option value="">Konsumsi</option>
+                                        <option value="" selected>Pilih Jenis</option>
+                                        <option value="pakan">Pakan</option>
+                                        <option value="konsumsi">Konsumsi</option>
                                     </select>
                                 </div>
                                 <div class="mb-1">
@@ -177,8 +181,9 @@
                                     <input class="form-control form-control-sm" id="varietas_jagung" name="varietas_jagung" type="text" placeholder="Masukkan varietas jagung" />
                                 </div>
 
-                                <div class="mb-1">
-                                    <button class="btn btn-sm btn-primary" id="saveFeatureProperties" type="submit">Simpan</button>
+                                <div class="mb-1 mt-2">
+                                    <button class="btn btn-sm btn-primary" id="saveFeatureProperties" type="submit" role="button">Simpan</button>
+                                    <button class="btn btn-sm btn-secondary" id="batalFeatureProperties" type="reset" role="button">Batal</button>
                                 </div>
                             </form>
                         </div>

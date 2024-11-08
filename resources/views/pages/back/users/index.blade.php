@@ -6,18 +6,18 @@
 @include("components.dependencies._datatables")
 
 @push("css")
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.min.css" rel="stylesheet">
+    {{-- code here --}}
 @endpush
 
 @section("content")
-    <div class="p-3 card">
+    <div class="card p-3">
 
-        <div class="px-2 mb-3 d-flex justify-content-end align-items-center">
+        <div class="d-flex justify-content-end align-items-center mb-3 px-2">
             <button class="btn btn-primary" id="createNewUser" data-bs-toggle="modal" data-bs-target="#userModal" type="button"> Tambah Pengguna </button>
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover table-striped" id="myTable" style="width:100%">
+            <table class="table-hover table-striped table" id="myTable" style="width:100%">
                 <thead>
                     <tr>
                         <th scope="col">No.</th>
@@ -54,18 +54,18 @@
                         @csrf
                         <input id="_method" name="_method" type="hidden">
 
-                        <div class="mb-3 form-group">
+                        <div class="form-group mb-3">
                             <label for="name">Nama</label>
                             <input class="form-control" id="name" name="name" type="text" value="{{ old("name") }}" placeholder="Masukkan Nama Anda" required autofocus="on">
                         </div>
 
                         <div class="row">
-                            <div class="mb-3 col-md-6 form-group">
+                            <div class="col-md-6 form-group mb-3">
                                 <label for="username">Username</label>
                                 <input class="form-control" id="username" name="username" type="text" value="{{ old("username") }}" placeholder="Masukkan username Anda" required>
                             </div>
 
-                            <div class="mb-3 col-md-6 form-group">
+                            <div class="col-md-6 form-group mb-3">
                                 <label for="role">Peran</label>
                                 <select class="form-control" id="role" name="role">
                                     <option value="admin">Admin</option>
@@ -75,12 +75,12 @@
                             </div>
                         </div>
 
-                        <div class="mb-3 form-group">
+                        <div class="form-group mb-3">
                             <label for="email">Email</label>
                             <input class="form-control" id="email" name="email" type="email" value="{{ old("email") }}" placeholder="Masukkan email" required>
                         </div>
 
-                        <div class="mb-3 form-group">
+                        <div class="form-group mb-3">
                             <label for="password">Kata Sandi</label>
                             <input class="form-control" id="password" name="password" type="password" placeholder="Masukkan kata sandi">
                             <span class="text-muted" id="passwordHelpBlock"></span>
@@ -97,8 +97,6 @@
 
 
 @push("javascript")
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.all.min.js"></script>
-
     <script>
         $(document).ready(function() {
             let table = new DataTable('#myTable', {

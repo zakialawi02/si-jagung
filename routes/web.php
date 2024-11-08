@@ -5,10 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LahanKebunController;
+use App\Http\Controllers\LahanReviewedController;
 use App\Http\Controllers\PetaController;
-use App\Models\LahanKebun;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,19 +19,6 @@ use Illuminate\Support\Facades\DB;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/insertKeDenganGeometry', function () {
-    $geoJson = '{"type": "Polygon", "coordinates": [[[-73.97, 40.77], [-73.98, 40.75], [-73.96, 40.73], [-73.97, 40.77]]]}';
-    dd(DB::raw("ST_GeomFromGeoJSON('{$geoJson}')"));
-
-    $polygon = 'POLYGON((-73.99756 40.73083, -73.99756 40.73091, -73.99745 40.73091, -73.99745 40.73083, -73.99756 40.73083))';
-    // Menyimpan data ke dalam kolom geometri
-    LahanKebun::create([
-        'user_id' => Auth::id(),
-        'nama_lahan' => 'Sample Location',
-        'geom' => DB::raw("ST_GeomFromText('$polygon', 4326)")
-    ]);
-});
 
 Route::get('/', function () {
     return view('pages.front.home');
@@ -59,16 +45,19 @@ Route::get('/kesehatan-jagung', function () {
 Route::get('/peta', [PetaController::class, 'index'])->name('peta.index');
 
 Route::prefix('dashboard')->as('admin.')->group(function () {
-    // route auth admin and writer
+    // route auth only admin
     Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::resource('users', UserController::class)->except('create', 'edit');
     });
 
-    // route auth only admin
-    Route::middleware(['auth', 'role:admin'])->group(function () {});
-
     // route auth all
-    Route::group(['middleware' => ['auth', 'role:admin,user']], function () {});
+    Route::group(['middleware' => ['auth', 'role:admin,user']], function () {
+        Route::get('/lahan', [LahanKebunController::class, 'index'])->name('lahan.index');
+        Route::get('/lahan/data-masuk', [LahanKebunController::class, 'indexNew'])->name('lahan.indexNew');
+        Route::get('/lahan/lihat/{lahan}', [LahanKebunController::class, 'show'])->name('lahan.show');
+        Route::delete('/lahan/{lahan}', [LahanKebunController::class, 'destroy'])->name('lahan.destroy');
+        Route::post('/lahan/verifikasi/{lahan}', [LahanReviewedController::class, 'verify'])->name('lahan.verifikasi');
+    });
 });
 
 
@@ -80,6 +69,8 @@ Route::middleware(['auth', 'role:admin,user'])->group(function () {
     Route::get('/admin', function () {
         return redirect('/dashboard');
     });
+
+    Route::post('/lahan', [LahanKebunController::class, 'store'])->name('lahan.store');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

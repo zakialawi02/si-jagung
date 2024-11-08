@@ -16,7 +16,7 @@
             "positionClass": "toast-top-right",
             "preventDuplicates": false,
             "onclick": null,
-            "timeOut": 3000,
+            "timeOut": 4000,
         }
         // toastr["success"]("Test tes", "Success", optionsTostr)
     </script>

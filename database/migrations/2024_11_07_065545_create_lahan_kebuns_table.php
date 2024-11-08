@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('lahan_kebuns', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id');
-            $table->string('no_lahan')->nullable();
-            $table->string('nama_lahan')->nullable();
-            $table->string('luas_lahan')->nullable();
-            $table->string('kepemilikan_lahan')->nullable();
-            $table->string('status_lahan')->nullable();
-            $table->geometry('geom')->nullable();
+            $table->string('no_kebun')->nullable();
+            $table->string('nama_pemilik');
+            $table->float('luas', 25, 6)->nullable();
+            $table->float('jumlah_produksi', 25, 3)->nullable();
+            $table->string('jenis_jagung');
+            $table->string('varietas_jagung')->nullable();
+            $table->geometry('geom', 4326);
             $table->timestamps();
+
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }

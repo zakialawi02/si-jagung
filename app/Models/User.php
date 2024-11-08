@@ -53,6 +53,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function kebun()
     {
-        return $this->hasMany(LahanKebun::class);
+        return $this->hasMany(LahanKebun::class, 'user_id');
     }
 }
