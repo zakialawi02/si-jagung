@@ -1,5 +1,5 @@
 <!-- Navbar Start -->
-<nav class="px-4 bg-white shadow navbar navbar-expand-lg navbar-light fixed-top py-lg-0 px-lg-5 z-1">
+<nav class="px-4 bg-white shadow navbar navbar-expand-lg navbar-light fixed-top py-lg-0 px-lg-5 z-3">
     <a class="navbar-brand d-inline-flex align-items-center" href="./">
         <img class="me-0" src="./assets/img/favicon.png" alt="Logo" height="50rem" />
         <h1 class="m-0 text-primary fw-bold">SIJAGUNG</h1>

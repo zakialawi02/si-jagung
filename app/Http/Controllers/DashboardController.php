@@ -24,7 +24,8 @@ class DashboardController extends Controller
                 return datatables()->of($lahan)
                     ->addIndexColumn()
                     ->addColumn('action', function ($data) {
-                        return '<button type="submit" class="btn btn-sm btn-danger deleteRowData" data-id="' . $data->id . ' "><span class="mdi mdi-trash-can-outline"></span></button>';
+                        return '<a href="' . route('admin.lahan.show', $data->id) . '" class="btn btn-sm btn-info"><span class="mdi mdi-file-eye-outline"></span></a>
+                        <button type="submit" class="btn btn-sm btn-danger deleteRowData" data-id="' . $data->id . ' "><span class="mdi mdi-trash-can-outline"></span></button>';
                     })
                     ->editColumn('luas', function ($data) {
                         return number_format($data->luas / 10000, 5, ',', '.') . ' Ha';

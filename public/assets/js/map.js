@@ -60,7 +60,7 @@ const osmBaseMap = new TileLayer({
     source: new OSM(),
     crossOrigin: "anonymous",
     visible: false,
-    preload: 10,
+    preload: 15,
 });
 
 const sourceBingMaps = new ol.source.BingMaps({
@@ -73,7 +73,6 @@ const bingAerialBaseMap = new ol.layer.Tile({
     source: sourceBingMaps,
     crossOrigin: "anonymous",
     visible: true,
-    preload: 10,
 });
 
 const mapboxBaseURL =
@@ -86,7 +85,7 @@ const mapboxBaseMap = new ol.layer.Tile({
     source: mapboxSource,
     crossOrigin: "anonymous",
     visible: false,
-    preload: 10,
+    preload: 15,
 });
 const baseMaps = [osmBaseMap, bingAerialBaseMap, mapboxBaseMap];
 
@@ -312,6 +311,11 @@ const methaneLayers = new LayerGroup({
 });
 map.addLayer(methaneLayers);
 
+const lahanLayers = new LayerGroup({
+    title: "Lahan Kebun",
+});
+map.addLayer(lahanLayers);
+
 //  DATA WMS DIPISAH KE FILE JS BERDASARKAN KELOMPOK DATA DAN DIIMPORT LEWAT HTML
 
 /**
@@ -327,7 +331,7 @@ const createWMSLayer = (title, layerName, visible, opacity, zIndex) =>
     new TileLayer({
         title,
         source: new TileWMS({
-            url: "http://localhost:8080/geoserver/si-jagung/wms",
+            url: "http://localhost:8080/geoserver/wms",
             attributions: "si-jagung wms layer",
             params: {
                 LAYERS: `si-jagung:${layerName}`,
@@ -355,6 +359,11 @@ ndmiWMSLayers.map(({ title, name, visible, zIndex }) => {
 methaneWMSLayers.map(({ title, name, visible, zIndex }) => {
     const layer = createWMSLayer(title, name, visible, zIndex);
     methaneLayers.getLayers().push(layer);
+});
+
+lahanWMSLayers.map(({ title, name, visible, zIndex }) => {
+    const layer = createWMSLayer(title, name, visible, zIndex);
+    lahanLayers.getLayers().push(layer);
 });
 
 map.on("singleclick", eventClickMap);

@@ -460,7 +460,7 @@ main {
   border-radius: 6px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   opacity: 0;
-  z-index: 9999;
+  z-index: 1029;
   transition: all 0.3s ease-in-out;
   transform: translateY(10%);
   animation: fadeSlideUp 0.3s forwards;
@@ -557,6 +557,7 @@ button.btn-close {
   background-color: #ffffff;
   border-radius: 5px;
   border: gray;
+  z-index: 1;
   cursor: pointer;
 }
 

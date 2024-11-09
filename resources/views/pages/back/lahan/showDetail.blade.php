@@ -81,6 +81,12 @@
                             <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->varietas_jagung }}</td>
                         </tr>
 
+                        <tr class="border-bottom d-flex flex-column flex-md-row">
+                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Pengirim</th>
+                            <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->user->name }} | {{ $data["lahan"]->user->username }} | {{ $data["lahan"]->user->email }}
+                            </td>
+                        </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -108,9 +114,13 @@
                     <div class="">
                         <div class="layer mb-3">
                             <div class="ml-3 mt-2 p-1">
-                                <p class="mb-1">NDVI</p>
+                                <p class="mb-1">Data Lahan/Kebun</p>
                             </div>
-                            {{-- Layer here --}}
+
+                            <div class="form-check">
+                                <input class="form-check-input" id="lahanKebuns" type="checkbox" value="si-jagung:lahan_kebuns" checked />
+                                <label class="form-check-label" for="lahanKebuns"> Lahan Ajuan </label>
+                            </div>
                         </div>
 
                         <div class="mb-3" id="basemap-select">
@@ -132,7 +142,7 @@
 
     </div>
 
-    @if (!$data["lahan"]->reviewed->reviewed)
+    @if (auth()->user()->role === "admin" && !$data["lahan"]->reviewed->reviewed)
         <div class="d-flex justify-content-end">
             <button class="btn btn-primary" id="verifikasiBtn" type="button" role="button">Verifikasi</button>
         </div>
@@ -513,6 +523,69 @@
                     setOsmBasemap();
                     break;
             }
+        });
+
+        const lahanKebunLayer = new TileLayer({
+            source: new TileWMS({
+                title: "Lahan Kebun Jagung",
+                url: "http://localhost:8080/geoserver/wms",
+                params: {
+                    LAYERS: "si-jagung:lahan_kebuns",
+                    TILED: true,
+                    FORMAT: "image/png",
+                    TRANSPARENT: true,
+                    featureID: "lahan_kebuns.{{ $data["lahan"]->id }}",
+                    // CQL_FILTER: "featureid='lahan_kebuns.9d72ba0c-9e64-4bb9-bf08-002fc723a719'" // filter hanya data dengan attribute property table
+                },
+                serverType: 'geoserver',
+                crossOrigin: "anonymous",
+            }),
+            visible: true
+        });
+        map.addLayer(lahanKebunLayer);
+
+        const url = 'http://localhost:8080/geoserver/wfs?' +
+            'service=WFS&' +
+            'version=1.1.0&' +
+            'request=GetFeature&' +
+            'typename=si-jagung:lahan_kebuns&' +
+            'outputFormat=application/json&' +
+            'featureID=lahan_kebuns.' + '{{ $data["lahan"]->id }}' + '&' +
+            'srsName=EPSG:3857'; // Sesuaikan dengan proyeksi peta Anda
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.features.length > 0) {
+                    // Hanya menggunakan data untuk mendapatkan extent
+                    const format = new ol.format.GeoJSON({
+                        dataProjection: 'EPSG:3857',
+                        featureProjection: map.getView().getProjection()
+                    });
+                    // Baca geometry tanpa menambahkan ke peta
+                    const feature = format.readFeature(data.features[0]);
+                    const extent = feature.getGeometry().getExtent();
+                    // Fokuskan peta ke extent yang didapat
+                    map.getView().fit(extent, {
+                        padding: [150, 150, 150, 150],
+                        duration: 1000,
+                        maxZoom: 18
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching feature:', error);
+            });
+
+        const checkboxesLayer = document.querySelectorAll(".layer .form-check-input");
+        const toggleLayerVisibility = (layerName, checked) => {
+            if (layerName === "si-jagung:lahan_kebuns") {
+                lahanKebunLayer.setVisible(checked);
+            }
+        };
+        checkboxesLayer.forEach((checkbox) => {
+            checkbox.addEventListener("change", (event) => {
+                toggleLayerVisibility(event.target.value, event.target.checked);
+            });
         });
     </script>
 @endpush
