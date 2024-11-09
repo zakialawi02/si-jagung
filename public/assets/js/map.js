@@ -983,7 +983,18 @@ $("#featurePropertiesForm").submit(function (e) {
         data: formData,
         dataType: "JSON",
         beforeSend: function () {
-            //
+            $("#saveFeatureProperties").html(loader);
+            $("#saveFeatureProperties, #batalFeatureProperties").prop(
+                "disabled",
+                true
+            );
+        },
+        complete: function () {
+            $("#saveFeatureProperties").html("Simpan");
+            $("#saveFeatureProperties, #batalFeatureProperties").prop(
+                "disabled",
+                false
+            );
         },
         success: function (response) {
             console.log(response);

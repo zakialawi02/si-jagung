@@ -48,15 +48,15 @@ Route::prefix('dashboard')->as('admin.')->group(function () {
     // route auth only admin
     Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::resource('users', UserController::class)->except('create', 'edit');
+        Route::get('/lahan', [LahanKebunController::class, 'index'])->name('lahan.index');
+        Route::get('/lahan/data-masuk', [LahanKebunController::class, 'indexNew'])->name('lahan.indexNew');
+        Route::post('/lahan/verifikasi/{lahan}', [LahanReviewedController::class, 'verify'])->name('lahan.verifikasi');
     });
 
     // route auth all
     Route::group(['middleware' => ['auth', 'role:admin,user']], function () {
-        Route::get('/lahan', [LahanKebunController::class, 'index'])->name('lahan.index');
-        Route::get('/lahan/data-masuk', [LahanKebunController::class, 'indexNew'])->name('lahan.indexNew');
         Route::get('/lahan/lihat/{lahan}', [LahanKebunController::class, 'show'])->name('lahan.show');
         Route::delete('/lahan/{lahan}', [LahanKebunController::class, 'destroy'])->name('lahan.destroy');
-        Route::post('/lahan/verifikasi/{lahan}', [LahanReviewedController::class, 'verify'])->name('lahan.verifikasi');
     });
 });
 
@@ -64,8 +64,6 @@ Route::prefix('dashboard')->as('admin.')->group(function () {
 // route auth all
 Route::middleware(['auth', 'role:admin,user'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/blank', [DashboardController::class, 'index2'])->name('dashboard');
-
     Route::get('/admin', function () {
         return redirect('/dashboard');
     });

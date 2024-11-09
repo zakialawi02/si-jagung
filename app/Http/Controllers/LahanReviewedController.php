@@ -17,7 +17,7 @@ class LahanReviewedController extends Controller
 
     public function verify(LahanKebun $lahan)
     {
-        if (LahanReviewed::where('lahan_kebun_id', $lahan->id)->update(['reviewed' => 1])) {
+        if (LahanReviewed::where('lahan_kebun_id', $lahan->id)->update(['reviewed' => 1, 'reviewed_at' => now()])) {
             return redirect()->route('admin.lahan.index')->with('success', 'Data berhasil diverifikasi');
         } else {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memverifikasi data');

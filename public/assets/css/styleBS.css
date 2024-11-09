@@ -286,16 +286,17 @@ main {
 }
 
 .profile-video {
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
-  margin-top: 12rem;
+  margin-top: 10rem;
   backdrop-filter: blur(8px);
 }
 
 .profile-video img {
-  width: 90vmin;
+  width: 100vh;
   height: 100%;
   object-fit: cover;
   object-position: center;
@@ -349,37 +350,6 @@ main {
   bottom: 5px;
   right: 5px;
   width: max-content;
-}
-
-@media screen and (max-width: 992px) {
-  #topLeft,
-  #topRight {
-    top: 20px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  #bottomLeft {
-    position: fixed;
-    width: 100%;
-  }
-
-  #mousePosition {
-    /* display: none; */
-  }
-
-  #bottomRight {
-    position: fixed;
-    bottom: 25px;
-  }
-
-  #attribution {
-    display: none;
-  }
-
-  .ol-scale-line {
-    max-width: 500px;
-  }
 }
 
 /* Mouse Position */
@@ -559,29 +529,6 @@ button.btn-close {
   font-size: 1rem;
 }
 
-@media screen and (max-width: 768px) {
-  #informationPopup,
-  #legendSection {
-    bottom: 55px;
-    margin: 0 auto;
-    width: 32rem;
-  }
-
-  #legendSection {
-    bottom: 70px;
-  }
-}
-
-@media screen and (max-width: 576px) {
-  #informationPopup,
-  #legendSection {
-    bottom: 0;
-    left: 0;
-    height: 44vh;
-    width: 100%;
-  }
-}
-
 /* Off canvas layer control */
 #layerControl {
   position: absolute;
@@ -708,6 +655,57 @@ button.btn-close {
   scrollbar-color: #888 #f0f0f0; /* Warna thumb dan track */
 }
 
+/* RESPONSIVE */
+@media screen and (max-width: 992px) {
+  #topLeft,
+  #topRight {
+    top: 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #bottomLeft {
+    position: fixed;
+    width: 100%;
+  }
+
+  #mousePosition {
+    /* display: none; */
+  }
+
+  #bottomRight {
+    position: fixed;
+    bottom: 25px;
+  }
+
+  #attribution {
+    display: none;
+  }
+
+  .ol-scale-line {
+    max-width: 500px;
+  }
+
+  .profile-video {
+    margin-top: 8rem;
+  }
+
+  .profile-video img {
+    width: 25rem;
+  }
+
+  #informationPopup,
+  #legendSection {
+    bottom: 55px;
+    margin: 0 auto;
+    width: 32rem;
+  }
+
+  #legendSection {
+    bottom: 70px;
+  }
+}
+
 @media screen and (max-width: 576px) {
   #layerControl {
     bottom: 52px;
@@ -741,5 +739,13 @@ button.btn-close {
     overflow-y: auto;
     min-height: 150px;
     max-height: calc(100vh - 360px);
+  }
+
+  #informationPopup,
+  #legendSection {
+    bottom: 0;
+    left: 0;
+    height: 44vh;
+    width: 100%;
   }
 }

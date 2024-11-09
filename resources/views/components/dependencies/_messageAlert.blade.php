@@ -31,5 +31,15 @@
             toastr["error"]("{{ session("error") }}", "Failed", optionsTostr)
         </script>
     @endif
+    @if (session("info"))
+        <script>
+            toastr["info"]("{{ session("info") }}", "Info", optionsTostr)
+        </script>
+    @endif
+    @if (session("status"))
+        <script>
+            toastr["info"]("{{ session("status") }}", "Info", optionsTostr)
+        </script>
+    @endif
 
 @endpush

@@ -47,7 +47,7 @@
         <!-- Favicon -->
         <link type="image/png" href={{ asset("assets/img/favicon.png") }} rel="icon">
 
-        @include("components.dependencies._messageAlert");
+        @include("components.dependencies._messageAlert")
         <style>
             p {
                 margin-bottom: 10px;

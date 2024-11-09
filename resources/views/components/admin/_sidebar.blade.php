@@ -24,26 +24,34 @@
                     <span class="link-title">Dasbor</span>
                 </a>
             </li>
-
-            <li class="nav-item nav-category">Utama</li>
-
-            <li class="nav-item {{ Request::is("dashboard/lahan*") ? "active" : "" }}">
-                <a class="nav-link" data-bs-toggle="collapse" href="#lahan" role="button" aria-expanded="false" aria-controls="lahan">
-                    <i class="link-icon" data-feather="layers"></i>
-                    <span class="link-title">Lahan/Kebun Petani</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+            <li class="nav-item {{ Request::is("peta") ? "active" : "" }}">
+                <a class="nav-link" href="/peta">
+                    <i class="link-icon" data-feather="map"></i>
+                    <span class="link-title">Peta</span>
                 </a>
-                <div class="{{ Request::is("dashboard/lahan*") ? "show" : "" }} collapse" id="lahan">
-                    <ul class="nav sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is("dashboard/lahan") ? "active" : "" }}" href={{ route("admin.lahan.index") }}>Semua data</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is("dashboard/lahan/data-masuk") ? "active" : "" }}" href={{ route("admin.lahan.indexNew") }}>Perminatan/Data baru</a>
-                        </li>
-                    </ul>
-                </div>
             </li>
+
+            @if (Auth::user()->role == "admin")
+                <li class="nav-item nav-category">Utama</li>
+
+                <li class="nav-item {{ Request::is("dashboard/lahan*") ? "active" : "" }}">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#lahan" role="button" aria-expanded="false" aria-controls="lahan">
+                        <i class="link-icon" data-feather="layers"></i>
+                        <span class="link-title">Lahan/Kebun Petani</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="{{ Request::is("dashboard/lahan*") ? "show" : "" }} collapse" id="lahan">
+                        <ul class="nav sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is("dashboard/lahan") ? "active" : "" }}" href={{ route("admin.lahan.index") }}>Semua data</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is("dashboard/lahan/data-masuk") ? "active" : "" }}" href={{ route("admin.lahan.indexNew") }}>Perminatan/Data baru</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
 
             {{-- <li class="nav-item {{ Request::is("blank") ? "active" : "" }}">
                 <a class="nav-link" href="/blank">
@@ -52,14 +60,16 @@
                 </a>
             </li> --}}
 
-            <li class="nav-item nav-category">Kelola</li>
+            @if (Auth::user()->role == "admin")
+                <li class="nav-item nav-category">Kelola</li>
 
-            <li class="nav-item {{ Request::is("dashboard/users*") ? "active" : "" }}">
-                <a class="nav-link" href={{ route("admin.users.index") }}>
-                    <i class="link-icon" data-feather="users"></i>
-                    <span class="link-title">Pengguna</span>
-                </a>
-            </li>
+                <li class="nav-item {{ Request::is("dashboard/users*") ? "active" : "" }}">
+                    <a class="nav-link" href={{ route("admin.users.index") }}>
+                        <i class="link-icon" data-feather="users"></i>
+                        <span class="link-title">Pengguna</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </div>
 </nav>

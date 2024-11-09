@@ -36,6 +36,6 @@ class LahanKebun extends Model
 
     public function reviewed()
     {
-        return $this->hasMany(LahanReviewed::class, 'lahan_kebun_id');
+        return $this->hasOne(LahanReviewed::class, 'lahan_kebun_id');
     }
 }

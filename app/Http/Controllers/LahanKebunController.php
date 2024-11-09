@@ -31,7 +31,7 @@ class LahanKebunController extends Controller
                     return number_format($data->jumlah_produksi, 3, ',', '.') . ' Kg';
                 })
                 ->editColumn('reviewed', function ($data) {
-                    return $data->reviewed[0]->reviewed ? '<span class="badge bg-success">Sudah Diperiksa</span>' : '<span class="badge bg-danger">Belum Diperiksa</span>';
+                    return $data->reviewed->reviewed ? '<span class="badge bg-success">Sudah Diperiksa</span>' : '<span class="badge bg-danger">Belum Diperiksa</span>';
                 })
                 ->editColumn('created_at', function ($data) {
                     return $data->created_at ? $data->created_at->format("d M Y H:i") : '-';

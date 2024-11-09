@@ -29,11 +29,16 @@
 
     <!-- Detail list -->
     <div class="card mb-3 p-3">
-        <div class="d-flex align-items-center mb-3 px-4 py-1">
+        <div class="px-4 py-1">
             <h4 class="me-2">Status</h4>
-            <span class="badge fs-5 {{ $data["lahan"]->reviewed[0]->reviewed ? "bg-success" : "bg-info" }} rounded-lg">
-                {!! $data["lahan"]->reviewed[0]->reviewed ? '<i data-feather="check-circle"></i> Sudah Diperiksa' : '<i data-feather="alert-circle"></i> Belum Diperiksa' !!}
+            <span class="badge fs-5 {{ $data["lahan"]->reviewed->reviewed ? "bg-success" : "bg-info" }} rounded-lg">
+                {!! $data["lahan"]->reviewed->reviewed ? '<i data-feather="check-circle"></i> Sudah Ditinjau' : '<i data-feather="alert-circle"></i> Belum Ditinjau' !!}
             </span>
+            @if (!empty($data["lahan"]->reviewed->reviewed))
+                <span>
+                    <p class="text-muted fs-6">{{ $data["lahan"]->reviewed->reviewed_at->format("d F Y H:i:s") }}</p>
+                </span>
+            @endif
         </div>
 
         <div class="table-responsive">
@@ -42,37 +47,37 @@
                     <tbody>
                         <!-- Row -->
                         <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 w-md-auto py-md-3 text-wrap px-4 py-1">Tgl. Input</th>
+                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Tgl. Input</th>
                             <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->created_at->format("d F Y H:i:s") }}</td>
                         </tr>
 
                         <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 w-md-auto py-md-3 text-wrap px-4 py-1">No. kebun</th>
+                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">No. kebun</th>
                             <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->no_kebun }}</td>
                         </tr>
 
                         <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 w-md-auto py-md-3 text-wrap px-4 py-1">Nama Pemilik</th>
+                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Nama Pemilik</th>
                             <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->nama_pemilik }}</td>
                         </tr>
 
                         <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 w-md-auto py-md-3 text-wrap px-4 py-1">Luasan</th>
+                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Luasan</th>
                             <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ number_format((float) $data["lahan"]->luas / 10000, 5, ",", ".") }} Ha</td>
                         </tr>
 
                         <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 w-md-auto py-md-3 text-wrap px-4 py-1">Jumlah Produksi sekali panen (Kg)</th>
+                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Jumlah Produksi sekali panen (Kg)</th>
                             <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ number_format((float) $data["lahan"]->jumlah_produksi, 3, ",", ".") }} Kg</td>
                         </tr>
 
                         <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 w-md-auto py-md-3 text-wrap px-4 py-1">Jenis Jagung</th>
+                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Jenis Jagung</th>
                             <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->jenis_jagung }}</td>
                         </tr>
 
                         <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 w-md-auto py-md-3 text-wrap px-4 py-1">Varietas Jagung</th>
+                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Varietas Jagung</th>
                             <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->varietas_jagung }}</td>
                         </tr>
 
@@ -127,7 +132,7 @@
 
     </div>
 
-    @if (!$data["lahan"]->reviewed[0]->reviewed)
+    @if (!$data["lahan"]->reviewed->reviewed)
         <div class="d-flex justify-content-end">
             <button class="btn btn-primary" id="verifikasiBtn" type="button" role="button">Verifikasi</button>
         </div>
@@ -168,6 +173,10 @@
             }
         });
 
+        $(".dropdown-toggle").click(function(e) {
+            $(this).toggleClass("show");
+            $(".dropdown-menu").toggleClass("show top-100");
+        });
         $("#layerControlBtn").click(function(e) {
             $("#layerControl").toggleClass("show");
         });
@@ -177,7 +186,11 @@
         $("#verifikasiBtn").click(function(e) {
             confirmAlert();
         });
+    </script>
+@endpush
 
+@push("javascript")
+    <script>
         function confirmAlert(dataId) {
             Swal.fire({
                 title: "Apakah Anda yakin ingin menyetujui data ini?",
