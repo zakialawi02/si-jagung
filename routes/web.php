@@ -35,7 +35,7 @@ Route::get('/kontak', function () {
 Route::get('/manfaat-jagung-bagi-kesehatan', function () {
     return view('pages.front.manfaatJagung');
 });
-Route::get('/cara-budidaya-jagung', function () {
+Route::get('/teknik-budidaya-jagung', function () {
     return view('pages.front.budidayaJagung');
 });
 Route::get('/kesehatan-jagung', function () {

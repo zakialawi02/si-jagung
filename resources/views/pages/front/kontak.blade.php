@@ -55,7 +55,7 @@
                 <div class="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
                     <div class="col-12 col-lg-6">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7904.4839249354045!2d111.61639928493351!3d-7.869730369777083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e79a7967dcfee75%3A0x7ea4ba09249258d9!2sBreeding%20Farm!5e0!3m2!1sen!2sid!4v1721634855670!5m2!1sen!2sid"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10129.962532174066!2d112.79374264927627!3d-7.278667019250665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fa13c4642591%3A0x894902aff3849275!2sDepartemen%20Teknik%20Geomatika!5e1!3m2!1sen!2sid!4v1731222375082!5m2!1sen!2sid"
                             style="border: 0" with="100%" width="100%" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                     <div class="col-12 col-lg-6">

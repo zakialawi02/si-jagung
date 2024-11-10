@@ -7,6 +7,14 @@
 @section("og_title", config("app.name"))
 @section("og_description", "")
 
+@push("css")
+    <style>
+        #produk h4 {
+            font-family: 'Bebas Neue';
+        }
+    </style>
+@endpush
+
 @section("content")
     <!-- Navbar -->
     @include("components.front._navbar")
@@ -16,11 +24,11 @@
         <section class="hero px-md-5 bg-white px-4" id="home">
             <div class="row flex-lg-row-reverse align-items-center justify-content-center g-5 py-6">
                 <div class="col-10 col-sm-8 col-lg-6">
-                    <img class="img-relative d-block mx-lg-auto img-fluid" src="./assets/img/vector-corn-stalks-illustration.png" width="500" width="700" height="500" loading="lazy" />
+                    <img class="img-relative d-block mx-lg-auto img-fluid" src="./assets/img/jagung home.jpg" alt="Jagung" width="700" height="500" loading="lazy" />
                 </div>
                 <div class="col-lg-6">
                     <h1 class="fw-bold lh-1 mb-3 text-start">Selamat Datang di Sistem Informasi Jagung</h1>
-                    <p class="lead">
+                    <p class="lead fw-normal">
                         Sistem informasi ini dirancang untuk memberikan pengetahuan komprehensif tentang jagung, mulai dari budidaya, pengolahan, hingga manfaatnya bagi kesehatan dan industri. Dengan
                         informasi yang disajikan, diharapkan dapat
                         membantu petani, peneliti, dan masyarakat umum untuk memahami lebih dalam tentang potensi jagung dan mengoptimalkan penggunaannya.
@@ -43,7 +51,7 @@
                     <div class="col-12 col-md-6 order-0 order-md-1 align-self-md-center">
                         <div class="row py-sm-5 py-xl-9 mt-md-10 justify-content-sm-center py-3">
                             <div class="col-12 col-sm-10">
-                                <h2 class="display-3 fw-bolder mb-4 text-white">Apakah Manfaat Jagung Bagi Kesehatan</h2>
+                                <h2 class="display-5 fw-bolder mb-4 text-white">Apakah Manfaat Jagung Bagi Kesehatan</h2>
                                 <div class="">
                                     <p class="fs-5 mb-5 text-white">Jagung adalah salah satu sumber pangan yang kaya akan nutrisi dan menawarkan berbagai manfaat bagi kesehatan.</p>
                                 </div>
@@ -82,7 +90,7 @@
                                     <p class="text-primary mb-4">Temukan peta lahan jagung yang terperinci dan lengkap, membantu Anda memetakan area pertanian dengan mudah dan efisien.</p>
                                 </div>
                                 <div class="mt-auto p-4 text-center">
-                                    <a class="fw-bold text-decoration-none link-secondary" href="./peta2">
+                                    <a class="fw-bold text-decoration-none link-secondary" href="/peta">
                                         Pelajari Lebih Lanjut
                                         <svg class="bi bi-arrow-right-short" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -98,7 +106,7 @@
                                     <p class="text-primary mb-4">Dapatkan panduan lengkap tentang cara budidaya jagung dari persiapan lahan hingga panen, memastikan hasil maksimal dan berkualitas.</p>
                                 </div>
                                 <div class="mt-auto p-4 text-center">
-                                    <a class="fw-bold text-decoration-none link-secondary" href="./cara-budidaya-jagung">
+                                    <a class="fw-bold text-decoration-none link-secondary" href="/teknik-budidaya-jagung">
                                         Pelajari Lebih Lanjut
                                         <svg class="bi bi-arrow-right-short" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -114,7 +122,7 @@
                                     <p class="text-primary mb-4">Pelajari cara menjaga kesehatan tanaman jagung Anda dengan tips dan trik untuk mencegah penyakit serta meningkatkan produktivitas.</p>
                                 </div>
                                 <div class="mt-auto p-4 text-center">
-                                    <a class="fw-bold text-decoration-none link-secondary" href="./kesehatan-jagung">
+                                    <a class="fw-bold text-decoration-none link-secondary" href="/kesehatan-jagung">
                                         Pelajari Lebih Lanjut
                                         <svg class="bi bi-arrow-right-short" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -130,57 +138,57 @@
         </section>
         <!-- Service End -->
 
-        <section class="bsb-service-6 py-xl-8 py-5">
+        <section class="bsb-service-6 py-xl-8 py-5" id="produk">
             <div class="container">
                 <div class="row justify-content-md-center">
                     <div class="col-12 col-md-10 col-lg-8 col-xl-7">
-                        <h2 class="display-5 mb-2 text-center">Produk dan Penggunaan Jagung</h2>
-                        <h3 class="fs-5 mb-md-3 text-secondary text-uppercase mb-2 text-center">Jagung memiliki berbagai kegunaan</h3>
+                        <h2 class="fs-1 mb-2 text-center">Produk dan Penggunaan Jagung</h2>
+                        <h3 class="fs-6 mb-md-3 text-secondary text-uppercase mb-2 text-center">Jagung memiliki berbagai kegunaan</h3>
                         <hr class="w-50 mb-xl-9 border-dark-subtle mx-auto mb-5">
                     </div>
                 </div>
             </div>
 
             <div class="container overflow-hidden">
-                <div class="row gy-4 gy-md-0 gx-xxl-5 align-items-lg-center justify-content-lg-center">
-                    <div class="col-12 col-md-4">
-                        <div class="card border-primary rounded-0 bg-transparent">
+                <div class="row gy-5 gy-md-0 gx-xxl-5 align-items-lg-center justify-content-lg-center">
+                    <div class="col-12 col-md-4 mb-2">
+                        <div class="card border-light rounded-0 bg-primary">
                             <div class="card-body text-center">
-                                <h4 class="mb-2">Pangan</h4>
-                                <p class="text-secondary mb-2">Jagung segar, tepung jagung, minyak jagung, sirup jagung fruktosa tinggi (HFCS).</p>
+                                <h4 class="text-light mb-2">Pangan</h4>
+                                <p class="fs-6 text-secondary mb-2">Jagung segar, tepung jagung, minyak jagung, sirup jagung fruktosa tinggi (HFCS).</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card border-primary rounded-0 bg-transparent">
+                    <div class="col-12 col-md-4 mb-2">
+                        <div class="card border-light rounded-0 bg-primary">
                             <div class="card-body text-center">
-                                <h4 class="mb-2">Pakan ternak</h4>
-                                <p class="text-secondary mb-2">Biji jagung, silase jagung.</p>
+                                <h4 class="text-light mb-2">Pakan ternak</h4>
+                                <p class="fs-6 text-secondary mb-2">Biji jagung, silase jagung.</p>
 
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card border-primary rounded-0 bg-transparent">
+                    <div class="col-12 col-md-4 mb-2">
+                        <div class="card border-light rounded-0 bg-primary">
                             <div class="card-body text-center">
-                                <h4 class="mb-2">Pakan ternak</h4>
-                                <p class="text-secondary mb-2">Bioetanol.</p>
+                                <h4 class="text-light mb-2">Bahan bakar</h4>
+                                <p class="fs-6 text-secondary mb-2">Bioetanol.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card border-primary rounded-0 bg-transparent">
+                    <div class="col-12 col-md-4 mb-2">
+                        <div class="card border-light rounded-0 bg-primary">
                             <div class="card-body text-center">
-                                <h4 class="mb-2">Industri</h4>
-                                <p class="text-secondary mb-2">Plastik biodegradable, tekstil, kosmetik, farmasi.</p>
+                                <h4 class="text-light mb-2">Industri</h4>
+                                <p class="fs-6 text-secondary mb-2">Plastik biodegradable, tekstil, kosmetik, farmasi.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card border-primary rounded-0 bg-transparent">
+                    <div class="col-12 col-md-4 mb-2">
+                        <div class="card border-light rounded-0 bg-primary">
                             <div class="card-body text-center">
-                                <h4 class="mb-2">Pati jagung</h4>
-                                <p class="text-secondary mb-2">Digunakan dalam berbagai produk makanan dan non-makanan.</p>
+                                <h4 class="text-light mb-2">Pati jagung</h4>
+                                <p class="fs-6 text-secondary mb-2">Digunakan dalam berbagai produk makanan dan non-makanan.</p>
                             </div>
                         </div>
                     </div>
@@ -261,43 +269,52 @@
             </div>
         </section>
 
+        <!-- Tanganan dan Prospek -->
         <section class="bg-light py-md-5 py-xl-8 mb-5 py-3">
             <div class="container p-3">
                 <div class="row gy-3 gy-md-5 gy-lg-0 align-items-center">
-                    <div class="col-12 col-lg-5">
-                        <h2 class="fs-3 text-primary mb-xl-3 mb-2">Tantangan dan Prospek Masa Depan</h2>
+                    <div class="col-12 col-lg-7">
+                        <h2 class="fs-2 text-primary mb-xl-3 mb-2">Tantangan dan Prospek Masa Depan</h2>
                         <h3 class="display-5 mb-xl-4 fs-5 mb-3">Beberapa tantangan dalam produksi jagung di Indonesia.</h3>
 
                         <p class="mt-5 pt-5">Namun, dengan inovasi teknologi seperti pengembangan varietas tahan kekeringan dan hama, serta peningkatan efisiensi produksi, jagung tetap memiliki prospek
                             yang
                             cerah sebagai komoditas strategis di Indonesia.</p>
                     </div>
-                    <div class="col-12 col-lg-7">
+                    <div class="col-12 col-lg-5">
                         <div class="row justify-content-xl-end">
                             <div class="col-12 col-xl-11">
-                                <div class="row gy-3 gy-md-4">
-                                    <div class="col-12 col-sm-6">
-                                        <div class="card h-50 justify-content-center align-items-center center mt-md-4 mb-4 mt-0 shadow">
-                                            <div class="card-body p-xxl-3 p-2 text-center">
-                                                <h5 class="mb-1">Perubahan iklim dan cuaca ekstrem</h5>
-                                            </div>
+                                <div class="row gy-1 mb-md-5 my-4">
+                                    <div class="d-flex">
+                                        <div>
+                                            <span class="btn btn-sm btn-primary bsb-btn-circle pe-none me-3">1</span>
                                         </div>
-                                        <div class="card h-50 justify-content-center align-items-center shadow">
-                                            <div class="card-body p-xxl-3 p-2 text-center">
-                                                <h5 class="mb-1">Serangan hama dan penyakit</h5>
-                                            </div>
+                                        <div>
+                                            <h4 class="text-primary mb-3">Perubahan iklim dan cuaca ekstrem</h4>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-6">
-                                        <div class="card h-50 justify-content-center align-items-center mt-lg-6 mt-xxl-8 mb-4 shadow">
-                                            <div class="card-body p-xxl-3 p-2 text-center">
-                                                <h5 class="mb-1">Keterbatasan lahan produktif</h5>
-                                            </div>
+                                    <div class="d-flex">
+                                        <div>
+                                            <span class="btn btn-sm btn-primary bsb-btn-circle pe-none me-3">2</span>
                                         </div>
-                                        <div class="card h-50 justify-content-center align-items-center shadow">
-                                            <div class="card-body p-xxl-3 p-2 text-center">
-                                                <h5 class="mb-1">Fluktuasi harga</h5>
-                                            </div>
+                                        <div>
+                                            <h4 class="text-primary mb-3">Serangan hama dan penyakit</h4>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div>
+                                            <span class="btn btn-sm btn-primary bsb-btn-circle pe-none me-3">3</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-primary mb-3">Keterbatasan lahan produktif</h4>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div>
+                                            <span class="btn btn-sm btn-primary bsb-btn-circle pe-none me-3">4</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-primary mb-3">Fluktuasi harga</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -316,7 +333,7 @@
                 <div class="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
                     <div class="col-12 col-lg-6">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7904.4839249354045!2d111.61639928493351!3d-7.869730369777083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e79a7967dcfee75%3A0x7ea4ba09249258d9!2sBreeding%20Farm!5e0!3m2!1sen!2sid!4v1721634855670!5m2!1sen!2sid"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10129.962532174066!2d112.79374264927627!3d-7.278667019250665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fa13c4642591%3A0x894902aff3849275!2sDepartemen%20Teknik%20Geomatika!5e1!3m2!1sen!2sid!4v1731222375082!5m2!1sen!2sid"
                             style="border: 0" with="100%" width="100%" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                     <div class="col-12 col-lg-6">
