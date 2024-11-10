@@ -199,5 +199,4 @@
     <script src={{ asset("assets/js/dataNDVI.js") }}></script>
     <script src={{ asset("assets/js/dataNDMI.js") }}></script>
     <script src={{ asset("assets/js/dataMETHANE.js") }}></script>
-    <script src={{ asset("assets/js/dataOtherLayers.js") }}></script>
 @endpush

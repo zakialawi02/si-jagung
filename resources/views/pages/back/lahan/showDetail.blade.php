@@ -536,11 +536,15 @@
                     TRANSPARENT: true,
                     featureID: "lahan_kebuns.{{ $data["lahan"]->id }}",
                     // CQL_FILTER: "featureid='lahan_kebuns.9d72ba0c-9e64-4bb9-bf08-002fc723a719'" // filter hanya data dengan attribute property table
+                    // CQL_FILTER: "id='{{ $data["lahan"]->id }}'" // filter hanya data dengan attribute property table
+
                 },
                 serverType: 'geoserver',
                 crossOrigin: "anonymous",
             }),
             visible: true
+            opacity: 0.8,
+            zIndex: 20
         });
         map.addLayer(lahanKebunLayer);
 

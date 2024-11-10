@@ -313,6 +313,26 @@ map.addLayer(methaneLayers);
 
 const lahanLayers = new LayerGroup({
     title: "Lahan Kebun",
+    layers: [
+        new TileLayer({
+            source: new TileWMS({
+                title: "Lahan Kebun Jagung",
+                url: "http://localhost:8080/geoserver/wms",
+                params: {
+                    LAYERS: "si-jagung:view_lahan",
+                    TILED: true,
+                    FORMAT: "image/png",
+                    TRANSPARENT: true,
+                    CQL_FILTER: "reviewed='true'", // filter hanya data dengan attribute property table
+                },
+                serverType: "geoserver",
+                crossOrigin: "anonymous",
+            }),
+            visible: true,
+            opacity: 0.8,
+            zIndex: 20,
+        }),
+    ],
 });
 map.addLayer(lahanLayers);
 
@@ -361,11 +381,6 @@ methaneWMSLayers.map(({ title, name, visible, zIndex }) => {
     methaneLayers.getLayers().push(layer);
 });
 
-lahanWMSLayers.map(({ title, name, visible, zIndex }) => {
-    const layer = createWMSLayer(title, name, visible, zIndex);
-    lahanLayers.getLayers().push(layer);
-});
-
 map.on("singleclick", eventClickMap);
 
 function eventClickMap(evt) {
@@ -389,6 +404,7 @@ function eventClickMap(evt) {
 
     // Combine layers from both ndviLayers and ndmiLayers
     const layersArray = [
+        ...lahanLayers.getLayers().getArray(),
         ...ndviLayers.getLayers().getArray(),
         ...ndmiLayers.getLayers().getArray(),
         ...methaneLayers.getLayers().getArray(),
