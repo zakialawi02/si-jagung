@@ -36,7 +36,7 @@
             </span>
             @if (!empty($data["lahan"]->reviewed->reviewed))
                 <span>
-                    <p class="text-muted fs-6">{{ $data["lahan"]->reviewed->reviewed_at->format("d F Y H:i:s") }}</p>
+                    <p class="text-muted fs-6">{{ $data["lahan"]->reviewed->reviewed_at?->format("d F Y H:i:s") ?? "datetime : error" }}</p>
                 </span>
             @endif
         </div>

@@ -323,6 +323,7 @@ const lahanLayers = new LayerGroup({
                     TILED: true,
                     FORMAT: "image/png",
                     TRANSPARENT: true,
+                    TIMESTAMP: new Date().getTime(),
                     CQL_FILTER: "reviewed='true'", // filter hanya data dengan attribute property table
                 },
                 serverType: "geoserver",
