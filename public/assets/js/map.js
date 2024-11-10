@@ -474,17 +474,41 @@ function eventClickMap(evt) {
             highlightClicked(dataArray); // Highlight clicked features
 
             // Display information properties layer
-            $("#informationPopupContent").html(
-                `<pre>Raw : <br> ${JSON.stringify(
-                    mergedPropertiesFeatures,
-                    null,
-                    2
-                )}</pre>`
-            );
+            renderTable(mergedPropertiesFeatures, "#informationPopupContent");
         } else {
             $("#informationPopupContent").html(`No features found.`);
         }
     })();
+}
+
+/**
+ * Render a table from a given array of objects.
+ * @param {array} data Array of objects to render as a table.
+ * @param {string} target ID of <div> element to render the table in.
+ */
+function renderTable(data, target) {
+    let table = `<table border="1" style="width: 100%; border-collapse: collapse;">
+                   <thead>
+                     <tr>
+                       <th>Property</th>
+                       <th>Value</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+
+    // Iterasi setiap properti dalam objek JSON pertama (karena hanya ada satu objek dalam array)
+    for (const [key, value] of Object.entries(data[0])) {
+        if (key === "reviewed" || key === "reviewed_at") continue;
+        table += `<tr>
+                  <td>${key}</td>
+                  <td>${value !== null ? value : "-"}</td>
+                </tr>`;
+    }
+
+    table += `</tbody></table>`;
+
+    // Menyisipkan tabel ke dalam elemen dengan ID informationPopupContent
+    $(target).html(table);
 }
 
 const checkboxesLayer = document.querySelectorAll(".layer .form-check-input");

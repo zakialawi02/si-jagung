@@ -7,6 +7,18 @@
 @section("og_title", config("app.name"))
 @section("og_description", "")
 
+@push("css")
+    <style>
+        table {
+            word-wrap: break-word;
+            /* word-break: break-all; */
+        }
+
+        td {
+            border: 1px solid #434343 !important;
+        }
+    </style>
+@endpush
 
 @section("content")
     <main class="pt-6">
