@@ -58,8 +58,8 @@
 
                                 <div class="d-flex align-items-center py-2 pt-4">
                                     <a class="btn btn-secondary py-sm-3 px-sm-5 me-5 px-3" href="./manfaat-jagung-bagi-kesehatan">Selengkapnya</a>
-                                    <a class="btn-play glightbox3" data-gallery="video1" data-type="video" type="button" href="https://youtu.be/V7VUoXoAisA"><span class="mt-1"></span></a>
-                                    <h6 class="d-none d-sm-block m-0 ms-4 text-white">Watch Video</h6>
+                                    {{-- <a class="btn-play glightbox3" data-gallery="video1" data-type="video" type="button" href="https://youtu.be/V7VUoXoAisA"><span class="mt-1"></span></a>
+                                    <h6 class="d-none d-sm-block m-0 ms-4 text-white">Watch Video</h6> --}}
                                 </div>
                             </div>
                         </div>
@@ -277,7 +277,7 @@
                         <h2 class="fs-2 text-primary mb-xl-3 mb-2">Tantangan dan Prospek Masa Depan</h2>
                         <h3 class="display-5 mb-xl-4 fs-5 mb-3">Beberapa tantangan dalam produksi jagung di Indonesia.</h3>
 
-                        <p class="mt-5 pt-5">Namun, dengan inovasi teknologi seperti pengembangan varietas tahan kekeringan dan hama, serta peningkatan efisiensi produksi, jagung tetap memiliki prospek
+                        <p class="mt-3 pt-3">Namun, dengan inovasi teknologi seperti pengembangan varietas tahan kekeringan dan hama, serta peningkatan efisiensi produksi, jagung tetap memiliki prospek
                             yang
                             cerah sebagai komoditas strategis di Indonesia.</p>
                     </div>

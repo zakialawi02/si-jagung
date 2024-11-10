@@ -43,6 +43,8 @@
         <!-- Bootstrap CSS -->
         <link href={{ asset("assets/css/bootstrap.min.css") }} rel="stylesheet" />
 
+        @stack("css")
+
         <link href={{ asset("assets/css/styleBS.css") }} rel="stylesheet" />
 
         <style>
@@ -55,7 +57,6 @@
             }
         </style>
 
-        @stack("css")
 
         <!-- Scripts -->
         @vite(["resources/css/app.css", "resources/js/app.js"])

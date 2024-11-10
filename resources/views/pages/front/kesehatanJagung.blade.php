@@ -147,7 +147,7 @@
             <div class="container">
                 <div class="row gy-4 gy-lg-0 align-items-lg-center">
                     <div class="col-12 col-lg-6">
-                        <img class="img-fluid border-dark rounded border" src="./assets/img/corn farm.jpg" alt="About Us" loading="lazy">
+                        <img class="img-fluid border-dark rounded border" src="/assets/img/siklus jagung.png" alt="About Us" loading="lazy">
                     </div>
                     <div class="col-12 col-lg-6 col-xxl-6">
                         <div class="row justify-content-lg-end">

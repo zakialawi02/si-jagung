@@ -7,6 +7,10 @@
 @section("og_title", config("app.name"))
 @section("og_description", "")
 
+@push("css")
+    <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet" />
+@endpush
+
 @section("content")
     <!-- Navbar -->
     @include("components.front._navbar")
@@ -48,6 +52,34 @@
             </div>
         </section>
         <!-- Profile End -->
+
+        <section class="container-fluid bg-dark align-content-center p-0" id="about">
+            <div class="row g-0 flex-column-reverse flex-lg-row">
+                <div class="hero-bg col-lg-6 order-lg-0 order-1 p-0">
+                    <div class="h-100 d-flex flex-column justify-content-center px-3 py-5">
+                        <h2 class="fs-1 text-light mb-5">Dokumentasi Tim Pengabdian Masyarakat SIJAGUNG</h2>
+                        <div class="d-flex align-items-center pt-4">
+                            <a class="btn-play glightbox3" data-gallery="video1" data-type="video" type="button" href="https://youtu.be/V7VUoXoAisA"> <span class="mt-1"></span></a>
+                            <h6 class="d-none d-sm-block m-0 ms-4 text-white">Watch Video</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-0 order-lg-1">
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img src={{ asset("assets/img/dokumentasi/IMG_0902-min.jpg") }} alt="" /></div>
+                            <div class="swiper-slide"><img src={{ asset("assets/img/dokumentasi/DSCF4078-min.JPG") }} alt="" /></div>
+                            <div class="swiper-slide"><img src={{ asset("assets/img/dokumentasi/DSCF4068-min.jpg") }} alt="" /></div>
+                            <div class="swiper-slide"><img src={{ asset("assets/img/dokumentasi/DSCF4055-min.jpg") }} alt="" /></div>
+                            <div class="swiper-slide"><img src={{ asset("assets/img/dokumentasi/IMG_0990-min.JPG") }} alt="" /></div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Contact Start -->
         <section class="py-md-5 align-items-center py-3" id="contact">
@@ -117,3 +149,37 @@
         @include("components.front._footer")
     </main>
 @endsection
+
+@push("javascript")
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        const swiper = new Swiper(".mySwiper", {
+            direction: "vertical",
+            slidesPerView: 1,
+            spaceBetween: 0,
+            loop: true,
+            mousewheel: false,
+            grabCursor: false,
+            allowTouchMove: false,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                1023: {
+                    grabCursor: true,
+                    allowTouchMove: true,
+                },
+            },
+        });
+    </script>
+@endpush
