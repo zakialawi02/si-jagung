@@ -528,7 +528,7 @@
         const lahanKebunLayer = new TileLayer({
             source: new TileWMS({
                 title: "Lahan Kebun Jagung",
-                url: "http://localhost:8080/geoserver/wms",
+                url: "https://geoserver.sijagungkita.com/geoserver/wms",
                 params: {
                     LAYERS: "si-jagung:lahan_kebuns",
                     TILED: true,
@@ -542,7 +542,7 @@
                 serverType: 'geoserver',
                 crossOrigin: "anonymous",
             }),
-            visible: true
+            visible: true,
             opacity: 0.8,
             zIndex: 20
         });
