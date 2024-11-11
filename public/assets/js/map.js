@@ -511,7 +511,7 @@ function renderTable(data, target) {
                               <td>${key}</td>
                               <td>${value !== null ? value : "-"}</td>
                             </tr>`;
-                    return;
+                    break;
                 } else if (key === "BLUE_BAND_") {
                     table += `<tr>
                               <td>${key}</td>
@@ -521,7 +521,7 @@ function renderTable(data, target) {
                                       : "-"
                               }</td>
                             </tr>`;
-                    return;
+                    break;
                 } else if (key === "RED_BAND") {
                     table += `<tr>
                               <td>${key}</td>
@@ -531,7 +531,7 @@ function renderTable(data, target) {
                                       : "-"
                               }</td>
                             </tr>`;
-                    return;
+                    break;
                 }
             }
         } else {
