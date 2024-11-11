@@ -503,36 +503,49 @@ function renderTable(data, target) {
             dataProp?.BLUE_BAND_ ||
             dataProp?.GREEN_BAND ||
             dataProp?.RED_BAND ||
-            dataProp?.GREY_BAND
+            dataProp?.GRAY_INDEX
         ) {
-            for (const [key, value] of Object.entries(dataProp)) {
-                if (key === "GREY_BAND") {
-                    table += `<tr>
-                              <td>Index</td>
-                              <td>${value !== null ? value : "-"}</td>
-                            </tr>`;
-                    break;
-                } else if (key === "BLUE_BAND_" && key === "RED_BAND") {
-                    table += `<tr>
+            console.log(dataProp.hasOwnProperty("BLUE_BAND_"));
+
+            if (dataProp.hasOwnProperty("GRAY_INDEX")) {
+                table += `<tr>
                               <td>Index</td>
                               <td>${
-                                  value !== null
-                                      ? ((value - 32767.5) / 32767.5).toFixed(1)
+                                  dataProp?.GRAY_INDEX !== null
+                                      ? dataProp?.GRAY_INDEX
                                       : "-"
                               }</td>
                             </tr>`;
-                    break;
-                } else if (key === "RED_BAND" && key === "BLUE_BAND") {
-                    table += `<tr>
+            } else if (
+                dataProp.hasOwnProperty("BLUE_BAND_") &&
+                dataProp.hasOwnProperty("RED_BAND")
+            ) {
+                table += `<tr>
                               <td>Index</td>
                               <td>${
-                                  value !== null
-                                      ? ((value - 32767.5) / 32767.5).toFixed(1)
+                                  dataProp?.BLUE_BAND_ !== null
+                                      ? (
+                                            (dataProp?.BLUE_BAND_ - 32767.5) /
+                                            32767.5
+                                        ).toFixed(1)
                                       : "-"
                               }</td>
                             </tr>`;
-                    break;
-                }
+            } else if (
+                dataProp.hasOwnProperty("RED_BAND") &&
+                dataProp.hasOwnProperty("BLUE_BAND")
+            ) {
+                table += `<tr>
+                              <td>Index</td>
+                              <td>${
+                                  dataProp?.RED_BAND !== null
+                                      ? (
+                                            (dataProp?.RED_BAND - 32767.5) /
+                                            32767.5
+                                        ).toFixed(1)
+                                      : "-"
+                              }</td>
+                            </tr>`;
             }
         } else {
             for (const [key, value] of Object.entries(dataProp)) {
