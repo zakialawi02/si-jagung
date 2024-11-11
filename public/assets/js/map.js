@@ -498,12 +498,48 @@ function renderTable(data, target) {
                    <tbody>`;
 
     // Iterasi setiap properti dalam objek JSON pertama (karena hanya ada satu objek dalam array)
-    for (const [key, value] of Object.entries(data[0])) {
-        if (key === "reviewed" || key === "reviewed_at") continue;
-        table += `<tr>
-                  <td>${key}</td>
-                  <td>${value !== null ? value : "-"}</td>
-                </tr>`;
+    for (const dataProp of data) {
+        if (
+            dataProp?.BLUE_BAND ||
+            dataProp?.GREEN_BAND ||
+            dataProp?.RED_BAND ||
+            dataProp?.GREY_BAND
+        ) {
+            for (const [key, value] of Object.entries(dataProp)) {
+                if (key === "GREY_BAND") {
+                    table += `<tr>
+                              <td>${key}</td>
+                              <td>${value !== null ? value : "-"}</td>
+                            </tr>`;
+                } else if (key === "BLUE_BAND_") {
+                    table += `<tr>
+                              <td>${key}</td>
+                              <td>${
+                                  value !== null
+                                      ? (value - 32767.5) / 32767.5
+                                      : "-"
+                              }</td>
+                            </tr>`;
+                } else if (key === "RED_BAND") {
+                    table += `<tr>
+                              <td>${key}</td>
+                              <td>${
+                                  value !== null
+                                      ? (value - 32767.5) / 32767.5
+                                      : "-"
+                              }</td>
+                            </tr>`;
+                }
+            }
+        } else {
+            for (const [key, value] of Object.entries(dataProp)) {
+                if (key === "reviewed" || key === "reviewed_at") continue;
+                table += `<tr>
+                          <td>${key}</td>
+                          <td>${value !== null ? value : "-"}</td>
+                        </tr>`;
+            }
+        }
     }
 
     table += `</tbody></table>`;
