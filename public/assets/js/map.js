@@ -511,24 +511,27 @@ function renderTable(data, target) {
                               <td>${key}</td>
                               <td>${value !== null ? value : "-"}</td>
                             </tr>`;
+                    return;
                 } else if (key === "BLUE_BAND_") {
                     table += `<tr>
                               <td>${key}</td>
                               <td>${
                                   value !== null
-                                      ? (value - 32767.5) / 32767.5
+                                      ? ((value - 32767.5) / 32767.5).toFixed(1)
                                       : "-"
                               }</td>
                             </tr>`;
+                    return;
                 } else if (key === "RED_BAND") {
                     table += `<tr>
                               <td>${key}</td>
                               <td>${
                                   value !== null
-                                      ? (value - 32767.5) / 32767.5
+                                      ? ((value - 32767.5) / 32767.5).toFixed(1)
                                       : "-"
                               }</td>
                             </tr>`;
+                    return;
                 }
             }
         } else {
