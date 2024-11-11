@@ -500,7 +500,7 @@ function renderTable(data, target) {
     // Iterasi setiap properti dalam objek JSON pertama (karena hanya ada satu objek dalam array)
     for (const dataProp of data) {
         if (
-            dataProp?.BLUE_BAND ||
+            dataProp?.BLUE_BAND_ ||
             dataProp?.GREEN_BAND ||
             dataProp?.RED_BAND ||
             dataProp?.GREY_BAND
