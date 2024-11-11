@@ -508,13 +508,13 @@ function renderTable(data, target) {
             for (const [key, value] of Object.entries(dataProp)) {
                 if (key === "GREY_BAND") {
                     table += `<tr>
-                              <td>${key}</td>
+                              <td>Index</td>
                               <td>${value !== null ? value : "-"}</td>
                             </tr>`;
                     break;
-                } else if (key === "BLUE_BAND_") {
+                } else if (key === "BLUE_BAND_" && key === "RED_BAND") {
                     table += `<tr>
-                              <td>${key}</td>
+                              <td>Index</td>
                               <td>${
                                   value !== null
                                       ? ((value - 32767.5) / 32767.5).toFixed(1)
@@ -522,9 +522,9 @@ function renderTable(data, target) {
                               }</td>
                             </tr>`;
                     break;
-                } else if (key === "RED_BAND") {
+                } else if (key === "RED_BAND" && key === "BLUE_BAND") {
                     table += `<tr>
-                              <td>${key}</td>
+                              <td>Index</td>
                               <td>${
                                   value !== null
                                       ? ((value - 32767.5) / 32767.5).toFixed(1)
