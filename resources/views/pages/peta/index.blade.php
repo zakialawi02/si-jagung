@@ -192,6 +192,10 @@
                                     <label class="form-label m-0" for="varietas_jagung" style="font-size: 14px">varietas jagung</label>
                                     <input class="form-control form-control-sm" id="varietas_jagung" name="varietas_jagung" type="text" placeholder="Masukkan varietas jagung" />
                                 </div>
+                                <div class="mb-1">
+                                    <label class="form-label m-0" for="kontak" style="font-size: 14px">Kontak</label>
+                                    <input class="form-control form-control-sm" id="kontak" name="kontak" type="text" placeholder="Masukkan yang dapat dihubungi" />
+                                </div>
 
                                 <div class="mb-1 mt-2">
                                     <button class="btn btn-sm btn-primary" id="saveFeatureProperties" type="submit" role="button">Simpan</button>

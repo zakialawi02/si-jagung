@@ -15,8 +15,8 @@ return new class extends Migration
             RETURNS TRIGGER AS
             $$
             BEGIN
-                INSERT INTO lahan_kebuns (id, user_id, no_kebun, nama_pemilik, luas, jumlah_produksi, jenis_jagung, varietas_jagung, geom, created_at, updated_at)
-                VALUES (NEW.id, NEW.user_id, NEW.no_kebun, NEW.nama_pemilik, NEW.luas, NEW.jumlah_produksi, NEW.jenis_jagung, NEW.varietas_jagung, NEW.geom, NOW(), NOW());
+                INSERT INTO lahan_kebuns (id, user_id, no_kebun, nama_pemilik, luas, jumlah_produksi, jenis_jagung, varietas_jagung, kontak, geom, created_at, updated_at)
+                VALUES (NEW.id, NEW.user_id, NEW.no_kebun, NEW.nama_pemilik, NEW.luas, NEW.jumlah_produksi, NEW.jenis_jagung, NEW.varietas_jagung, NEW.kontak, NEW.geom, NOW(), NOW());
 
                 INSERT INTO lahan_revieweds (lahan_kebun_id, reviewed, reviewed_at, created_at, updated_at)
                 VALUES (NEW.id, NEW.reviewed, NEW.reviewed_at, NOW(), NOW());
@@ -38,6 +38,7 @@ return new class extends Migration
                     jumlah_produksi = NEW.jumlah_produksi,
                     jenis_jagung = NEW.jenis_jagung,
                     varietas_jagung = NEW.varietas_jagung,
+                    kontak = NEW.kontak,
                     geom = NEW.geom,
                     updated_at = NOW()
                 WHERE id = OLD.id;

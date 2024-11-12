@@ -21,6 +21,7 @@ class LahanKebun extends Model
         'jumlah_produksi',
         'jenis_jagung',
         'varietas_jagung',
+        'kontak',
         'geom',
     ];
 

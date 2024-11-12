@@ -29,74 +29,89 @@
 
     <!-- Detail list -->
     <div class="card mb-3 p-3">
-        <div class="px-4 py-1">
-            <h4 class="me-2">Status</h4>
-            <span class="badge fs-5 {{ $data["lahan"]->reviewed->reviewed ? "bg-success" : "bg-info" }} rounded-lg">
-                {!! $data["lahan"]->reviewed->reviewed ? '<i data-feather="check-circle"></i> Sudah Ditinjau' : '<i data-feather="alert-circle"></i> Belum Ditinjau' !!}
-            </span>
-            @if (!empty($data["lahan"]->reviewed->reviewed))
-                <span>
-                    <p class="text-muted fs-6">{{ $data["lahan"]->reviewed->reviewed_at?->format("d F Y H:i:s") ?? "datetime : error" }}</p>
-                </span>
-            @endif
-        </div>
+        <form id="lahanForm" action="{{ route("admin.lahan.update", $data["lahan"]->id) }}" method="POST">
+            @csrf
+            @method("PUT")
 
-        <div class="table-responsive">
-            <div class="rounded bg-white shadow">
-                <table class="table-borderless table">
-                    <tbody>
-                        <!-- Row -->
-                        <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Tgl. Input</th>
-                            <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->created_at->format("d F Y H:i:s") }}</td>
-                        </tr>
-
-                        <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">No. kebun</th>
-                            <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->no_kebun }}</td>
-                        </tr>
-
-                        <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Nama Pemilik</th>
-                            <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->nama_pemilik }}</td>
-                        </tr>
-
-                        <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Luasan</th>
-                            <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ number_format((float) $data["lahan"]->luas / 10000, 5, ",", ".") }} Ha</td>
-                        </tr>
-
-                        <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Jumlah Produksi sekali panen (Kg)</th>
-                            <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ number_format((float) $data["lahan"]->jumlah_produksi, 3, ",", ".") }} Kg</td>
-                        </tr>
-
-                        <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Jenis Jagung</th>
-                            <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->jenis_jagung }}</td>
-                        </tr>
-
-                        <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Varietas Jagung</th>
-                            <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->varietas_jagung }}</td>
-                        </tr>
-
-                        <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Kontak</th>
-                            <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->kontak }}</td>
-                        </tr>
-
-                        <tr class="border-bottom d-flex flex-column flex-md-row">
-                            <th class="fw-semibold w-25 py-md-3 text-wrap px-4 py-1" style="min-width: 15rem">Pengirim</th>
-                            <td class="text-dark w-100 py-md-3 pb-md-2 text-wrap px-4 py-1">{{ $data["lahan"]->user->name }} | {{ $data["lahan"]->user->username }} | {{ $data["lahan"]->user->email }}
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
+            <div class="d-flex justify-content-end align-items-center p-1 px-2">
+                <button class="btn btn-primary" form="lahanForm" type="submit">Simpan</button>
             </div>
 
-        </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="tgl_input">Tgl. Input</label>
+                <input class="form-control" id="tgl_input" type="text" value="{{ $data["lahan"]->created_at->format("d F Y H:i:s") }}" readonly disabled>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="no_kebun">No. kebun</label>
+                <input class="form-control" id="no_kebun" name="no_kebun" type="text" value="{{ $data["lahan"]->no_kebun }}" required>
+                @error("no_kebun")
+                    <span class="text-danger" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="nama_pemilik">Nama Pemilik</label>
+                <input class="form-control" id="nama_pemilik" name="nama_pemilik" type="text" value="{{ $data["lahan"]->nama_pemilik }}" required>
+                @error("nama_pemilik")
+                    <span class="text-danger" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="luas">Luasan (Ha)</label>
+                <input class="form-control" id="luas" name="luas" type="number" value="{{ $data["lahan"]->luas / 10000 }}" readonly disabled>
+                @error("luas")
+                    <span class="text-danger" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="jumlah_produksi">Jumlah Produksi sekali panen (Kg)</label>
+                <input class="form-control" id="jumlah_produksi" name="jumlah_produksi" type="number" value="{{ $data["lahan"]->jumlah_produksi }}" step="0.001" required>
+                @error("jumlah_produksi")
+                    <span class="text-danger" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="jenis_jagung">Jenis Jagung</label>
+                <select class="form-select" id="jenis_jagung" name="jenis_jagung" required>
+                    <option value="pakan" @if ($data["lahan"]->jenis_jagung === "pakan") selected @endif>Pakan</option>
+                    <option value="konsumsi" @if ($data["lahan"]->jenis_jagung === "konsumsi") selected @endif>Konsumsi</option>
+                </select>
+                @error("jenis_jagung")
+                    <span class="text-danger" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="varietas_jagung">Varietas Jagung</label>
+                <input class="form-control" id="varietas_jagung" name="varietas_jagung" type="text" value="{{ $data["lahan"]->varietas_jagung }}" required>
+                @error("varietas_jagung")
+                    <span class="text-danger" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="kontak">Kontak</label>
+                <input class="form-control" id="kontak" name="kontak" type="text" value="{{ $data["lahan"]->kontak }}" required>
+                @error("kontak")
+                    <span class="text-danger" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Pengirim</label>
+                <input class="form-control" type="text" value="{{ $data["lahan"]->user->name }} | {{ $data["lahan"]->user->username }} | {{ $data["lahan"]->user->email }}" readonly disabled>
+            </div>
+        </form>
     </div>
 
     <!-- Map -->
@@ -182,6 +197,12 @@
 
 @push("javascript")
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $(".dropdown-toggle").click(function(e) {
             $(this).toggleClass("show");
             $(".dropdown-menu").toggleClass("show top-100");

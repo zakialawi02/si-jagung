@@ -1,11 +1,11 @@
 @extends("layouts.appFront")
 
-@section("title", "Budidaya Jagung | " . config("app.name"))
-@section("meta_description", "")
-@section("meta_keywords", "")
+@section("title", "Kontak dan Tim | " . config("app.name"))
+@section("meta_description", "Kontak dan Tim Pengabdian Masyarakat SIJAGUNG: PEMANFAATAN SISTEM INFORMASI GEOGRAFIS BERBASIS WEB UNTUK RANTAI PRODUKSI JAGUNG")
+@section("meta_keywords", "pemanfaatan sistem informasi geografis, rantai produksi jagung, tim pengabdian masyarakat, sijagung")
 
 @section("og_title", config("app.name"))
-@section("og_description", "")
+@section("og_description", "Kontak dan Tim Pengabdian Masyarakat SIJAGUNG: PEMANFAATAN SISTEM INFORMASI GEOGRAFIS BERBASIS WEB UNTUK RANTAI PRODUKSI JAGUNG")
 
 @push("css")
     <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet" />

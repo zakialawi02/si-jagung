@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('jumlah_produksi', 25, 3)->nullable();
             $table->string('jenis_jagung');
             $table->string('varietas_jagung')->nullable();
+            $table->string('kontak')->nullable();
             $table->geometry('geom', 4326);
             $table->timestamps();
 

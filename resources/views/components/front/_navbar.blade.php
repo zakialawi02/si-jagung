@@ -12,6 +12,7 @@
             <a class="nav-item nav-link {{ Request::is("/") ? "active" : "" }}" href="./#home">Home</a>
             <a class="nav-item nav-link {{ Request::is("teknik-budidaya-jagung") ? "active" : "" }}" href="/teknik-budidaya-jagung">Tekni Budidaya Jagung</a>
             <a class="nav-item nav-link {{ Request::is("kesehatan-jagung") ? "active" : "" }}" href="/kesehatan-jagung">Kesehatan Jagung</a>
+            <a class="nav-item nav-link {{ Request::is("daftar-lahan") ? "active" : "" }}" href="/daftar-lahan">Data Kebun</a>
             <a class="nav-item nav-link {{ Request::is("peta") ? "active" : "" }}" href="/peta">Peta</a>
             <a class="nav-item nav-link {{ Request::is("kontak") ? "active" : "" }}" href="/kontak">Kontak</a>
 

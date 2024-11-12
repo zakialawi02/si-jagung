@@ -43,6 +43,7 @@ Route::get('/kesehatan-jagung', function () {
 });
 
 Route::get('/peta', [PetaController::class, 'index'])->name('peta.index');
+Route::get('/daftar-lahan', [LahanKebunController::class, 'indexList'])->name('lahan.list');
 
 Route::prefix('dashboard')->as('admin.')->group(function () {
     // route auth only admin
@@ -56,6 +57,8 @@ Route::prefix('dashboard')->as('admin.')->group(function () {
     // route auth all
     Route::group(['middleware' => ['auth', 'role:admin,user']], function () {
         Route::get('/lahan/lihat/{lahan}', [LahanKebunController::class, 'show'])->name('lahan.show');
+        Route::get('/lahan/edit/{lahan}', [LahanKebunController::class, 'edit'])->name('lahan.edit');
+        Route::put('/lahan/edit/{lahan}', [LahanKebunController::class, 'update'])->name('lahan.update');
         Route::delete('/lahan/{lahan}', [LahanKebunController::class, 'destroy'])->name('lahan.destroy');
     });
 });

@@ -1,19 +1,23 @@
 @extends("layouts.appFront")
 
 @section("title", config("app.name"))
-@section("meta_description", "")
-@section("meta_keywords", "")
+@section("meta_description",
+    "Sistem informasi ini dirancang untuk memberikan pengetahuan komprehensif tentang jagung, mulai dari budidaya, pengolahan, hingga manfaatnya bagi kesehatan dan industri.
+    Dengan informasi yang disajikan, diharapkan dapat membantu petani, peneliti, dan masyarakat umum untuk memahami lebih dalam tentang potensi jagung dan mengoptimalkan penggunaannya.")
+@section("meta_keywords", "pemanfaatan sistem informasi geografis, rantai produksi jagung, tim pengabdian masyarakat, sijagung, jagung, geografi, geofisika, geoinformatika, geodesi, pertanian")
 
 @section("og_title", config("app.name"))
-@section("og_description", "")
+@section("og_description",
+    "Sistem informasi ini dirancang untuk memberikan pengetahuan komprehensif tentang jagung, mulai dari budidaya, pengolahan, hingga manfaatnya bagi kesehatan dan industri.
+    Dengan informasi yang disajikan, diharapkan dapat membantu petani, peneliti, dan masyarakat umum untuk memahami lebih dalam tentang potensi jagung dan mengoptimalkan penggunaannya.")
 
-@push("css")
-    <style>
-        #produk h4 {
-            font-family: 'Bebas Neue';
-        }
-    </style>
-@endpush
+    @push("css")
+        <style>
+            #produk h4 {
+                font-family: 'Bebas Neue';
+            }
+        </style>
+    @endpush
 
 @section("content")
     <!-- Navbar -->

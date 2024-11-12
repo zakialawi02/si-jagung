@@ -95,6 +95,7 @@ class LahanKebunController extends Controller
             'jumlah_produksi' => 'required|numeric',
             'jenis_jagung' => 'required|in:pakan,konsumsi',
             'varietas_jagung' => 'required|min:2',
+            'kontak' => 'required',
             'geom' => 'required'
         ]);
 
@@ -107,6 +108,7 @@ class LahanKebunController extends Controller
                 'jumlah_produksi' => $request->jumlah_produksi,
                 'jenis_jagung' => $request->jenis_jagung,
                 'varietas_jagung' => $request->varietas_jagung,
+                'kontak' => $request->kontak,
                 'geom' => DB::raw("ST_GeomFromGeoJSON('{$request->geom}')")
             ]);
 
@@ -129,6 +131,56 @@ class LahanKebunController extends Controller
         }
     }
 
+    public function edit(LahanKebun $lahan)
+    {
+        $lahan->load('reviewed', 'user');
+        if ($lahan->reviewed->reviewed) {
+            abort(401);
+        }
+        $data = [
+            'title' => "Edit data",
+            'lahan' => $lahan
+        ];
+
+        return view('pages.back.lahan.editLahan', compact('data'));
+    }
+
+    public function update(Request $request, LahanKebun $lahan)
+    {
+
+        $request->validate([
+            'no_kebun' => 'required',
+            'nama_pemilik' => 'required|min:2',
+            // 'luas' => 'required|numeric',
+            'jumlah_produksi' => 'required|numeric',
+            'jenis_jagung' => 'required|in:pakan,konsumsi',
+            'varietas_jagung' => 'required|min:2',
+            'kontak' => 'nullable',
+            // 'geom' => 'required'
+        ]);
+
+        $lahan = LahanKebun::where('id', $lahan->id)->update([
+            'no_kebun' => $request->no_kebun,
+            'nama_pemilik' => $request->nama_pemilik,
+            // 'luas' => $request->luas,
+            'jumlah_produksi' => $request->jumlah_produksi,
+            'jenis_jagung' => $request->jenis_jagung,
+            'varietas_jagung' => $request->varietas_jagung,
+            'kontak' => $request->kontak,
+            // 'geom' => DB::raw("ST_GeomFromGeoJSON('{$request->geom}')")
+        ]);
+
+        if ($lahan) {
+            if (Auth::user()->role === 'user') {
+                return redirect(route('dashboard'))->with('success', 'Data berhasil diupdate');
+            } else {
+                return redirect(route('admin.lahan.index'))->with('success', 'Data berhasil diupdate');
+            }
+        } else {
+            return back()->with('error', 'Terjadi kesalahan saat mengupdate data');
+        }
+    }
+
     public function destroy(LahanKebun $lahan)
     {
         try {
@@ -144,5 +196,29 @@ class LahanKebunController extends Controller
                 'error' => $e
             ], 400);
         }
+    }
+
+    public function indexList(LahanKebun $lahan)
+    {
+        $lahan = LahanKebun::with('user', 'reviewed')
+            ->whereHas('reviewed', function ($q) {
+                $q->where('reviewed', 1);
+            })
+            ->selectRaw("*, ST_AsGeoJSON(geom) as geom_geojson") // Mengonversi WKB ke GeoJSON
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'data' => $lahan,
+            ], 200);
+        }
+
+        $data = [
+            'title' => 'Data Lahan Kebun',
+            'lahan' => $lahan
+        ];
+
+        return view('pages.front.listLahan', compact('data'));
     }
 }
