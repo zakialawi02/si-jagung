@@ -50,8 +50,10 @@
                                 <div class="badge text-dark"><span class="text-muted">No. Kebun </span> <span>{{ $lahan->no_kebun }}</span> </div>
                             </div>
                             <div class="mt-5">
-                                <h5 class="heading">Jagung: {{ $lahan->jenis_jagung }}<br>{{ $lahan->varietas_jagung }}</h5>
-                                <h6>luas lahan: {{ number_format((float) $lahan->luas / 1000, 2, ",", ".") }} Ha</h6>
+                                <h5 class="heading">Jagung: {{ $lahan->jenis_jagung }}</h5>
+                                <h6 class="heading">Varietas Jagung: <br> {{ $lahan->varietas_jagung }}</h6>
+                                <h6>luas lahan: <br> {{ number_format((float) $lahan->luas / 1000, 2, ",", ".") }} Ha</h6>
+                                <h6>Jumlah Produksi per panen [Kg] : <br> {{ number_format((float) $lahan->jumlah_produksi, 2, ",", ".") }}</h6>
                                 <h6>Kontak : {{ $lahan->kontak ?? "-" }}</h6>
                                 <div class="mt-3">
                                     <div class="map" id="map-{{ $lahan->id }}"></div>
@@ -209,13 +211,13 @@
             // Fokuskan peta pada extent fitur yang dimuat
             map.getView().fit(extent, {
                 padding: [80, 80, 80, 80], // Padding agar fitur tidak terlalu rapat dengan tepi peta
-                duration: 100, // Durasi zoom
+                duration: 0, // Durasi zoom
                 maxZoom: 18 // Zoom maksimum untuk fokus lebih dekat
             });
 
             // Tangkap screenshot setelah peta selesai dirender
             map.once('rendercomplete', function() {
-                $(`#map-${target}`).addClass("d-none");
+                // $(`#map-${target}`).addClass("d-none");
                 captureMap(map, target); // Menampilkan gambar peta
                 $(`#map-${target}`).remove();
             });
