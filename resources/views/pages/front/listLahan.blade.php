@@ -78,6 +78,9 @@
 
 
 @push("javascript")
+    <!-- open layers js -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@v10.2.1/dist/ol.js"></script>
+
     <script>
         $(document).ready(function() {
 
@@ -88,14 +91,7 @@
             });
 
         });
-    </script>
-@endpush
 
-@push("javascript")
-    <!-- open layers js -->
-    <script src="https://cdn.jsdelivr.net/npm/ol@v10.2.1/dist/ol.js"></script>
-
-    <script>
         $(".navbar-toggler").click(function(e) {
             $("#navbarCollapse").toggleClass("collapse");
             $("#navbarCollapse").toggleClass("show");
@@ -112,9 +108,7 @@
             $("#userDropdown-menu").toggleClass("show");
         });
     </script>
-@endpush
 
-@push("javascript")
     <script>
         let Map = ol.Map;
         let View = ol.View;
@@ -134,43 +128,54 @@
             Stroke,
         } = ol.style;
 
-
         // Fungsi untuk menampilkan gambar peta statis
         function captureMap(map, target) {
-            const mapCanvas = document.createElement('canvas');
-            const size = map.getSize();
-            mapCanvas.width = size[0];
-            mapCanvas.height = size[1];
-            const mapContext = mapCanvas.getContext('2d');
-            Array.prototype.forEach.call(
-                document.querySelectorAll('.ol-layer canvas'),
-                function(canvas) {
-                    if (canvas.width > 0) {
-                        mapContext.globalAlpha = canvas.parentNode.style.opacity === '' ? 1 : Number(canvas.parentNode.style.opacity);
-                        const transform = canvas.style.transform;
-                        const matrix = transform.match(/^matrix\(([^\(]*)\)$/)[1].split(',').map(Number);
-                        CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
-                        mapContext.drawImage(canvas, 0, 0);
-                    }
-                }
-            );
-            const dataURL = mapCanvas.toDataURL('image/png');
-            document.getElementById(`screenshot-${target}`).src = dataURL;
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const mapCanvas = document.createElement('canvas');
+                    const size = map.getSize();
+                    mapCanvas.width = size[0];
+                    mapCanvas.height = size[1];
+                    const mapContext = mapCanvas.getContext('2d');
+
+                    Array.prototype.forEach.call(
+                        document.querySelectorAll(`#map-${target} .ol-layer canvas`),
+                        function(canvas) {
+                            if (canvas.width > 0) {
+                                mapContext.globalAlpha = canvas.parentNode.style.opacity === '' ? 1 : Number(canvas.parentNode.style.opacity);
+                                const transform = canvas.style.transform;
+                                const matrix = transform.match(/^matrix\(([^\(]*)\)$/)[1].split(',').map(Number);
+                                CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
+                                mapContext.drawImage(canvas, 0, 0);
+                            }
+                        }
+                    );
+
+                    const dataURL = mapCanvas.toDataURL('image/png');
+                    document.getElementById(`screenshot-${target}`).src = dataURL;
+
+                    $(`#map-${target}`).remove(); // Hapus elemen peta setelah capture selesai
+                    resolve(); // Tandai bahwa capture selesai
+                }, 10); // Beri jeda untuk memastikan semua elemen sudah selesai dirender
+            });
         }
 
-        function createMap(geojsonObject, target) {
+        // Fungsi untuk membuat peta
+        async function createMap(geojsonObject, target) {
+            let mapContainer = document.createElement('div');
+            mapContainer.id = `map-${target}`;
+            mapContainer.style.width = "300px";
+            mapContainer.style.height = "300px";
+            document.body.appendChild(mapContainer);
 
-            // Inisialisasi layer basemap
             const basemapLayer = new TileLayer({
-                source: new OSM(),
+                source: new OSM()
             });
 
-            // Inisialisasi peta OpenLayers
             const map = new Map({
                 target: `map-${target}`,
                 layers: [basemapLayer],
                 view: new View({
-                    // projection: "EPSG:4326",
                     center: fromLonLat([111.550394, -7.857051]),
                     zoom: 16,
                     minZoom: 9,
@@ -178,18 +183,15 @@
                 })
             });
 
-            // Mengonversi GeoJSON menjadi fitur OpenLayers
             const geojsonFormat = new GeoJSON();
             const features = geojsonFormat.readFeatures(geojsonObject, {
                 dataProjection: 'EPSG:4326',
                 featureProjection: map.getView().getProjection()
             });
 
-            // Menambahkan fitur ke peta OpenLayers
             const vectorSource = new VectorSource({
-                features: features
+                features
             });
-
             const vectorLayer = new VectorLayer({
                 source: vectorSource,
                 style: new Style({
@@ -204,40 +206,30 @@
             });
 
             map.addLayer(vectorLayer);
-
-            // Menghitung extent dari semua fitur
-            const extent = vectorSource.getExtent();
-
-            // Fokuskan peta pada extent fitur yang dimuat
-            map.getView().fit(extent, {
-                padding: [80, 80, 80, 80], // Padding agar fitur tidak terlalu rapat dengan tepi peta
-                duration: 0, // Durasi zoom
-                maxZoom: 18 // Zoom maksimum untuk fokus lebih dekat
+            map.getView().fit(vectorSource.getExtent(), {
+                padding: [80, 80, 80, 80],
+                duration: 0,
+                maxZoom: 18
             });
 
-            // Tangkap screenshot setelah peta selesai dirender
-            map.once('rendercomplete', function() {
-                // $(`#map-${target}`).addClass("d-none");
-                captureMap(map, target); // Menampilkan gambar peta
-                $(`#map-${target}`).remove();
-            });
+            await new Promise((resolve) => map.once('rendercomplete', resolve));
 
-            // Render peta secara langsung
-            map.renderSync();
+            await captureMap(map, target);
 
+            document.body.removeChild(mapContainer); // Hapus elemen peta setelah capture selesai
         }
 
-        // Ambil data GeoJSON dari API Laravel menggunakan Ajax
         $.ajax({
             url: '/daftar-lahan',
             type: 'GET',
             dataType: 'json',
-            success: function(data) {
+            success: async function(data) {
                 const dataRaw = data.data;
-                // console.log(dataRaw);
+                console.log(dataRaw);
+
                 for (let i = 0; i < dataRaw.length; i++) {
                     const geojsonObject = JSON.parse(dataRaw[i].geom_geojson);
-                    createMap(geojsonObject, dataRaw[i].id);
+                    await createMap(geojsonObject, dataRaw[i].id); // Tunggu setiap peta selesai sebelum lanjut
                 }
             }
         });
